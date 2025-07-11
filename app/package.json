@@ -2,7 +2,9 @@
   "name": "camagru",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tailwindcss -i ./src/input.css -o ./src/style.css --watch",
+    "dev": "concurrently \"npm run build-css\" \"npm run serve\"",
+    "serve": "live-server . --port=3001 --host=0.0.0.0",
+    "build-css": "tailwindcss -i ./src/input.css -o ./src/style.css --watch",
     "build": "tailwindcss -i ./src/input.css -o ./src/style.css --minify"
   },
   "dependencies": {
@@ -10,6 +12,8 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "daisyui": "^5.0.46"
+    "concurrently": "^9.2.0",
+    "daisyui": "^5.0.46",
+    "live-server": "^1.2.2"
   }
 }
