@@ -1,0 +1,12 @@
+{
+  "name": "camagru",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./src/style.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./src/style.css --minify"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  }
+}

@@ -1,8 +1,7 @@
 services:
   nginx:
-    build: ./nginx/.
+    build:
+      context: . #Root du projet
+      dockerfile: nginx/Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./public:/var/www/static
-      - ./uploads:/var/www/uploads
