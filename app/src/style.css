@@ -10,11 +10,10 @@
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-yellow-200: oklch(94.5% 0.129 101.54);
-    --color-green-200: oklch(92.5% 0.084 155.995);
-    --color-blue-200: oklch(88.2% 0.059 254.128);
-    --color-blue-300: oklch(80.9% 0.105 251.813);
-    --color-blue-400: oklch(70.7% 0.165 254.624);
-    --color-blue-500: oklch(62.3% 0.214 259.815);
+    --color-green-500: oklch(72.3% 0.219 149.579);
+    --color-indigo-500: oklch(58.5% 0.233 277.117);
+    --color-zinc-500: oklch(55.2% 0.016 285.938);
+    --spacing: 0.25rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --default-transition-duration: 150ms;
@@ -1152,6 +1151,11 @@
       cursor: not-allowed;
     }
   }
+  .drawer-content {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    min-width: calc(0.25rem * 0);
+  }
   .filter {
     display: flex;
     flex-wrap: wrap;
@@ -1193,6 +1197,12 @@
         opacity: 0%;
       }
     }
+  }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
+  .mr-2 {
+    margin-right: calc(var(--spacing) * 2);
   }
   .badge {
     display: inline-flex;
@@ -1269,8 +1279,17 @@
       }
     }
   }
+  .flex {
+    display: flex;
+  }
   .table {
     display: table;
+  }
+  .btn-circle {
+    border-radius: calc(infinity * 1px);
+    padding-inline: calc(0.25rem * 0);
+    width: var(--size);
+    height: var(--size);
   }
   .flex-shrink {
     flex-shrink: 1;
@@ -1297,18 +1316,24 @@
   .flex-wrap {
     flex-wrap: wrap;
   }
+  .justify-center {
+    justify-content: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .bg-red-200 {
-    background-color: var(--color-red-200);
+  .bg-green-500 {
+    background-color: var(--color-green-500);
   }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
+  .bg-indigo-500 {
+    background-color: var(--color-indigo-500);
   }
-  .bg-yellow-200 {
-    background-color: var(--color-yellow-200);
+  .bg-zinc-500 {
+    background-color: var(--color-zinc-500);
   }
   .text-wrap {
     text-wrap: wrap;
@@ -1331,6 +1356,14 @@
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
+  }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
+  }
+  .btn-accent {
+    --btn-color: var(--color-accent);
+    --btn-fg: var(--color-accent-content);
   }
   .btn-primary {
     --btn-color: var(--color-primary);

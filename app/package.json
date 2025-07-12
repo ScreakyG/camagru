@@ -8,10 +8,10 @@
     "build": "tailwindcss -i ./src/input.css -o ./src/style.css --minify"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.11",
-    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11",
     "concurrently": "^9.2.0",
     "daisyui": "^5.0.46",
     "live-server": "^1.2.2"
