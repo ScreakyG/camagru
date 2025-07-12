@@ -8,5 +8,7 @@ export function handleHeader() {
 
     loginBtn?.addEventListener("click", () => {
         console.log("You clicked login button");
+        const loginModal = document.getElementById("login-modal");
+        loginModal.showModal();
     })
 }
