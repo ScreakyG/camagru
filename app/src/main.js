@@ -1,7 +1,9 @@
 import { router } from "./router.js";
 import { handleHeader } from "./header.js";
-import { handleLoginModal } from "./login.js";
+import { handleRegisterModal } from "./register.js";
 
-handleLoginModal(); 
-handleHeader();
-// router();
+document.addEventListener("DOMContentLoaded", () => {
+    handleRegisterModal();
+    handleHeader();
+    // router();
+})
