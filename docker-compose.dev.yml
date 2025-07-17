@@ -1,0 +1,23 @@
+services:
+  nginx:
+    build:
+      context: . #Root du projet
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - camagru-network
+
+  api:
+    build:
+      context: . #Root du projet
+      dockerfile: back/Dockerfile
+    volumes:
+      - ./back/src/:/app/src
+    command: node --watch src/server.js
+    networks:
+      - camagru-network
+
+networks:
+  camagru-network:
+    driver: bridge

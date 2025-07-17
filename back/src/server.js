@@ -14,7 +14,7 @@ fastify.get("/", async function handler (request, reply) {
 })
 
 fastify.get("/api/", async function handler (request, reply) {
-    return (reply.code(200).send({ hello: "bien ouej" }));
+    return (reply.code(200).send({ hello: "bien ouej mecose" }));
 })
 
 try {
