@@ -1,14 +1,21 @@
-async function submitForm(params) {
+import { printAPIResponse } from "./utils.js";
+
+async function submitForm() {
+    const formMail = "warclown"
     try
     {
-        const response = await fetch("/api/", {
-            method: "GET"
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({formMail})
         })
         const resData = await response.json();
         if (!response.ok)
-            console.log("Fetch Failed : ", resData);
+            printAPIResponse("/api/auth/register", resData);
         else
-            console.log("Fetch success with answer : ", resData);
+            printAPIResponse("/api/auth/register", resData);
     }
     catch (error)
     {
