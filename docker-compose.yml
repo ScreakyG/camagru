@@ -5,3 +5,15 @@ services:
       dockerfile: nginx/Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - camagru-network
+      
+  api:
+    build:
+      dockerfile: back/Dockerfile
+    networks:
+      - camagru-network
+
+networks:
+  camagru-network:
+    driver: bridge
