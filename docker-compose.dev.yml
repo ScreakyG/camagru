@@ -1,10 +1,11 @@
 services:
   nginx:
-    build:
-      context: . #Root du projet
-      dockerfile: nginx/Dockerfile
+    image: nginx:alpine
     ports:
       - "8080:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./app:/var/www/static
     networks:
       - camagru-network
 
@@ -14,7 +15,7 @@ services:
       dockerfile: back/Dockerfile
     volumes:
       - ./back/src/:/app/src
-    command: node --watch src/server.js
+    command: npm run dev
     networks:
       - camagru-network
 
