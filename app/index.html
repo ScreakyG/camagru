@@ -16,17 +16,17 @@
                 <div class="modal-box">
                     <h2 class="text-center text-2xl">Register</h2>
                     <button id="close-register-modal"class="btn btn-error absolute right-2 top-2" autofocus>X</button>
-                    <form>
+                    <form id="register-form" name="register-form">
                         <div class="m-4">
-                            <label>Email</label>
-                            <input class="input block mt-2 w-full" type="email" placeholder="Enter email"></input>
+                            <label for="email">Email</label>
+                            <input id="email" name="email" class="input block mt-2 w-full" type="email" placeholder="Enter email" required></input>
                         </div>
                         <div class="m-4">
-                            <label>Password</label>
-                            <input class="input block mt-2 w-full" type="password" placeholder="Enter password"></input>
+                            <label for="password">Password</label>
+                            <input id="password" name="password" class="input block mt-2 w-full" type="password" placeholder="Enter password" required></input>
                         </div>
                         <p class="mx-4">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-                        <button id="submit-register-btn" type="button" class="btn btn-primary block mx-auto mt-5 sm:px-20">Register</button>
+                        <button id="submit-register-btn" type="submit" class="btn btn-primary block mx-auto mt-5 sm:px-20">Register</button>
                     </form>
                 </div>
             </dialog>
