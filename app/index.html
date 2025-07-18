@@ -19,14 +19,24 @@
                     <form id="register-form" name="register-form">
                         <div class="m-4">
                             <label for="email">Email</label>
-                            <input id="email" name="email" class="input block mt-2 w-full" type="email" placeholder="Enter email" required></input>
+                            <input id="email" name="email" class="input validator block mt-2 w-full" type="email" placeholder="Enter email" required></input>
+                            <div class="validator-hint hidden">Enter valid email address</div>
                         </div>
                         <div class="m-4">
                             <label for="password">Password</label>
-                            <input id="password" name="password" class="input block mt-2 w-full" type="password" placeholder="Enter password" required></input>
+                            <input id="password" name="password" class="input validator block mt-2 w-full" type="password" placeholder="Enter password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" required></input>
+                            <p class="validator-hint hidden">
+                                Must be more than 8 characters, including
+                                <br/>At least one number
+                                <br/>At least one lowercase letter
+                                <br/>At least one uppercase letter
+                            </p>
                         </div>
-                        <p class="mx-4">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-                        <button id="submit-register-btn" type="submit" class="btn btn-primary block mx-auto mt-5 sm:px-20">Register</button>
+                        <div class="m-4">
+                            <p class="text-center text-xs mb-5">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+                            <button id="submit-register-btn" type="submit" class="btn btn-primary w-full">Register</button>
+                        </div>
                     </form>
                 </div>
             </dialog>
