@@ -1,23 +1,8 @@
-import { printAPIResponse } from "./utils.js";
-
-// Recuperer les valeurs du formulaires de register.
-function getFormValues() {
-    const registerForm = document.getElementById("register-form");
-
-    if (!registerForm)
-        return;
-
-    let formData = new FormData(registerForm);
-    const formValues = {
-        email: formData.get("email"),
-        password: formData.get("password")
-    };
-
-    return (formValues);
-}
+import { printAPIResponse, getFormValues } from "./utils.js";
 
 async function submitForm() {
-    const formValues = getFormValues();
+    const registerForm = document.getElementById("register-form");
+    const formValues = getFormValues(registerForm);
 
     try
     {
