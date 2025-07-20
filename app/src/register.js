@@ -26,7 +26,7 @@ async function submitForm() {
     }
 }
 
-export function handleRegisterModal(params) {
+export function handleRegisterModal() {
     const dialog = document.getElementById("register-modal");
     const closeModalBtn = document.getElementById("close-register-modal");
     const form = document.getElementById("register-form");
