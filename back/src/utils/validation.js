@@ -41,14 +41,8 @@ export function verifyPasswordInput(password) {
     if (!/[A-Z]/.test(password))
         throw new Error('Password must contain at least one uppercase letter');
 
-    /*
-        Verifier les requirements du mot de passe :
-            1/ Majuscule
-            2/ Miniscule
-            3/ Nombre
-            4/ Caractere special
-    */
-
-
+    if (!/[!@#$%^&*]/.test(password))
+        throw new Error('Password must contain at least one special character (!@#$%^&*)');
+    
     return (password);
 }
