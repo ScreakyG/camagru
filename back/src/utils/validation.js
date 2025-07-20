@@ -1,6 +1,5 @@
 export function verifyEmailInput(email) {
 
-    console.log(email);
     if (typeof email !== "string")
         throw new Error("Invalid email format (not a string)");
 
@@ -24,8 +23,6 @@ export function verifyEmailInput(email) {
 
 export function verifyPasswordInput(password) {
 
-    console.log(password);
-
     if (typeof password !== "string")
         throw new Error("Invalid password format (not a string)")
 
@@ -43,6 +40,6 @@ export function verifyPasswordInput(password) {
 
     if (!/[!@#$%^&*]/.test(password))
         throw new Error('Password must contain at least one special character (!@#$%^&*)');
-    
+
     return (password);
 }
