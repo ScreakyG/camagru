@@ -27,7 +27,7 @@ export function verifyPasswordInput(password) {
         throw new Error("Invalid password format (not a string)")
 
     if (!password || password.length < 8)
-        throw new Error("Password does not meet requirements (at least 8 characters)");
+        throw new Error("Password does not meet length requirements (at least 8 characters)");
 
     if (!/\d/.test(password))
         throw new Error('Password must contain at least one number');
@@ -42,4 +42,19 @@ export function verifyPasswordInput(password) {
         throw new Error('Password must contain at least one special character (!@#$%^&*)');
 
     return (password);
+}
+
+export function verifyUsernameInput(username) {
+    const trimmedUsername = username.trim();
+
+    if (typeof username !== "string")
+        throw new Error("Invalid username format (not a string)");
+
+    if (!username || trimmedUsername.length < 3 || trimmedUsername.length > 30)
+        throw new Error("Username does not meet length requirements (between 3 and 30 characters)");
+
+    if (!/^[a-zA-Z0-9-]+$/.test(trimmedUsername))
+        throw new Error('Username can only contain letters, numbers or dash');
+
+    return trimmedUsername;
 }

@@ -1,17 +1,22 @@
-import { verifyEmailInput, verifyPasswordInput } from "../utils/validation.js";
+import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../utils/validation.js";
 
 const registerSchema = {
     body: {
         type: 'object',
         required: ['email', 'password'],
         properties: {
+            username: {
+                type: "string",
+                minLength: 3,
+                maxLength: 30
+            },
             email: {
-                type: 'string',
+                type: "string",
                 format: 'email',
                 maxLength: 255
             },
             password: {
-                type: 'string',
+                type: "string",
                 minLength: 8,
                 maxLength: 128
             }
@@ -32,11 +37,19 @@ async function authRoutes(fastify, options) {
         */
         try
         {
-            let { email, password } = request.body;
+            console.log("Request body : ", request.body);
+            let { username, email, password } = request.body;
 
             // Verifie le format et rejette en cas de caracteres innatendus.
+            username = verifyUsernameInput(username);
             email = verifyEmailInput(email);
             password = verifyPasswordInput(password);
+
+            console.log("After validation/sanitize : ", {
+                username: username,
+                email: email,
+                password: password
+            })
         }
         catch(error)
         {

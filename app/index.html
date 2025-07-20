@@ -40,6 +40,7 @@
                                     minlength="3"
                                     maxlength="30"
                                     title="Only letters, numbers or dash"
+                                    name="username"
                                 />
                             </label>
                             <p class="validator-hint hidden">
@@ -94,7 +95,7 @@
                             </div>
                         </div>
                         <div class="m-4">
-                            <label class="input w-full">
+                            <label id="repeat-password-label" class="input w-full">
                                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <g
                                         stroke-linejoin="round"
@@ -110,6 +111,7 @@
                                     </g>
                                 </svg>
                                 <input
+                                    id ="repeat-password-input"
                                     type="password"
                                     required
                                     placeholder="Repeat Password"

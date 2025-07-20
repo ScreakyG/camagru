@@ -11,6 +11,9 @@
     --text-xs--line-height: calc(1 / 0.75);
     --text-2xl: 1.5rem;
     --text-2xl--line-height: calc(2 / 1.5);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -503,6 +506,12 @@
   }
   .justify-end {
     justify-content: flex-end;
+  }
+  .border-error {
+    border-color: var(--color-error);
+  }
+  .border-success {
+    border-color: var(--color-success);
   }
   .text-center {
     text-align: center;

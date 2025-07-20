@@ -26,6 +26,20 @@ async function submitForm() {
     }
 }
 
+function repeatPasswordMatch() {
+    const passwordInput = document.getElementById("password");
+    const reapeatPassword = document.getElementById("repeat-password-input");
+    const reapeatPasswordLabel = document.getElementById("repeat-password-label");
+
+    if (reapeatPassword.value !== passwordInput.value)
+    {
+        reapeatPasswordLabel.classList.add("border-error");
+        return (false);
+    }
+    reapeatPasswordLabel.classList.add("border-success");
+    return (true);
+}
+
 export function handleRegisterModal() {
     const dialog = document.getElementById("register-modal");
     const closeModalBtn = document.getElementById("close-register-modal");
@@ -39,8 +53,19 @@ export function handleRegisterModal() {
     // Handle the register button that send the form.
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+        if (!repeatPasswordMatch())
+            return ;
         submitForm();
     });
+
+    // Handle password repeat validation.
+    const reapeatPassword = document.getElementById("repeat-password-input");
+    
+    reapeatPassword.addEventListener("focus", () => {
+        const reapeatPasswordLabel = document.getElementById("repeat-password-label");
+        reapeatPasswordLabel.classList.remove("border-error");
+        reapeatPasswordLabel.classList.remove("border-success");
+    })
 
     //Handle register modal closing when clicking outside the modal.
     const registerModal = document.getElementById("register-modal");
