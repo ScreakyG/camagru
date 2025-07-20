@@ -1,9 +1,48 @@
-async function authRoutes(fastify, options) {
-    fastify.post("/register", async (request, reply) => {
-        const bodyData = request.body;
+import { verifyEmailInput, verifyPasswordInput } from "../utils/validation.js";
 
-        console.log("Request body = ", bodyData);
-        return (reply.code(200).send({ message:"Succesfully called API", content: bodyData }));
+const registerSchema = {
+    body: {
+        type: 'object',
+        required: ['email', 'password'],
+        properties: {
+            email: {
+                type: 'string',
+                format: 'email',
+                maxLength: 255
+            },
+            password: {
+                type: 'string',
+                minLength: 8,
+                maxLength: 128
+            }
+        },
+        additionalProperties: false
+    }
+};
+
+async function authRoutes(fastify, options) {
+    fastify.post("/register", { schema: registerSchema }, async (request, reply) => {
+
+        /* TODO
+            1/ Verifier que le schema de la requete est bon.
+            2/ Valider / Sanitize le body.
+            3/ Verifier que le mail / username n'est pas deja utilise.
+            4/ Hasher le mot de passe.
+            5/ Store dans la DB.
+        */
+        try
+        {
+            let { email, password } = request.body;
+
+            // Verifie le format et rejette en cas de caracteres innatendus.
+            email = verifyEmailInput(email);
+            password = verifyPasswordInput(password);
+        }
+        catch(error)
+        {
+            return (reply.code(400).send({ success: false, message: error.message }))
+        }
+        return (reply.code(200).send({ success: true, message:"Succesfully registered" }));
     })
 }
 

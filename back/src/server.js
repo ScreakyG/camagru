@@ -10,10 +10,11 @@ const fastify = Fastify({
 
 // Register des routes liees a l'Auth
 await fastify.register(authRoutes, {prefix: "/api/auth"});
+
 // Register du plugins pour gerer CORS
-await fastify.register(cors, {
-    // put your options here
-})
+// await fastify.register(cors, {
+//     // put your options here
+// })
 
 // Check si l'API fonctionne bien
 fastify.get("/api/health", async function handler (request, reply) {
