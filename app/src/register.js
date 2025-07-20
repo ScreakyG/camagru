@@ -1,48 +1,8 @@
 import { printAPIResponse, getFormValues } from "./utils.js";
 
-function resetInputsErrors(params) {
-    const emailInput = document.getElementById("email");
-    const emailErrors = document.getElementById("email-errors");
-    const emailLabel = document.getElementById("email-label");
-
-    emailInput.addEventListener("focus", () => {
-        emailLabel.classList.remove("border-error");
-        emailErrors.textContent = "";
-    })
-}
-
-function verifyRegisterForm(formValues) {
-    let errors = 0;
-    const emailLabel = document.getElementById("email-label");
-    const emailErrors = document.getElementById("email-errors");
-    const passwordLabel = document.getElementById("password-label");
-    const passwordErrors = document.getElementById("password-errors");
-
-    if (formValues.email === "")
-    {
-        emailLabel.classList.add("border-error");
-        emailErrors.textContent = "Enter a valid email";
-        errors++;
-    }
-
-    if (formValues.password === "")
-    {
-        passwordLabel.classList.add("border-error");
-        passwordErrors.textContent = "At least 8 characters";
-        errors++;
-    }
-
-    if (errors != 0)
-        return (false);
-    return (true);
-}
-
 async function submitForm() {
     const registerForm = document.getElementById("register-form");
     const formValues = getFormValues(registerForm);
-
-    if (!verifyRegisterForm(formValues))
-        return ;
 
     try
     {
@@ -81,8 +41,6 @@ export function handleRegisterModal(params) {
         event.preventDefault();
         submitForm();
     });
-
-    resetInputsErrors();
 
     //Handle register modal closing when clicking outside the modal.
     const registerModal = document.getElementById("register-modal");

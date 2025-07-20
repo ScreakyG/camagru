@@ -19,7 +19,7 @@
                     <form id="register-form" name="register-form">
                         <div class="m-4">
                             Email
-                            <label id="email-label" class="input w-full mt-2">
+                            <label id="email-label" class="input validator w-full mt-2">
                                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <g
                                         stroke-linejoin="round"
@@ -34,7 +34,7 @@
                                 </svg>
                                 <input id="email" name="email" type="email" placeholder="Enter your email"/>
                             </label>
-                            <div id="email-errors" class="text-error text-xs mt-2"></div>
+                            <div id="email-errors" class="validator-hint hidden">Enter valid email address</div>
                         </div>
                         <div class="m-4">
                             Password
