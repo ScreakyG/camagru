@@ -2,11 +2,14 @@ import Fastify from "fastify"
 import cors from "@fastify/cors"
 
 import authRoutes from "./routes/authRoutes.js"
+import { initDB } from "./db/db.js"
 
 // Instance setup
 const fastify = Fastify({
     logger: true
 })
+
+initDB();
 
 // Register des routes liees a l'Auth
 await fastify.register(authRoutes, {prefix: "/api/auth"});

@@ -1,3 +1,4 @@
+import { getDB } from "../db/db.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../utils/validation.js";
 
 const registerSchema = {
@@ -45,17 +46,21 @@ async function authRoutes(fastify, options) {
             email = verifyEmailInput(email);
             password = verifyPasswordInput(password);
 
-            console.log("After validation/sanitize : ", {
-                username: username,
-                email: email,
-                password: password
-            })
+            // On store le user dans la DB.
+            const db = getDB();
+            await db.run(`
+                INSERT  INTO    users (username)
+                VALUES  (?)`, [username]);
+
+            // Recuperer le user fraichement cree.
+            const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())")
+
+            return (reply.code(201).send({ success: true, message:"Succesfully registered", user: user }));
         }
         catch(error)
         {
             return (reply.code(400).send({ success: false, message: error.message }))
         }
-        return (reply.code(200).send({ success: true, message:"Succesfully registered" }));
     })
 }
 
