@@ -1,4 +1,5 @@
 import { getDB } from "../db/db.js";
+import { createUser, findUserByEmail } from "../db/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../utils/validation.js";
 
 const registerSchema = {
@@ -48,9 +49,7 @@ async function authRoutes(fastify, options) {
 
             // On store le user dans la DB.
             const db = getDB();
-            await db.run(`
-                INSERT  INTO    users (username)
-                VALUES  (?)`, [username]);
+            createUser(username);
 
             // Recuperer le user fraichement cree.
             const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())");

@@ -9,7 +9,7 @@ const fastify = Fastify({
     logger: true
 })
 
-initDB();
+await initDB();
 
 // Register des routes liees a l'Auth
 await fastify.register(authRoutes, {prefix: "/api/auth"});
