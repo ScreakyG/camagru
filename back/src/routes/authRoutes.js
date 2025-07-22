@@ -53,7 +53,7 @@ async function authRoutes(fastify, options) {
                 VALUES  (?)`, [username]);
 
             // Recuperer le user fraichement cree.
-            const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())")
+            const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())");
 
             return (reply.code(201).send({ success: true, message:"Succesfully registered", user: user }));
         }

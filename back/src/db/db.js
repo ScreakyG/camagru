@@ -5,7 +5,7 @@ let dbInstance = null;
 
 export async function initDB() {
     dbInstance = await open({
-        filename: "./database.sqlite",
+        filename: "./camagru.db",
         driver: sqlite3.Database
     })
 

@@ -1,6 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
 
+# Utile pour aller regarder des infos sur la DB dans le container
+RUN apk add sqlite
 # Copie les dependences.
 COPY back/package*.json ./
 # Installe les dependences.
