@@ -49,7 +49,7 @@ async function authRoutes(fastify, options) {
 
             // On store le user dans la DB.
             const db = getDB();
-            createUser(username);
+            await createUser(email, username, password);
 
             // Recuperer le user fraichement cree.
             const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())");
