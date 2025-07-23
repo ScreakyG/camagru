@@ -1,5 +1,4 @@
-import { getDB } from "../db/db.js";
-import { createUser, findUserByEmail } from "../db/querys.js";
+import { createUser} from "../db/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../utils/validation.js";
 
 const registerSchema = {
@@ -47,18 +46,18 @@ async function authRoutes(fastify, options) {
             email = verifyEmailInput(email);
             password = verifyPasswordInput(password);
 
-            // On store le user dans la DB.
-            const db = getDB();
-            await createUser(email, username, password);
+            const newUser = await createUser(email, username, password);
 
-            // Recuperer le user fraichement cree.
-            const user = await db.get("SELECT * FROM users WHERE id = (SELECT last_insert_rowid())");
-
-            return (reply.code(201).send({ success: true, message:"Succesfully registered", user: user }));
+            return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
         }
         catch(error)
         {
-            return (reply.code(400).send({ success: false, message: error.message }))
+            // It means that its a error that we throw ourself.
+            if (error.statusCode)
+                return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}));
+            // It is a error that we did not handle. (We should avoid this at all cost).
+            else
+                return (reply.code(500).send({success: false, errorMessage: "Internal server error", details: error.message}));
         }
     })
 }
