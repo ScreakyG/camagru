@@ -6,3 +6,11 @@ export class ConflictError extends Error {
         this.name = "ConclictError";
     }
 }
+
+export class ValidationError extends Error {
+    constructor(message) {
+        super(message); // Appelle le constructeur parent avec le parametre.
+        this.statusCode = 400;
+        this.name = "ValidationError";
+    }
+}
