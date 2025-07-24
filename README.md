@@ -12,3 +12,6 @@ Preview of the app design :
 
 <img width="800" height="696" alt="image" src="https://github.com/user-attachments/assets/9e7db9b0-9e80-44f2-83e3-32d7e9632bf4" />
 
+Current handling of register process : 
+
+<img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/9d7a8ab8-02b0-4896-9edf-193f2052dfaa" />
