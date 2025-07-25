@@ -30,9 +30,10 @@ async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, async (request, reply) => {
 
         /* TODO
-            1/ Verifier que le schema de la requete est bon.
-            2/ Valider / Sanitize le body.
-            3/ Verifier que le mail / username n'est pas deja utilise.
+            1/ Verifier que le schema de la requete est bon. OK
+            2/ Valider / Sanitize le body. OK
+            3/ Verifier que le mail / username n'est pas deja utilise. OK
+            
             4/ Hasher le mot de passe.
             5/ Store dans la DB.
         */
