@@ -25,6 +25,7 @@ fastify.get("/api/health", async function handler (request, reply) {
     return (reply.code(200).send({ message: "API is working" }));
 })
 
+// Simple test endpoint to see if jwt creation works.
 fastify.get("/api/jwt", (request, reply) => {
     const createTokenFromJson = (jsonData, options = {}) => {
         try
