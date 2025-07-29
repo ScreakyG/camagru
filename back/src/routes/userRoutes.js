@@ -1,9 +1,8 @@
 import { requireAuth } from "../utils/preHandlers.js";
+import { userInfos } from "./user/userInfos.js";
 
 async function userRoutes(fastify, options) {
-    fastify.get("/me", { preHandler: requireAuth },  async (request, reply) => {
-        return (reply.send({ success: true, user: request.user }));
-    });
+    fastify.get("/me", { preHandler: requireAuth }, userInfos);
 }
 
 export default userRoutes

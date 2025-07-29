@@ -15,6 +15,9 @@ export async function createUser(email, username, password) {
     if (usernameTaken)
         throw new ConflictError("This username is already taken");
 
+    //Encrypt the password to store it in DB.
+    
+
     const db = await getDB();
     const query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
     const result = await db.run(query, [email, username, password]);
