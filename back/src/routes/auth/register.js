@@ -1,8 +1,6 @@
 import { createUser } from "../../db/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
 
-import { createJWT } from "../../utils/jwt.js"; // Pensez a remove
-
 export async function register(request, reply)
 {
     /*

@@ -18,6 +18,8 @@ services:
     command: npm run dev
     networks:
       - camagru-network
+    env_file: # Va ajouter les variables d'environnement du .env dans l'env du container.
+      - ./back/.env
 
 networks:
   camagru-network:

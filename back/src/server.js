@@ -1,3 +1,5 @@
+console.log(process.env);
+
 import Fastify from "fastify"
 import cors from "@fastify/cors"
 import cookie from "@fastify/cookie"
@@ -34,10 +36,16 @@ fastify.get("/api/health", async function handler (request, reply) {
     return (reply.code(200).send({ message: "API is working" }));
 })
 
-try {
-    await fastify.listen({port: 3000, host: "0.0.0.0"});
+try
+{
+    const port = process.env.PORT || 3000;
+    const host = process.env.HOST || "0.0.0.0";
+
+    await fastify.listen({port, host});
+    console.log(`✅ Server running on ${host}:${port}`);
 }
-catch (err) {
+catch (err)
+{
     fastify.log.error(err);
     process.exit(1);
 }
