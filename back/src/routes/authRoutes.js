@@ -1,4 +1,4 @@
-import { signin } from "./auth/login.js";
+import { login } from "./auth/login.js";
 import { register } from "./auth/register.js";
 
 const registerSchema = {
@@ -26,9 +26,29 @@ const registerSchema = {
     }
 };
 
+const loginSchema = {
+    body: {
+        type: 'object',
+        required: ["username", "password"],
+        properties: {
+            username: {
+                type: "string",
+                minLength: 3,
+                maxLength: 30
+            },
+            password: {
+                type: "string",
+                minLength: 8,
+                maxLength: 128
+            }
+        },
+        additionalProperties: false
+    }
+};
+
 async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, register);
-    fastify.post("/login", signin);
+    fastify.post("/login", { schema: loginSchema }, login);
 }
 
 export default authRoutes;

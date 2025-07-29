@@ -1,5 +1,6 @@
 import { getDB } from "./db.js";
 import { ConflictError } from "../utils/errors.js";
+import { encryptPassword } from "../utils/encrypt.js";
 
 export async function createUser(email, username, password) {
 
@@ -15,12 +16,12 @@ export async function createUser(email, username, password) {
     if (usernameTaken)
         throw new ConflictError("This username is already taken");
 
-    //Encrypt the password to store it in DB.
-    
+    //Encrypt the password.
+    const hashPass = await encryptPassword(password);
 
     const db = await getDB();
     const query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
-    const result = await db.run(query, [email, username, password]);
+    const result = await db.run(query, [email, username, hashPass]);
 
     // We return the id that was used to store in DB and also the users infos.
     return ({id: result.lastID, email, username, created_at: new Date().toISOString()});

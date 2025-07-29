@@ -22,15 +22,7 @@ export async function register(request, reply)
 
         // Creer un user , crypte le mdp et store dans la DB.
         const newUser = await createUser(email, username, password);
-        // Creer un JWT pour l'auth (a l'enlever , on le donnera pas dans cette route).
-        const token = createJWT(newUser);
 
-        reply.setCookie("auth_token", token, {
-            httpOnly: true, // Non accessible avec JavaScript.
-            secure: false, // Mettre en true si en HTTPS.
-            sameSite: "strict",
-            path: "/"
-        })
         return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
     }
 
