@@ -3,6 +3,7 @@ import cors from "@fastify/cors"
 import cookie from "@fastify/cookie"
 
 import authRoutes from "./routes/authRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
 import { initDB } from "./db/db.js"
 
 // Instance setup
@@ -17,11 +18,14 @@ fastify.register(cookie, {
     parseOptions: {}
 })
 
-// Register des routes liees a l'Auth
+// Register des routes de l'API
 await fastify.register(authRoutes, {prefix: "/api/auth"});
+await fastify.register(userRoutes, {prefix: "/api/user"});
 
 // Register du plugins pour gerer CORS
 // await fastify.register(cors, {
+//     origin: ["http://localhost:8080"],
+//     credentials: true
 //     // put your options here
 // })
 

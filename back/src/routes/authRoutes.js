@@ -46,8 +46,6 @@ async function authRoutes(fastify, options) {
 
             const newUser = await createUser(email, username, password);
             const token = createJWT(newUser);
-            if (!token)
-                throw new Error("Error while creating JWT");
 
             reply.setCookie("auth_token", token, {
                 httpOnly: true, // Non accessible avec JavaScript.
