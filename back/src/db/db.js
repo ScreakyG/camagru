@@ -13,6 +13,7 @@ export async function initDB() {
     try
     {
         dbInstance = await open({
+            // filename: process.env.DB_PATH
             filename: "./camagru.db",
             driver: sqlite3.Database
         })
