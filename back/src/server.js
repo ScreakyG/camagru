@@ -1,6 +1,6 @@
 import Fastify from "fastify"
 import cors from "@fastify/cors"
-import jwt from "jsonwebtoken";
+import cookie from "@fastify/cookie"
 
 import authRoutes from "./routes/authRoutes.js"
 import { initDB } from "./db/db.js"
@@ -11,6 +11,11 @@ const fastify = Fastify({
 })
 
 await initDB();
+
+fastify.register(cookie, {
+    secret: "my-secret",
+    parseOptions: {}
+})
 
 // Register des routes liees a l'Auth
 await fastify.register(authRoutes, {prefix: "/api/auth"});
@@ -23,31 +28,6 @@ await fastify.register(authRoutes, {prefix: "/api/auth"});
 // Check si l'API fonctionne bien
 fastify.get("/api/health", async function handler (request, reply) {
     return (reply.code(200).send({ message: "API is working" }));
-})
-
-// Simple test endpoint to see if jwt creation works.
-fastify.get("/api/jwt", (request, reply) => {
-    const createTokenFromJson = (jsonData, options = {}) => {
-        try
-        {
-            const secretKey = "test";
-            const token = jwt.sign(jsonData, secretKey);
-            return (token);
-        }
-        catch(error)
-        {
-            console.log("Error /api/jwt: ", error.message);
-            return (null);
-        }
-    }
-
-    const jsonData = { email: "yka@gmail.com", password: "mdp"};
-    const token = createTokenFromJson(jsonData);
-
-    if (token)
-        return (reply.send({success: true, token: token}));
-    else
-        return (reply.send({success: false}));
 })
 
 try {

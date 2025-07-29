@@ -1,10 +1,11 @@
-import { createUser} from "../db/querys.js";
+import { createUser } from "../db/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../utils/validation.js";
+import { createJWT } from "../utils/jwt.js";
 
 const registerSchema = {
     body: {
         type: 'object',
-        required: ['email', 'password'],
+        required: ["username", "email", "password"],
         properties: {
             username: {
                 type: "string",
@@ -30,12 +31,8 @@ async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, async (request, reply) => {
 
         /* TODO
-            1/ Verifier que le schema de la requete est bon. OK
-            2/ Valider / Sanitize le body. OK
-            3/ Verifier que le mail / username n'est pas deja utilise. OK
-            
-            4/ Hasher le mot de passe.
-            5/ Store dans la DB.
+            1/ Hasher le mot de passe.
+            2/ Store dans la DB.
         */
         try
         {
@@ -48,7 +45,16 @@ async function authRoutes(fastify, options) {
             password = verifyPasswordInput(password);
 
             const newUser = await createUser(email, username, password);
+            const token = createJWT(newUser);
+            if (!token)
+                throw new Error("Error while creating JWT");
 
+            reply.setCookie("auth_token", token, {
+                httpOnly: true, // Non accessible avec JavaScript.
+                secure: false, // Mettre en true si en HTTPS.
+                sameSite: "strict",
+                path: "/"
+            })
             return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
         }
         catch(error)
