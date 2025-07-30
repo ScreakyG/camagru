@@ -1,4 +1,5 @@
 import { printAPIResponse, getFormValues } from "./utils.js";
+import { router } from "./router.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");
@@ -18,11 +19,14 @@ async function submitForm() {
         if (!response.ok)
         {
             printAPIResponse("/api/auth/login", resData);
+            
             const showError = document.getElementById("login-error-message");
             showError.textContent = resData.errorMessage;
         }
         else
-            printAPIResponse("/api/auth/login", resData);
+        {
+           printAPIResponse("/api/auth/login", resData);
+        }
     }
     catch (error)
     {

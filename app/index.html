@@ -16,12 +16,12 @@
                 <a class="btn btn-ghost text-xl">Camagru</a>
             </div>
             <!-- Bouttons disponibles seulement quand pas Auth -->
-            <div class="flex justify-end">
+            <div id="auth-buttons" class="flex justify-end">
                 <button id="register-btn" type="button" class="btn btn-primary mr-2">Register</button>
                 <button id="login-btn" type="button" class="btn btn-primary mr-2">Login</button>
             </div>
             <!-- Menu disponible quand Auth -->
-            <div class="flex-none hidden">
+            <div id="avatar-menu" class="flex-none hidden">
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                         <div class="w-10 rounded-full">
@@ -41,6 +41,10 @@
             </div>
         </div>
     </header>
+
+    <main id="test-box">
+
+    </main>
 
     <!-- MODALS -->
     <dialog id="register-modal" class="modal">

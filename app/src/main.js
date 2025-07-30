@@ -7,5 +7,5 @@ document.addEventListener("DOMContentLoaded", () => {
     handleRegisterModal();
     handleLoginModal();
     handleHeader();
-    // router();
+    router();
 })
