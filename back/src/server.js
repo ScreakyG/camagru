@@ -1,5 +1,3 @@
-console.log(process.env);
-
 import Fastify from "fastify"
 import cors from "@fastify/cors"
 import cookie from "@fastify/cookie"
@@ -15,10 +13,7 @@ const fastify = Fastify({
 
 await initDB();
 
-fastify.register(cookie, {
-    secret: "my-secret",
-    parseOptions: {}
-})
+fastify.register(cookie);
 
 // Register des routes de l'API
 await fastify.register(authRoutes, {prefix: "/api/auth"});
