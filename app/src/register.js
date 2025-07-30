@@ -16,7 +16,11 @@ async function submitForm() {
 
         const resData = await response.json();
         if (!response.ok)
+        {
             printAPIResponse("/api/auth/register", resData);
+            const showError = document.getElementById("register-error-message");
+            showError.textContent = resData.errorMessage;
+        }
         else
             printAPIResponse("/api/auth/register", resData);
     }
