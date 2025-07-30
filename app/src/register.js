@@ -60,17 +60,10 @@ export function handleRegisterModal() {
 
     // Handle password repeat validation.
     const reapeatPassword = document.getElementById("repeat-password-input");
-    
+
     reapeatPassword.addEventListener("focus", () => {
         const reapeatPasswordLabel = document.getElementById("repeat-password-label");
         reapeatPasswordLabel.classList.remove("border-error");
         reapeatPasswordLabel.classList.remove("border-success");
     })
-
-    //Handle register modal closing when clicking outside the modal.
-    const registerModal = document.getElementById("register-modal");
-    window.onclick = function (event) {
-        if (event.target === registerModal)
-            registerModal.close();
-    }
 }

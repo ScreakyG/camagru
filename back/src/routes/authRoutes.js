@@ -33,12 +33,10 @@ const loginSchema = {
         properties: {
             username: {
                 type: "string",
-                minLength: 3,
                 maxLength: 30
             },
             password: {
                 type: "string",
-                minLength: 8,
                 maxLength: 128
             }
         },

@@ -2,7 +2,7 @@
 
 echo "🚀 Démarrage du build de Camagru"
 
-# Couleurs pour les logs
+# Couleurs
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
@@ -15,7 +15,7 @@ cleanup() {
     exit 0
 }
 
-# Gérer Ctrl+C
+# Gerer Ctrl+C
 trap cleanup SIGINT SIGTERM
 
 # Démarrer Docker en arrière-plan
