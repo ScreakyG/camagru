@@ -1,3 +1,10 @@
+export async function logoutUser() {
+    // Call "/api/auth/logout", qui va remove le JWT.
+    await updateAuthUI();
+    console.log("User logged out");
+}
+
+// Retourne les infos du users grace au JWT dans les cookies. Null si pas logged.
 export async function getCurrentUser() {
     try
     {
@@ -18,25 +25,22 @@ export async function getCurrentUser() {
     }
 }
 
-export async function updateUI() {
+// Cache les choses qui ne devrait pas etre visible en fonction du logged/oupas
+export async function updateAuthUI() {
     const currentUser = await getCurrentUser();
+    const authButtons = document.getElementById("auth-buttons");
+    const avatarMenu = document.getElementById("avatar-menu");
 
     // Si authenticate , on cache les bouttons auths et on affiche le menu.
     if (currentUser)
     {
-        const authButtons = document.getElementById("auth-buttons");
         authButtons.classList.add("hidden");
-
-        const avatarMenu = document.getElementById("avatar-menu");
         avatarMenu.classList.remove("hidden");
     }
     // Si pas authenticate , on affiche les bouttons auth et on cache le menu.
     else
     {
-        const authButtons = document.getElementById("auth-buttons");
         authButtons.classList.remove("hidden");
-
-        const avatarMenu = document.getElementById("avatar-menu");
         avatarMenu.classList.add("hidden");
     }
 }
