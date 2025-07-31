@@ -28,6 +28,7 @@ async function submitForm() {
         {
             printAPIResponse("/api/auth/login", resData);
             closeLoginModal();
+            router();
         }
     }
     catch (error)
