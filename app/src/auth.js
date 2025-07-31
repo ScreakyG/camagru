@@ -46,17 +46,18 @@ export async function updateAuthUI() {
     const currentUser = await getCurrentUser();
     const authButtons = document.getElementById("auth-buttons");
     const avatarMenu = document.getElementById("avatar-menu");
+    const logoutBtn = document.getElementById("logout-btn");
 
-    // Si authenticate , on cache les bouttons auths et on affiche le menu.
     if (currentUser)
     {
         authButtons.classList.add("hidden");
         avatarMenu.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
     }
-    // Si pas authenticate , on affiche les bouttons auth et on cache le menu.
     else
     {
         authButtons.classList.remove("hidden");
         avatarMenu.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
     }
 }
