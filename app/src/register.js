@@ -26,7 +26,7 @@ async function submitForm() {
     }
     catch (error)
     {
-        console.error("Error while fetching API");
+        console.error("Error while fetching API /api/auth/register");
     }
 }
 

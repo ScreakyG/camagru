@@ -1,7 +1,26 @@
+import { printAPIResponse } from "./utils.js";
+
+// Call "/api/auth/logout", qui va remove le JWT.
 export async function logoutUser() {
-    // Call "/api/auth/logout", qui va remove le JWT.
-    await updateAuthUI();
-    console.log("User logged out");
+    try
+    {
+        const response = await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+        const resData = await response.json();
+        if (!response.ok)
+        {
+            printAPIResponse("/api/auth/logout", resData);
+            return ;
+        }
+        printAPIResponse("/api/auth/logout", resData);
+        await updateAuthUI();
+    }
+    catch (error)
+    {
+        console.error("Error while fetching API /api/auth/logout");
+    }
 }
 
 // Retourne les infos du users grace au JWT dans les cookies. Null si pas logged.
@@ -12,15 +31,12 @@ export async function getCurrentUser() {
         const user = await response.json();
 
         if (!response.ok)
-        {
-            console.log("User is not auth");
             return (null);
-        }
         return (user);
     }
     catch (error)
     {
-        console.log("Error while fetching /api/user/me");
+        console.error("Error while fetching API /api/user/me");
         return (null);
     }
 }

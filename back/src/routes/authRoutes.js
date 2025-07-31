@@ -1,5 +1,6 @@
 import { login } from "./auth/login.js";
 import { register } from "./auth/register.js";
+import { logout } from "./auth/logout.js";
 
 const registerSchema = {
     body: {
@@ -47,6 +48,7 @@ const loginSchema = {
 async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, register);
     fastify.post("/login", { schema: loginSchema }, login);
+    fastify.post("/logout", logout);
 }
 
 export default authRoutes;
