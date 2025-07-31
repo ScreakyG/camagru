@@ -21,6 +21,7 @@ async function getCurrentUser() {
 export async function router() {
     const currentUser = await getCurrentUser();
 
+    // Si authenticate , on cache les bouttons auths et on affiche le menu.
     if (currentUser)
     {
         const authButtons = document.getElementById("auth-buttons");
@@ -29,6 +30,7 @@ export async function router() {
         const avatarMenu = document.getElementById("avatar-menu");
         avatarMenu.classList.remove("hidden");
     }
+    // Si pas authenticate , on affiche les bouttons auth et on cache le menu.
     else
     {
         const authButtons = document.getElementById("auth-buttons");

@@ -1,5 +1,6 @@
 import { printAPIResponse, getFormValues } from "./utils.js";
 import { router } from "./router.js";
+import { closeLoginModal } from "./utils.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");
@@ -19,13 +20,14 @@ async function submitForm() {
         if (!response.ok)
         {
             printAPIResponse("/api/auth/login", resData);
-            
+
             const showError = document.getElementById("login-error-message");
             showError.textContent = resData.errorMessage;
         }
         else
         {
-           printAPIResponse("/api/auth/login", resData);
+            printAPIResponse("/api/auth/login", resData);
+            closeLoginModal();
         }
     }
     catch (error)
@@ -35,13 +37,12 @@ async function submitForm() {
 }
 
 export function handleLoginModal() {
-    const dialog = document.getElementById("login-modal");
     const closeModalBtn = document.getElementById("close-login-modal");
     const form = document.getElementById("login-form");
 
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
-        dialog?.close();
+        closeLoginModal();
     });
 
     // Handle the login button that send the form.

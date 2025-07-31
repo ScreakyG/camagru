@@ -16,3 +16,23 @@ export function getFormValues(form) {
 
     return (formValues);
 }
+
+export function closeLoginModal() {
+    const loginModal = document.getElementById("login-modal");
+    loginModal?.close();
+}
+
+export function closeRegisterModal() {
+    const registerModal = document.getElementById("register-modal");
+    registerModal?.close();
+}
+
+export function showLoginModal() {
+    const loginModal = document.getElementById("login-modal");
+    loginModal?.showModal();
+}
+
+export function showRegisterModal() {
+    const registerModal = document.getElementById("register-modal");
+    registerModal?.showModal();
+}

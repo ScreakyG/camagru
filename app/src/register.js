@@ -1,4 +1,4 @@
-import { printAPIResponse, getFormValues } from "./utils.js";
+import { printAPIResponse, getFormValues, closeRegisterModal } from "./utils.js";
 
 async function submitForm() {
     const registerForm = document.getElementById("register-form");
@@ -45,13 +45,12 @@ function repeatPasswordMatch() {
 }
 
 export function handleRegisterModal() {
-    const dialog = document.getElementById("register-modal");
     const closeModalBtn = document.getElementById("close-register-modal");
     const form = document.getElementById("register-form");
 
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
-        dialog?.close();
+        closeRegisterModal();
     })
 
     // Handle the register button that send the form.

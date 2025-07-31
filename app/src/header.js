@@ -1,3 +1,5 @@
+import { closeLoginModal, closeRegisterModal, showLoginModal, showRegisterModal } from "./utils.js";
+
 function resetLoginForm() {
     const errorMsg = document.getElementById("login-error-message");
     errorMsg.textContent = "";
@@ -23,24 +25,25 @@ function resetRegisterForm() {
 export function handleHeader() {
     const registerBtn = document.getElementById("register-btn");
     const loginBtn = document.getElementById("login-btn");
-    const loginModal = document.getElementById("login-modal");
-    const registerModal = document.getElementById("register-modal");
 
     registerBtn?.addEventListener("click", () => {
         resetRegisterForm();
-        registerModal?.showModal();
+        showRegisterModal();
     })
 
     loginBtn?.addEventListener("click", () => {
         resetLoginForm();
-        loginModal?.showModal();
+        showLoginModal();
     })
 
     //Handle modals closing when clicking outside the modal.
+    const loginModal = document.getElementById("login-modal");
+    const registerModal = document.getElementById("register-modal");
+    
     window.onclick = function (event) {
         if (event.target === loginModal)
-           loginModal?.close();
+           closeLoginModal();
         else if (event.target === registerModal)
-           registerModal?.close();
+           closeRegisterModal();
     }
 }
