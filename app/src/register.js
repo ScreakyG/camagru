@@ -1,4 +1,25 @@
-import { printAPIResponse, getFormValues, closeRegisterModal } from "./utils.js";
+import { printAPIResponse, getFormValues, closeRegisterModal, showLoginModal } from "./utils.js";
+
+function showSuccessfulRegister(email) {
+    closeRegisterModal();
+
+    const newDiv = document.createElement("div");
+
+    console.log(newDiv);
+    newDiv.innerHTML = /*html*/
+        `<dialog id="success-register" class="modal">
+            <div class="modal-box">
+                <h2 class="text-center">Verify your account</h2>
+                <p>Please validate your account using the mail that we sent you at : ${email}</p>
+            </div>
+        </dialog>`
+
+    const body = document.querySelector("body");
+    body.appendChild(newDiv);
+
+    const modal = document.getElementById("success-register");
+    modal.showModal();
+}
 
 async function submitForm() {
     const registerForm = document.getElementById("register-form");
@@ -22,7 +43,10 @@ async function submitForm() {
             showError.textContent = resData.errorMessage;
         }
         else
+        {
             printAPIResponse("/api/auth/register", resData);
+            showSuccessfulRegister(formValues.email);
+        }
     }
     catch (error)
     {

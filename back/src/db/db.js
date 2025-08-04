@@ -17,12 +17,12 @@ export async function initDB() {
             filename: "./camagru.db",
             driver: sqlite3.Database
         })
-        console.log("✅ Connected to database !");
+        console.log("💽 Connected to database ! ✅ ");
         await createTables();
     }
     catch (error)
     {
-        console.log("❌ Error with database connection : ", error);
+        console.log("💽 ❌ Error with database connection : ", error);
     }
 }
 

@@ -5,13 +5,17 @@ import cookie from "@fastify/cookie"
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import { initDB } from "./db/db.js"
+import { initEmailService, emailServiceStatus } from "./utils/mailService.js"
 
 // Instance setup
 const fastify = Fastify({
     logger: true
 })
 
+// Start les services necessaires pour l'API ( les try/catch sont des les fonctions donc l'app ne va pas crash atm).
 await initDB();
+initEmailService();
+await emailServiceStatus();
 
 fastify.register(cookie);
 

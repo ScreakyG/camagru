@@ -1,11 +1,11 @@
 import { createUser } from "../../db/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
+import { sendValidationMail } from "../../utils/mailService.js";
 
 export async function register(request, reply)
 {
     /*
         TODO :
-            - Hasher le mot de passe.
             - Envoyer un mail de confirmation avant de stocker l'utilisateur dans la DB.
     */
     try
@@ -20,6 +20,7 @@ export async function register(request, reply)
 
         // Creer un user , crypte le mdp et store dans la DB.
         const newUser = await createUser(email, username, password);
+        await sendValidationMail(email);
 
         return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
     }
