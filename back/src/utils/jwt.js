@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 // Creer un JWT avec notre secret word et jsonData dans le payload.
 export function createJWT(jsonData, options = {}) {
@@ -17,4 +18,10 @@ export function verifyJWT(token) {
         console.log("JWT verification failed : ", error.message);
         return (null);
     }
+}
+
+export function createValidationToken()
+{
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    return (verificationToken);
 }

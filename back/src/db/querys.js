@@ -1,6 +1,7 @@
 import { getDB } from "./db.js";
 import { ConflictError } from "../utils/errors.js";
 import { encryptPassword } from "../utils/encrypt.js";
+import { createValidationToken } from "../utils/jwt.js";
 
 export async function createUser(email, username, password) {
 
@@ -19,12 +20,15 @@ export async function createUser(email, username, password) {
     //Encrypt the password.
     const hashPass = await encryptPassword(password);
 
+    // Create verification account token
+    const verificationToken = createValidationToken();
+
     const db = await getDB();
-    const query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
-    const result = await db.run(query, [email, username, hashPass]);
+    const query = "INSERT INTO users (email, username, password, verification_token) VALUES (?, ?, ?, ?)";
+    const result = await db.run(query, [email, username, hashPass, verificationToken]);
 
     // We return the id that was used to store in DB and also the users infos.
-    return ({id: result.lastID, email, username, created_at: new Date().toISOString()});
+    return ({id: result.lastID, email, username, created_at: new Date().toISOString(), verificationToken});
 }
 
 export async function findUserByEmail(email) {
@@ -41,4 +45,18 @@ export async function findUserByUsername(username) {
     const result = await db.get(query, [username]);
 
     return (result);
+}
+
+export async function findUserByValidationToken(token) {
+    const db = await getDB();
+    const query = "SELECT * FROM users WHERE verification_token = ?";
+    const result = await db.get(query, [token]);
+
+    return (result);
+}
+
+export async function setVerifiedUser(user) {
+    const db = await getDB();
+    const query = "UPDATE users SET isVerified = 1, verification_token = NULL WHERE id = ?";
+    const result = await db.run(query, [user.id]);
 }

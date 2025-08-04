@@ -33,6 +33,8 @@ async function createTables() {
             email       TEXT        UNIQUE  NOT     NULL,
             username    TEXT        UNIQUE  NOT     NULL,
             password    TEXT        NOT     NULL,
-            createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP
+            createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
+            isVerified  BOOLEAN     DEFAULT FALSE,
+            verification_token TEXT
     )`);
 }

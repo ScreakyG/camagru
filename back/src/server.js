@@ -19,16 +19,16 @@ await emailServiceStatus();
 
 fastify.register(cookie);
 
-// Register des routes de l'API
-await fastify.register(authRoutes, {prefix: "/api/auth"});
-await fastify.register(userRoutes, {prefix: "/api/user"});
-
-// Register du plugins pour gerer CORS
+// Register du plugin pour gerer CORS
 // await fastify.register(cors, {
 //     origin: ["http://localhost:8080"],
 //     credentials: true
 //     // put your options here
 // })
+
+// Register des routes de l'API
+await fastify.register(authRoutes, {prefix: "/api/auth"});
+await fastify.register(userRoutes, {prefix: "/api/user"});
 
 // Check si l'API fonctionne bien
 fastify.get("/api/health", async function handler (request, reply) {

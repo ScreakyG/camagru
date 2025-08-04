@@ -6,7 +6,9 @@ export async function register(request, reply)
 {
     /*
         TODO :
-            - Envoyer un mail de confirmation avant de stocker l'utilisateur dans la DB.
+            - Creer un token qui sera envoyer dans le mail pour la verification
+            - Creer la route qui permetra de valider se token
+            - Envoyer un mail de confirmation de creation de compte.
     */
     try
     {
@@ -20,7 +22,7 @@ export async function register(request, reply)
 
         // Creer un user , crypte le mdp et store dans la DB.
         const newUser = await createUser(email, username, password);
-        await sendValidationMail(email);
+        await sendValidationMail(newUser);
 
         return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
     }

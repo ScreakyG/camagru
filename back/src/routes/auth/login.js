@@ -1,6 +1,6 @@
 import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername, findUserByEmail } from "../../db/querys.js";
-import { AuthenticationError } from "../../utils/errors.js";
+import { AuthenticationError, AccountValidationError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
 
 
@@ -17,6 +17,9 @@ export async function login(request, reply) {
         if (!result)
             throw new AuthenticationError("Username/Password not valid");
 
+        if (!user.isVerified)
+            throw new AccountValidationError("Account is not validated");
+
         const token = createJWT(user);
         reply.setCookie("auth_token", token, {
             httpOnly: true, // Non accessible avec JavaScript.
@@ -25,7 +28,7 @@ export async function login(request, reply) {
             path: "/"
         })
 
-        return (reply.code(200).send({ message: "Login successful" }));
+        return (reply.code(200).send({success: true, message: "Login successful" }));
     }
     catch(error)
     {

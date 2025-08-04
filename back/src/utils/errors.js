@@ -22,3 +22,11 @@ export class AuthenticationError extends Error {
         this.name = "AuthenticationError";
     }
 }
+
+export class AccountValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.statusCode = 403;
+        this.name = "AccountValidationError";
+    };
+}

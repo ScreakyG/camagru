@@ -25,20 +25,23 @@ export async function emailServiceStatus() {
     }
 }
 
-export async function sendValidationMail(emailTarget) {
+export async function sendValidationMail(user) {
     try
     {
         const info = await transporter.sendMail({
-            from: '"Camagru Admin" <camagru@example.com',
-            to: emailTarget,
+            from : `"Camagru" <${process.env.EMAIL_USER}>`,
+            to: user.email,
             subject: "Account Verification",
-            text: "Please click the verification link to verify your account."
+            html: /*html*/
+             `<h1>Please click the verification link to verify your account :</h1>
+             <a href=http://localhost:8080/api/auth/verify?token=${user.verificationToken}>Verify</a>
+             `,
         });
 
-        console.log(`📨 ✅ Validation mail sent to : ${emailTarget}`);
+        console.log(`📨 ✅ Validation mail sent to : ${user.email}`);
     }
     catch (error)
     {
-        console.log(`📨 ❌ Failed to deliver validation mail to : ${emailTarget}, because ${error}`);
+        console.log(`📨 ❌ Failed to deliver validation mail to : ${user.email}, because ${error}`);
     }
 }

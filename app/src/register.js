@@ -5,7 +5,6 @@ function showSuccessfulRegister(email) {
 
     const newDiv = document.createElement("div");
 
-    console.log(newDiv);
     newDiv.innerHTML = /*html*/
         `<dialog id="success-register" class="modal">
             <div class="modal-box">
@@ -45,7 +44,7 @@ async function submitForm() {
         else
         {
             printAPIResponse("/api/auth/register", resData);
-            showSuccessfulRegister(formValues.email);
+            showSuccessfulRegister(resData.user.email);
         }
     }
     catch (error)
