@@ -18,7 +18,7 @@ export async function login(request, reply) {
             throw new AuthenticationError("Username/Password not valid");
 
         if (!user.isVerified)
-            throw new AccountValidationError("Account is not validated");
+            return (reply.code(403).send({success: false, errorMessage: "Account is not validated", email: user.email}))
 
         const token = createJWT(user);
         reply.setCookie("auth_token", token, {

@@ -1,31 +1,4 @@
-import { printAPIResponse, getFormValues, closeRegisterModal, showLoginModal } from "./utils.js";
-
-export function showSuccessfulRegister(email) {
-    closeRegisterModal();
-
-    const newDiv = document.createElement("div");
-
-    newDiv.innerHTML = /*html*/
-        `<dialog id="success-register" class="modal">
-            <div class="modal-box">
-                <h2 class="text-center text-2xl font-bold">Verify your account</h2>
-                <div class="m-4 flex flex-col items-center">
-                    <p class="m-2 text-center">You're almost there! We sent an email to <br/>
-                        <span class="text-indigo-300 font-semibold">${email}</span>
-                    </p>
-                    <p class="m-2">Just click on the link in that email to complete your signup. If you don't see it, you may need to check your spam folder.</p>
-                    <p class="m-2">Still can't find the email ? No problem.</p>
-                    <button type="button" class="btn btn-primary mt-4">Resend Verification Email</button>
-                </div>
-            </div>
-        </dialog>`
-
-    const body = document.querySelector("body");
-    body.appendChild(newDiv);
-
-    const modal = document.getElementById("success-register");
-    modal.showModal();
-}
+import { printAPIResponse, getFormValues, closeRegisterModal, showAccountVerificationModal } from "./utils.js";
 
 async function submitForm() {
     const registerForm = document.getElementById("register-form");
@@ -51,7 +24,8 @@ async function submitForm() {
         else
         {
             printAPIResponse("/api/auth/register", resData);
-            showSuccessfulRegister(resData.user.email);
+            closeRegisterModal();
+            showAccountVerificationModal(resData.user.email);
         }
     }
     catch (error)

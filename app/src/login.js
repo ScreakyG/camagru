@@ -1,7 +1,6 @@
-import { printAPIResponse, getFormValues } from "./utils.js";
+import { printAPIResponse, getFormValues, showAccountVerificationModal } from "./utils.js";
 import { router } from "./router.js";
 import { closeLoginModal } from "./utils.js";
-import { showSuccessfulRegister } from "./register.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");
@@ -25,7 +24,7 @@ async function submitForm() {
             if (response.status === 403)
             {
                 closeLoginModal();
-                showSuccessfulRegister();
+                showAccountVerificationModal(resData.email);
                 return ;
             }
 
