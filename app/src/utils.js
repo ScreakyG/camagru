@@ -41,7 +41,7 @@ export function showAccountVerificationModal(email) {
     const newDiv = document.createElement("div");
 
     newDiv.innerHTML = /*html*/
-        `<dialog id="success-register" class="modal">
+        `<dialog id="acc-validation-modal" class="modal">
             <div class="modal-box">
                 <h2 class="text-center text-2xl font-bold">Verify your account</h2>
                 <div class="m-4 flex flex-col items-center">
@@ -58,6 +58,11 @@ export function showAccountVerificationModal(email) {
     const body = document.querySelector("body");
     body.appendChild(newDiv);
 
-    const modal = document.getElementById("success-register");
+    const modal = document.getElementById("acc-validation-modal");
     modal.showModal();
+
+    // Supprime la <div> au dessus pour destroy la modal
+    modal.addEventListener("close", () => {
+        modal.parentElement.remove();
+    })
 }
