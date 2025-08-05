@@ -1,6 +1,7 @@
 import { printAPIResponse, getFormValues } from "./utils.js";
 import { router } from "./router.js";
 import { closeLoginModal } from "./utils.js";
+import { showSuccessfulRegister } from "./register.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");
@@ -20,6 +21,13 @@ async function submitForm() {
         if (!response.ok)
         {
             printAPIResponse("/api/auth/login", resData);
+            // Handle if account is not verified
+            if (response.status === 403)
+            {
+                closeLoginModal();
+                showSuccessfulRegister();
+                return ;
+            }
 
             const showError = document.getElementById("login-error-message");
             showError.textContent = resData.errorMessage;
