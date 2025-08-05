@@ -7,6 +7,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-indigo-300: oklch(78.5% 0.115 274.713);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -16,6 +17,8 @@
     --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
     --text-2xl--line-height: calc(2 / 1.5);
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -777,6 +780,9 @@
     overflow-y: auto;
     overscroll-behavior: contain;
   }
+  .m-2 {
+    margin: calc(var(--spacing) * 2);
+  }
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
@@ -788,6 +794,9 @@
   }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
+  }
+  .mt-4 {
+    margin-top: calc(var(--spacing) * 4);
   }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
@@ -864,6 +873,28 @@
   .flex-none {
     flex: none;
   }
+  .link {
+    cursor: pointer;
+    text-decoration-line: underline;
+    &:focus {
+      --tw-outline-style: none;
+      outline-style: none;
+      @media (forced-colors: active) {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+      }
+    }
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .items-center {
+    align-items: center;
+  }
   .justify-end {
     justify-content: flex-end;
   }
@@ -921,6 +952,14 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+  .font-semibold {
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
   .text-base-content {
     color: var(--color-base-content);
   }
@@ -929,6 +968,9 @@
   }
   .text-gray-800 {
     color: var(--color-gray-800);
+  }
+  .text-indigo-300 {
+    color: var(--color-indigo-300);
   }
   .lowercase {
     text-transform: lowercase;
@@ -1210,6 +1252,10 @@
     opacity: 1;
   }
 }
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-shadow {
   syntax: "*";
   inherits: false;
@@ -1278,6 +1324,7 @@
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
+      --tw-font-weight: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;
