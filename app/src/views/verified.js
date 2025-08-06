@@ -1,4 +1,4 @@
-import { showLoginModal } from "../utils.js";
+import { router } from "../router.js";
 
 export function showVerifiedAccountSuccess() {
     const newDiv = document.createElement("div");
@@ -23,8 +23,8 @@ export function showVerifiedAccountSuccess() {
     const loginBtn = modal.querySelector("button");
     loginBtn?.addEventListener("click", () => {
         modal.close();
-        window.location.href = "/login";
-        // showLoginModal();
+        window.history.pushState({}, "", "/login");
+        router();
     })
 
     // Supprime la <div> au dessus pour destroy la modal
