@@ -1,4 +1,4 @@
-import { redirectTo } from "../navigation.js";
+import { redirectTo } from "../../navigation.js";
 
 export function showVerifiedAccountSuccess() {
     const newDiv = document.createElement("div");

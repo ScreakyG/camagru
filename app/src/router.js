@@ -1,5 +1,5 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
-import { showVerifiedAccountSuccess } from "./views/verified.js";
+import { showVerifiedAccountSuccess } from "./views/verify/success.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
 
@@ -14,7 +14,7 @@ export async function router() {
 
 
     switch (currentPath) {
-        case "/verified":
+        case "/verify/success":
             if (currentUser)
             {
                 redirectTo("/");
