@@ -35,6 +35,7 @@ async function submitForm() {
         {
             printAPIResponse("/api/auth/login", resData);
             closeLoginModal();
+            window.location.href = "/";
             router();
         }
     }

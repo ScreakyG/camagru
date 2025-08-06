@@ -17,6 +17,7 @@ export async function verifyAccount(request, reply) {
         // Changer le status verified de l'user a true;
         await setVerifiedUser(user);
 
+        reply.redirect("/verified");
         return (reply.code(200).send({success: true, message: "Your account has been verified"}));
     }
     catch (error)
