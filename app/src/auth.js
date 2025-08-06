@@ -1,3 +1,4 @@
+import { redirectTo } from "./navigation.js";
 import { printAPIResponse } from "./utils.js";
 
 // Call "/api/auth/logout", qui va remove le JWT.
@@ -15,7 +16,7 @@ export async function logoutUser() {
             return ;
         }
         printAPIResponse("/api/auth/logout", resData);
-        await updateAuthUI();
+        redirectTo("/");
     }
     catch (error)
     {

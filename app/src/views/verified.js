@@ -1,4 +1,4 @@
-import { router } from "../router.js";
+import { redirectTo } from "../navigation.js";
 
 export function showVerifiedAccountSuccess() {
     const newDiv = document.createElement("div");
@@ -23,8 +23,7 @@ export function showVerifiedAccountSuccess() {
     const loginBtn = modal.querySelector("button");
     loginBtn?.addEventListener("click", () => {
         modal.close();
-        window.history.pushState({}, "", "/login");
-        router();
+        redirectTo("/login");
     })
 
     // Supprime la <div> au dessus pour destroy la modal

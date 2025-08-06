@@ -1,5 +1,6 @@
 import { closeLoginModal, closeRegisterModal, showLoginModal, showRegisterModal } from "./utils.js";
 import { logoutUser } from "./auth.js";
+import { redirectTo } from "./navigation.js";
 
 function resetLoginForm() {
     const errorMsg = document.getElementById("login-error-message");
@@ -30,12 +31,12 @@ export function handleHeader() {
 
     registerBtn?.addEventListener("click", () => {
         resetRegisterForm();
-        showRegisterModal();
+        redirectTo("/register");
     })
 
     loginBtn?.addEventListener("click", () => {
         resetLoginForm();
-        showLoginModal();
+        redirectTo("/login");
     })
 
     logoutBtn?.addEventListener("click", logoutUser);
