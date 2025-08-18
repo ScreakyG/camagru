@@ -1,14 +1,12 @@
-Create a ".env" in "./back/.env", otherwhise API will crash.
+1/ Create a ".env" in "./back/.env", otherwhise API will crash.
 
-PORT : "port for API"
-HOST : "host for API"
+PORT : "port for API"<br/>
+HOST : "host for API"<br/>
 
-EMAIL_USER : "username for emailService"
-EMAIL_PASS "password for emailService"
+EMAIL_USER : "username for emailService"<br/>
+EMAIL_PASS "password for emailService"<br/>
 
 JWT_SECRET: "secret key to sign JWTs"
-
-1/ Git clone the project
 
 2/
 
