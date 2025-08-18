@@ -1,3 +1,12 @@
+You will need a .env that would look like that : 
+PORT : <port for API>
+HOST : <host for API>
+
+EMAIL_USER : <username for emailService>
+EMAIL_PASS <password for emailService>
+
+JWT_SECRET: <secret key to sign JWTs>
+
 1/ Git clone the project
 
 2/
