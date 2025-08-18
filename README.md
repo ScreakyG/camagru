@@ -1,11 +1,12 @@
-You will need a .env that would look like that : 
-PORT : <port for API>
-HOST : <host for API>
+Create a ".env" in "./back/.env", otherwhise API will crash.
 
-EMAIL_USER : <username for emailService>
-EMAIL_PASS <password for emailService>
+PORT : "port for API"
+HOST : "host for API"
 
-JWT_SECRET: <secret key to sign JWTs>
+EMAIL_USER : "username for emailService"
+EMAIL_PASS "password for emailService"
+
+JWT_SECRET: "secret key to sign JWTs"
 
 1/ Git clone the project
 
