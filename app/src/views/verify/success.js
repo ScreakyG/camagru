@@ -23,6 +23,8 @@ function showFailed(modal) {
         `<div class="modal-box">
             <h2 class="text-center text-2xl font-bold">Verification failed</h2>
         </div>`
+
+        modal.addEventListener("close", () => redirectTo("/"));
 }
 
 export function showVerifyStatus() {
