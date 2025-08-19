@@ -12,12 +12,14 @@ export async function verifyAccount(request, reply) {
         const user = await findUserByValidationToken(token);
 
         if (!user)
+        {
+            reply.redirect("/verify?status=failed");
             return (reply.code(400).send({success: false, message: "Invalid/expired token"}));
+        }
 
         // Changer le status verified de l'user a true;
         await setVerifiedUser(user);
-
-        reply.redirect("/verify/success");
+        reply.redirect("/verify?status=success");
     }
     catch (error)
     {

@@ -1,5 +1,5 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
-import { showVerifiedAccountSuccess } from "./views/verify/success.js";
+import { showVerifyStatus } from "./views/verify/success.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
 
@@ -12,15 +12,15 @@ export async function router() {
     // Update what should be shown if user is logged/not logged.
     await updateAuthUI();
 
-
+    console.log(currentPath);
     switch (currentPath) {
-        case "/verify/success":
+        case "/verify":
             if (currentUser)
             {
                 redirectTo("/");
                 break ;
             }
-            showVerifiedAccountSuccess();
+            showVerifyStatus();
             break;
 
         case "/login":

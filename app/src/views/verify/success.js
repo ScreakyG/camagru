@@ -1,6 +1,6 @@
 import { redirectTo } from "../../navigation.js";
 
-export function showVerifiedAccountSuccess() {
+function showSuccess() {
     const newDiv = document.createElement("div");
 
     newDiv.innerHTML = /*html*/
@@ -30,4 +30,46 @@ export function showVerifiedAccountSuccess() {
     modal.addEventListener("close", () => {
         modal.parentElement.remove();
     })
+}
+
+function showFailed() {
+    const newDiv = document.createElement("div");
+
+    newDiv.innerHTML = /*html*/
+        `<dialog id="acc-validation-failed-modal" class="modal">
+            <div class="modal-box">
+                <h2 class="text-center text-2xl font-bold">Verification failed</h2>
+            </div>
+        </dialog>`
+
+    const body = document.querySelector("body");
+    body.appendChild(newDiv);
+
+    const modal = document.getElementById("acc-validation-failed-modal");
+    modal.showModal();
+
+    // Supprime la <div> au dessus pour destroy la modal
+    modal.addEventListener("close", () => {
+        modal.parentElement.remove();
+    })
+}
+
+export function showVerifyStatus() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get("status");
+    console.log(status);
+
+
+    switch (status) {
+        case "success":
+            showSuccess();
+            break;
+
+        case "failed":
+            showFailed();
+            break;
+
+        default:
+            break;
+    }
 }
