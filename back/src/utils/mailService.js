@@ -4,8 +4,10 @@ let transporter = null;
 
 export function initEmailService() {
     transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
+    // host: 'smtp.ethereal.email',
+    // port: 587,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -34,7 +36,7 @@ export async function sendValidationMail(user) {
             subject: "Account Verification",
             html: /*html*/
              `<h1>Please click the verification link to verify your account :</h1>
-             <a href=http://localhost:8080/api/auth/verify?token=${user.verificationToken}>Verify</a>
+             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/api/auth/verify?token=${user.verificationToken}>Verify</a>
              `,
         });
 
