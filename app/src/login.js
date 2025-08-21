@@ -48,6 +48,7 @@ async function submitForm() {
 export function handleLoginModal() {
     const closeModalBtn = document.getElementById("close-login-modal");
     const form = document.getElementById("login-form");
+    const forgotPassword = document.getElementById("forgot-password");
 
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
@@ -59,4 +60,7 @@ export function handleLoginModal() {
         event.preventDefault();
         submitForm();
     });
+
+    // Clicking anchors is catched in routers function but we need to close previous modal.
+    forgotPassword.addEventListener("click", closeLoginModal);
 }
