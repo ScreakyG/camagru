@@ -46,10 +46,15 @@ const loginSchema = {
     }
 };
 
+function forgotPassword(request, reply) {
+    return reply.send({message: "okok"});
+}
+
 async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, register);
     fastify.post("/login", { schema: loginSchema }, login);
     fastify.post("/logout", logout);
+    fastify.post("/forgot-password", forgotPassword);
     fastify.get("/verify", verifyAccount);
 }
 

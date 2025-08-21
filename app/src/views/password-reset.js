@@ -1,12 +1,12 @@
 import { printAPIResponse } from "../utils.js";
 
-async function submitResetPassword(form) {
+async function submitForgotPassword(form) {
     const formData = new FormData(form);
     const email = formData.get("email");
 
     try
     {
-        const response = await fetch("/api/user/reset-password", {
+        const response = await fetch("/api/auth/forgot-password", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -15,20 +15,20 @@ async function submitResetPassword(form) {
         });
 
         const resData = await response.json();
-        printAPIResponse("/api/user/reset-password", resData);
+        printAPIResponse("/api/auth/forgot-password", resData);
         //close la modal
         //afficher une autre modal pour dire "email envoye blabla .."
     }
     catch (error)
     {
-        console.error("Error while fetching API /api/auth/reset-password");
+        console.error("Error while fetching API /api/auth/forgot-password");
     }
 }
 
-export function showResetPasswordModal() {
+export function showForgotPasswordModal() {
     const newDiv = document.createElement("div");
     newDiv.innerHTML = /*html*/
-        `<dialog id="reset-password-modal" class="modal">
+        `<dialog id="forgot-password-modal" class="modal">
             <div class="modal-box">
                 <h2 class="text-center text-2xl">Reset your password</h2>
                 <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
@@ -62,10 +62,10 @@ export function showResetPasswordModal() {
     const body = document.querySelector("body");
     body.appendChild(newDiv);
 
-    const resetPasswordForm = newDiv.querySelector("form");
-    resetPasswordForm?.addEventListener("submit", (event) => {
+    const forgotPasswordForm = newDiv.querySelector("form");
+    forgotPasswordForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        submitResetPassword(resetPasswordForm);
+        submitForgotPassword(forgotPasswordForm);
     });
 
     const modal = newDiv.querySelector("dialog");

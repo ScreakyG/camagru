@@ -1,5 +1,5 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
-import { showResetPasswordModal } from "./views/password-reset.js";
+import { showForgotPasswordModal } from "./views/password-reset.js";
 import { showVerifyStatus } from "./views/verify/success.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
@@ -30,7 +30,6 @@ export async function router() {
     // Update what should be shown if user is logged/not logged.
     await updateAuthUI();
 
-    console.log(currentPath);
     switch (currentPath) {
         case "/verify":
             if (currentUser)
@@ -50,8 +49,8 @@ export async function router() {
             showLoginModal();
             break;
 
-        case "/password-reset":
-            showResetPasswordModal();
+        case "/forgot-password":
+            showForgotPasswordModal();
             break;
 
         case "/register":
