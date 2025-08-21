@@ -1,4 +1,5 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
+import { showResetPasswordModal } from "./views/password-reset.js";
 import { showVerifyStatus } from "./views/verify/success.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
@@ -47,6 +48,10 @@ export async function router() {
                 break ;
             }
             showLoginModal();
+            break;
+
+        case "/password-reset":
+            showResetPasswordModal();
             break;
 
         case "/register":
