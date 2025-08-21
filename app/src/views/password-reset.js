@@ -1,4 +1,4 @@
-import { printAPIResponse } from "../utils.js";
+import { printAPIResponse, closeForgotPasswordModal } from "../utils.js";
 
 async function submitForgotPassword(form) {
     const formData = new FormData(form);
@@ -16,13 +16,44 @@ async function submitForgotPassword(form) {
 
         const resData = await response.json();
         printAPIResponse("/api/auth/forgot-password", resData);
-        //close la modal
-        //afficher une autre modal pour dire "email envoye blabla .."
+
+        closeForgotPasswordModal();
+        showCheckPasswordMailModal(email);
     }
     catch (error)
     {
         console.error("Error while fetching API /api/auth/forgot-password");
     }
+}
+
+function showCheckPasswordMailModal(email) {
+
+    const newDiv = document.createElement("div");
+        newDiv.innerHTML = /*html*/
+            `<dialog class="modal">
+                <div class="modal-box">
+                    <h2 class="text-center text-2xl">Check your email</h2>
+                    <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
+                    <p>If this email is associated to a account you should receive it to : ${email}</p>
+                </div>
+            </dialog>`
+
+    const body = document.querySelector("body");
+    body.appendChild(newDiv);
+
+    const modal = newDiv.querySelector("dialog");
+    modal.showModal();
+
+    const closeModalBtn = newDiv.querySelector("button");
+    // Handle closing modal with redcross.
+    closeModalBtn?.addEventListener("click", () => {
+        modal.close();
+    });
+
+    // Supprime la <div> au dessus pour destroy la modal
+    modal.addEventListener("close", () => {
+        modal.parentElement.remove();
+    })
 }
 
 export function showForgotPasswordModal() {
@@ -31,7 +62,7 @@ export function showForgotPasswordModal() {
         `<dialog id="forgot-password-modal" class="modal">
             <div class="modal-box">
                 <h2 class="text-center text-2xl">Reset your password</h2>
-                <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
+                <button id="close-btn-forgot-modal" class="btn btn-error absolute right-2 top-2" autofocus>X</button>
                 <form>
                     <div class="m-4">
                         Email
@@ -70,4 +101,17 @@ export function showForgotPasswordModal() {
 
     const modal = newDiv.querySelector("dialog");
     modal.showModal();
+
+    // Supprime la <div> au dessus pour destroy la modal
+    modal.addEventListener("close", () => {
+        modal.parentElement.remove();
+    })
+
+    const closeModalBtn = document.getElementById("close-btn-forgot-modal");
+    console.log(closeModalBtn);
+    // Handle closing modal with redcross.
+    closeModalBtn?.addEventListener("click", () => {
+        modal.close();
+    });
+
 }

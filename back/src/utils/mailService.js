@@ -28,6 +28,7 @@ export async function emailServiceStatus() {
 }
 
 export async function sendValidationMail(user) {
+    // TODO: Changer pour le bon lien.
     try
     {
         const info = await transporter.sendMail({
@@ -45,5 +46,26 @@ export async function sendValidationMail(user) {
     catch (error)
     {
         console.log(`📨 ❌ Failed to deliver validation mail to : ${user.email}, because ${error}`);
+    }
+}
+
+export async function sendPasswordResetMail(user, token) {
+    try
+    {
+            const info = await transporter.sendMail({
+            from : `"Camagru" <${process.env.EMAIL_USER}>`,
+            to: user.email,
+            subject: "Reset Password",
+            html: /*html*/
+             `<h1>Please click the link to reset your password :</h1>
+             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/XXXXXX?token=${token}>Verify</a>
+             `,
+        });
+
+        console.log(`📨 ✅ Reset password mail sent to : ${user.email}`);
+    }
+    catch (error)
+    {
+        console.log(`📨 ❌ Failed to deliver reset password mail to : ${user.email}, because ${error}`);
     }
 }

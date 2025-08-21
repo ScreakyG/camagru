@@ -37,6 +37,11 @@ export function showRegisterModal() {
     registerModal?.showModal();
 }
 
+export function closeForgotPasswordModal() {
+    const forgotPasswordModal = document.getElementById("forgot-password-modal");
+    forgotPasswordModal?.close();
+}
+
 export function showAccountVerificationModal(email) {
     const newDiv = document.createElement("div");
 

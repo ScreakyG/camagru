@@ -2,6 +2,7 @@ import { login } from "./auth/login.js";
 import { register } from "./auth/register.js";
 import { logout } from "./auth/logout.js";
 import { verifyAccount } from "./auth/verify.js";
+import { forgotPassword } from "./auth/forgot-password.js";
 
 const registerSchema = {
     body: {
@@ -46,15 +47,25 @@ const loginSchema = {
     }
 };
 
-function forgotPassword(request, reply) {
-    return reply.send({message: "okok"});
-}
+const forgotPasswordSchema = {
+    body: {
+        type: "object",
+        required: ["email"],
+        properties: {
+            email: {
+                type: "string",
+                format: "email",
+                maxLength: 255
+            }
+        }
+    }
+};
 
 async function authRoutes(fastify, options) {
     fastify.post("/register", { schema: registerSchema }, register);
     fastify.post("/login", { schema: loginSchema }, login);
     fastify.post("/logout", logout);
-    fastify.post("/forgot-password", forgotPassword);
+    fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
     fastify.get("/verify", verifyAccount);
 }
 
