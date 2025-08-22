@@ -3,6 +3,8 @@
 PORT : "port for API"<br/>
 HOST : "host for API"<br/>
 
+EMAIL_HOST: "mail service your using"<br/>
+EMAIL_PORT: "port your service will use if it use one"<br/>
 EMAIL_USER : "username for emailService"<br/>
 EMAIL_PASS "password for emailService"<br/>
 
