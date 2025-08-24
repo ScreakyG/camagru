@@ -49,6 +49,7 @@ export function showVerifyStatus() {
             break;
 
         default:
+            showFailed(modal);
             break;
     }
 

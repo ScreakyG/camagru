@@ -9,14 +9,22 @@ export async function resetPassword(request, reply) {
      *  3/ Update le MDP dans la DB.
      */
     const token = request.body.token;
+    try
+    {
+        if (!token || typeof token !== "string")
+            throw new Error("Missing token");
 
-    if (!token || typeof token !== "string")
-        return reply.send({success: false, message: "Missing token"});
 
-    const hashedToken = hashToken(token);
-    const user = await findUserByResetPasswordToken(hashedToken);
+        const hashedToken = hashToken(token);
+        const user = await findUserByResetPasswordToken(hashedToken);
 
-    if (!user)
-        return reply.send({success: false, message: "Invalid / Expired token"});
-    return reply.send({message: "Your token is valid for user = ", user});
+        if (!user)
+            throw new Error("Invalid / Expired token");
+
+        return reply.send({message: "Password successfuly changed for user = ", user});
+    }
+    catch (error)
+    {
+        return (reply.code(500).send({success: false, message: error.message}));
+    }
 }

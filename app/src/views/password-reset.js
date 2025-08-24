@@ -1,10 +1,10 @@
 import { printAPIResponse } from "../utils.js";
+import { redirectTo } from "../navigation.js";
 
-async function submitForm() {
+async function submitForm(modal) {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
 
-    console.log(token);
     try
     {
          const response = await fetch("/api/auth/reset-password", {
@@ -16,14 +16,48 @@ async function submitForm() {
          });
          const resData = await response.json();
          printAPIResponse("/api/auth/reset-password", resData);
+
+        if (!response.ok)
+        {
+            showFailure(modal);
+            return;
+        }
+        showSuccess(modal);
+
     }
     catch (error)
     {
         console.error("Error while fetching /api/auth/reset-password");
-        console.log(error);
+        // console.error(error);
     }
 
 }
+
+function showSuccess(modal) {
+    modal.innerHTML = /*html*/`
+        <div class="modal-box">
+            <h2>Password changed</h2>
+            <p>Your password has been successfully changed.</p>
+            <button class="btn btn-primary w-full">Log in</button>
+        </div>
+    `
+
+    const loginBtn = modal.querySelector("button");
+    loginBtn.addEventListener("click", () => {
+        modal.close();
+        redirectTo("/login");
+    });
+}
+
+function showFailure(modal) {
+    modal.innerHTML = /*html*/`
+        <div class="modal-box">
+            <h2>Invalid / Expired Token</h2>
+            <p>Something went wrong</p>
+        </div>
+    `
+}
+
 
 export async function showPasswordResetModal() {
     const newDiv = document.createElement("div");
@@ -88,6 +122,6 @@ export async function showPasswordResetModal() {
     const form = newDiv.querySelector("form");
     form.addEventListener("submit", (event) => {
         event.preventDefault();
-        submitForm();
+        submitForm(modal);
     })
 }

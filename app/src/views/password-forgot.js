@@ -23,6 +23,7 @@ async function submitForgotPassword(form) {
     catch (error)
     {
         console.error("Error while fetching API /api/auth/forgot-password");
+        console.error(error);
     }
 }
 
