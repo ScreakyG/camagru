@@ -1,40 +1,39 @@
-import { printAPIResponse, closeForgotPasswordModal } from "../utils.js";
-
-async function submitForgotPassword(form) {
-    const formData = new FormData(form);
-    const email = formData.get("email");
-
-    try
-    {
-        const response = await fetch("/api/auth/forgot-password", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({email})
-        });
-
-        const resData = await response.json();
-        printAPIResponse("/api/auth/forgot-password", resData);
-
-        closeForgotPasswordModal();
-        showCheckPasswordMailModal(email);
-    }
-    catch (error)
-    {
-        console.error("Error while fetching API /api/auth/forgot-password");
-    }
-}
-
-function showCheckPasswordMailModal(email) {
-
+export function showPasswordResetModal() {
     const newDiv = document.createElement("div");
         newDiv.innerHTML = /*html*/
             `<dialog class="modal">
                 <div class="modal-box">
-                    <h2 class="text-center text-2xl">Check your email</h2>
-                    <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
-                    <p>If this email is associated to a account you should receive it to : ${email}</p>
+                    <form name="reset-password-form">
+                        <h2 class="text-center text-2xl">Reset your password</h2>
+                        <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
+                        <div class="m-4">
+                            Password
+                            <label id="password-label" class="input validator w-full mt-2">
+                                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g
+                                        stroke-linejoin="round"
+                                        stroke-linecap="round"
+                                        stroke-width="2.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+                                        ></path>
+                                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                                    </g>
+                                </svg>
+                                <input id="password" name="password" type="password" placeholder="Password" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}" minlength="8"/>
+                            </label>
+                            <div id="password-errors" class="validator-hint hidden">
+                                Must be more than 8 characters, including<br />
+                                At least one number <br />
+                                At least one lowercase letter <br />
+                                At least one uppercase letter <br />
+                                At least one special character !@#$%^&*
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </dialog>`
 
@@ -44,6 +43,7 @@ function showCheckPasswordMailModal(email) {
     const modal = newDiv.querySelector("dialog");
     modal.showModal();
 
+    // Peut etre changer car il y a egalement un button submit ce qui pourrait poser un probleme.
     const closeModalBtn = newDiv.querySelector("button");
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
@@ -54,64 +54,4 @@ function showCheckPasswordMailModal(email) {
     modal.addEventListener("close", () => {
         modal.parentElement.remove();
     })
-}
-
-export function showForgotPasswordModal() {
-    const newDiv = document.createElement("div");
-    newDiv.innerHTML = /*html*/
-        `<dialog id="forgot-password-modal" class="modal">
-            <div class="modal-box">
-                <h2 class="text-center text-2xl">Reset your password</h2>
-                <button id="close-btn-forgot-modal" class="btn btn-error absolute right-2 top-2" autofocus>X</button>
-                <form>
-                    <div class="m-4">
-                        Email
-                        <label class="input validator w-full mt-2">
-                            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <g
-                                    stroke-linejoin="round"
-                                    stroke-linecap="round"
-                                    stroke-width="2.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                >
-                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                </g>
-                            </svg>
-                            <input name="email" type="email" placeholder="Enter your email" required/>
-                        </label>
-                        <div class="validator-hint hidden">Enter valid email address</div>
-                    </div>
-                    <div class="m-4">
-                        <button type="submit" class="btn btn-primary w-full">Reset Password</button>
-                    </div>
-                </form>
-            </div>
-        </dialog>`
-
-    const body = document.querySelector("body");
-    body.appendChild(newDiv);
-
-    const forgotPasswordForm = newDiv.querySelector("form");
-    forgotPasswordForm?.addEventListener("submit", (event) => {
-        event.preventDefault();
-        submitForgotPassword(forgotPasswordForm);
-    });
-
-    const modal = newDiv.querySelector("dialog");
-    modal.showModal();
-
-    // Supprime la <div> au dessus pour destroy la modal
-    modal.addEventListener("close", () => {
-        modal.parentElement.remove();
-    })
-
-    const closeModalBtn = document.getElementById("close-btn-forgot-modal");
-    console.log(closeModalBtn);
-    // Handle closing modal with redcross.
-    closeModalBtn?.addEventListener("click", () => {
-        modal.close();
-    });
-
 }

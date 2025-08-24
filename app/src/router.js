@@ -1,5 +1,6 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
-import { showForgotPasswordModal } from "./views/password-reset.js";
+import { showForgotPasswordModal } from "./views/password-forgot.js";
+import { showPasswordResetModal } from "./views/password-reset.js";
 import { showVerifyStatus } from "./views/verify/success.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
@@ -60,6 +61,10 @@ export async function router() {
                 break ;
             }
             showRegisterModal();
+            break;
+
+        case "/reset-password":
+            showPasswordResetModal();
             break;
 
         default:
