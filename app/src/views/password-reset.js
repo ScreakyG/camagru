@@ -4,11 +4,11 @@ export function showPasswordResetModal() {
             `<dialog class="modal">
                 <div class="modal-box">
                     <form name="reset-password-form">
-                        <h2 class="text-center text-2xl">Reset your password</h2>
+                        <h2 class="text-center text-2xl">Reset password</h2>
                         <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
                         <div class="m-4">
-                            Password
-                            <label id="password-label" class="input validator w-full mt-2">
+                            New password
+                            <label class="input validator w-full mt-2">
                                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <g
                                         stroke-linejoin="round"
@@ -23,15 +23,18 @@ export function showPasswordResetModal() {
                                         <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
                                     </g>
                                 </svg>
-                                <input id="password" name="password" type="password" placeholder="Password" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}" minlength="8"/>
+                                <input name="password" type="password" placeholder="Password" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}" minlength="8"/>
                             </label>
-                            <div id="password-errors" class="validator-hint hidden">
+                            <div class="validator-hint hidden">
                                 Must be more than 8 characters, including<br />
                                 At least one number <br />
                                 At least one lowercase letter <br />
                                 At least one uppercase letter <br />
                                 At least one special character !@#$%^&*
                             </div>
+                        </div>
+                        <div class="m-4">
+                            <button type="submit" class="btn btn-primary w-full">Change Password</button>
                         </div>
                     </form>
                 </div>
