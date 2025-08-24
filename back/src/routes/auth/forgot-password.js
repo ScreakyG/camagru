@@ -26,7 +26,7 @@ export async function forgotPassword(request, reply) {
         const token = createValidationToken();
         const hash = hashToken(token);
 
-        await storeTokenDatabase(user, "reset_pw_token", hash);
+        await storeTokenDatabase(user, "reset_pw_token_hash", hash);
         await sendPasswordResetMail(user, token);
 
         return reply.send({success: true, message: "Reset password mail sent"});
