@@ -1,6 +1,6 @@
 import { getDB } from "./db.js";
 import { ConflictError } from "../utils/errors.js";
-import { encryptPassword } from "../utils/encrypt.js";
+import { encryptPassword, hashToken } from "../utils/encrypt.js";
 import { createValidationToken } from "../utils/jwt.js";
 
 export async function createUser(email, username, password) {
@@ -22,10 +22,11 @@ export async function createUser(email, username, password) {
 
     // Create verification account token
     const verificationToken = createValidationToken();
+    const hashedToken = hashToken(verificationToken);
 
     const db = await getDB();
     const query = "INSERT INTO users (email, username, password, verification_token) VALUES (?, ?, ?, ?)";
-    const result = await db.run(query, [email, username, hashPass, verificationToken]);
+    const result = await db.run(query, [email, username, hashPass, hashedToken]);
 
     // We return the id that was used to store in DB and also the users infos.
     return ({id: result.lastID, email, username, created_at: new Date().toISOString(), verificationToken});

@@ -1,4 +1,5 @@
 import { findUserByValidationToken, setVerifiedUser } from "../../db/querys.js";
+import { hashToken } from "../../utils/encrypt.js";
 
 export async function verifyAccount(request, reply) {
     const token = request.query.token;
@@ -9,7 +10,8 @@ export async function verifyAccount(request, reply) {
             return (reply.code(400).send({success: false, message: "Missing token"}));
 
         // Chercher quel user a ce token dans la db.
-        const user = await findUserByValidationToken(token);
+        const hashedToken = hashToken(token);
+        const user = await findUserByValidationToken(hashedToken);
 
         if (!user)
         {
