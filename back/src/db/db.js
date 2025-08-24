@@ -35,6 +35,7 @@ async function createTables() {
             password    TEXT        NOT     NULL,
             createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
             isVerified  BOOLEAN     DEFAULT FALSE,
-            verification_token TEXT
+            verification_token TEXT,
+            reset_pw_token  TEXT
     )`);
 }

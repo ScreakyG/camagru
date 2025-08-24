@@ -1,6 +1,7 @@
-import { findUserByEmail } from "../../db/querys.js";
+import { findUserByEmail, storeTokenDatabase } from "../../db/querys.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendPasswordResetMail } from "../../utils/mailService.js";
+import { hashToken } from "../../utils/encrypt.js";
 
 export async function forgotPassword(request, reply) {
     /**
@@ -23,7 +24,9 @@ export async function forgotPassword(request, reply) {
             throw new Error("No account with this email / not verified");
 
         const token = createValidationToken();
-        // TODO: Stocker le token dans la DB.
+        const hash = hashToken(token);
+
+        await storeTokenDatabase(user, "reset_pw_token", hash);
         await sendPasswordResetMail(user, token);
 
         return reply.send({success: true, message: "Reset password mail sent"});
