@@ -56,6 +56,14 @@ export async function findUserByValidationToken(token) {
     return (result);
 }
 
+export async function findUserByResetPasswordToken(token) {
+    const db = await getDB();
+    const query = "SELECT * FROM users WHERE reset_pw_token_hash = ?";
+    const result = db.get(query, [token]);
+
+    return (result);
+}
+
 export async function setVerifiedUser(user) {
     const db = await getDB();
     const query = "UPDATE users SET isVerified = 1, verification_token_hash = NULL WHERE id = ?";

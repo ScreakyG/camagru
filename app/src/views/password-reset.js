@@ -1,4 +1,31 @@
-export function showPasswordResetModal() {
+import { printAPIResponse } from "../utils.js";
+
+async function submitForm() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    console.log(token);
+    try
+    {
+         const response = await fetch("/api/auth/reset-password", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({token})
+         });
+         const resData = await response.json();
+         printAPIResponse("/api/auth/reset-password", resData);
+    }
+    catch (error)
+    {
+        console.error("Error while fetching /api/auth/reset-password");
+        console.log(error);
+    }
+
+}
+
+export async function showPasswordResetModal() {
     const newDiv = document.createElement("div");
         newDiv.innerHTML = /*html*/
             `<dialog class="modal">
@@ -56,5 +83,11 @@ export function showPasswordResetModal() {
     // Supprime la <div> au dessus pour destroy la modal
     modal.addEventListener("close", () => {
         modal.parentElement.remove();
+    })
+
+    const form = newDiv.querySelector("form");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        submitForm();
     })
 }

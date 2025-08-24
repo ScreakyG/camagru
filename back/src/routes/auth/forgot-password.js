@@ -6,11 +6,8 @@ import { hashToken } from "../../utils/encrypt.js";
 export async function forgotPassword(request, reply) {
     /**
      * TODO:
-     *  1/ Recheck si le body a un email ?
-     *  2/ Chercher si un utilisateur a ce mail.
-     *      a/ Si non -> ne rien faire.
-     *      b/ Si oui -> generer un token et envoyer un lien vers reset password page.
-     *  3/ Envoyer une reponse positive dans tout les cas ? Les users ne devrait pas savoir si une requete a reussi ou pas a des fins de securite.
+     *  Envoyer une reponse positive dans tout les cas ?
+     *  les users ne devrait pas savoir si une requete a reussi ou pas a des fins de securite.
      */
     try
     {

@@ -6,7 +6,7 @@ export async function verifyAccount(request, reply) {
 
     try
     {
-        if (!token)
+        if (!token || typeof token !== "string")
             return (reply.code(400).send({success: false, message: "Missing token"}));
 
         // Chercher quel user a ce token dans la db.

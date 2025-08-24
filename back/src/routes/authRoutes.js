@@ -3,6 +3,7 @@ import { register } from "./auth/register.js";
 import { logout } from "./auth/logout.js";
 import { verifyAccount } from "./auth/verify.js";
 import { forgotPassword } from "./auth/forgot-password.js";
+import { resetPassword } from "./auth/reset-password.js";
 
 const registerSchema = {
     body: {
@@ -66,6 +67,7 @@ async function authRoutes(fastify, options) {
     fastify.post("/login", { schema: loginSchema }, login);
     fastify.post("/logout", logout);
     fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
+    fastify.post("/reset-password", resetPassword);
     fastify.get("/verify", verifyAccount);
 }
 
