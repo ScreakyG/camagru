@@ -1,7 +1,7 @@
-For the moment im only working on the authentication part of the app.
+For the moment im only working on the authentication part of the app.<br/>
 Preview :
 
-<img width="774" height="864" alt="image" src="https://github.com/user-attachments/assets/943972b5-45d0-4e6f-8e23-84adfb64a12a" />
+<img width="761" height="854" alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" />
 
 1/ Create a ".env" in "./back/.env", otherwhise API will crash.
 
