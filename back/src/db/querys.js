@@ -75,3 +75,12 @@ export async function storeTokenDatabase(user, tokenName, token) {
     const query = `UPDATE users SET ${tokenName} = ? WHERE id = ?`;
     const result = await db.run(query, [token, user.id]);
 }
+
+export async function updatePassword(user, password) {
+    //Encrypt the password.
+    const hashPass = await encryptPassword(password);
+
+    const db = await getDB();
+    const query = "UPDATE users SET password = ? WHERE id = ?";
+    const result = await db.run(query, [hashPass, user.id]);
+}

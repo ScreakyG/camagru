@@ -1,9 +1,10 @@
-import { printAPIResponse } from "../utils.js";
+import { printAPIResponse, getFormValues } from "../utils.js";
 import { redirectTo } from "../navigation.js";
 
-async function submitForm(modal) {
+async function submitForm(modal, form) {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
+    const password = getFormValues(form).password;
 
     try
     {
@@ -12,7 +13,7 @@ async function submitForm(modal) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({token})
+            body: JSON.stringify({token, password})
          });
          const resData = await response.json();
          printAPIResponse("/api/auth/reset-password", resData);
@@ -28,17 +29,18 @@ async function submitForm(modal) {
     catch (error)
     {
         console.error("Error while fetching /api/auth/reset-password");
-        // console.error(error);
+        console.error(error);
     }
-
 }
 
 function showSuccess(modal) {
     modal.innerHTML = /*html*/`
         <div class="modal-box">
-            <h2>Password changed</h2>
-            <p>Your password has been successfully changed.</p>
-            <button class="btn btn-primary w-full">Log in</button>
+            <h2 class="text-center text-2xl">Password changed</h2>
+            <div class="m-4 flex-col items-center">
+                <p class="m-2 text-center">Your password has been successfully changed.</p>
+                <button class="m-2 btn btn-primary w-full">Log in</button>
+            </div>
         </div>
     `
 
@@ -52,7 +54,7 @@ function showSuccess(modal) {
 function showFailure(modal) {
     modal.innerHTML = /*html*/`
         <div class="modal-box">
-            <h2>Invalid / Expired Token</h2>
+            <h2 class="text-center text-2xl">Invalid / Expired Token</h2>
             <p>Something went wrong</p>
         </div>
     `
@@ -122,6 +124,6 @@ export async function showPasswordResetModal() {
     const form = newDiv.querySelector("form");
     form.addEventListener("submit", (event) => {
         event.preventDefault();
-        submitForm(modal);
+        submitForm(modal, form);
     })
 }

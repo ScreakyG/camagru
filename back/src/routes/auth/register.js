@@ -4,12 +4,6 @@ import { sendValidationMail } from "../../utils/mailService.js";
 
 export async function register(request, reply)
 {
-    /*
-        TODO :
-            - Creer un token qui sera envoyer dans le mail pour la verification
-            - Creer la route qui permetra de valider se token
-            - Envoyer un mail de confirmation de creation de compte.
-    */
     try
     {
         console.log("Request body : ", request.body);
