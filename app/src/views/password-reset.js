@@ -55,9 +55,17 @@ function showFailure(modal) {
     modal.innerHTML = /*html*/`
         <div class="modal-box">
             <h2 class="text-center text-2xl">Invalid / Expired Token</h2>
-            <p>Something went wrong</p>
+            <div class="m-4 flex-col items-center">
+                <p class="m-2 text-center">
+                    We couldn’t reset your password because this link is invalid or has expired.<br>
+                    For security, reset links are single-use and valid for a limited time.
+                </p>
+                <a href="/forgot-password" class="btn btn-primary mt-2 w-full">Request a new reset link</a>
+            </div>
         </div>
     `
+    const requestNewLink = modal.querySelector("a");
+    requestNewLink.addEventListener("click", () => modal.close());
 }
 
 

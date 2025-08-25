@@ -35,7 +35,15 @@ function showCheckPasswordMailModal(email) {
                 <div class="modal-box">
                     <h2 class="text-center text-2xl">Check your email</h2>
                     <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
-                    <p>If this email is associated to a account you should receive it to : ${email}</p>
+                    <div class="m-4 flex-col items-center">
+                        <p class="m-2 text-center">
+                            If an account exists for <span class="font-semibold text-indigo-300">${email}</span>,<br>
+                            you’ll receive a password reset link shortly.
+                        </p>
+                        <p class="mt-2 text-sm text-gray-500 text-center">
+                            Don’t forget to check your spam folder.
+                        </p>
+                    </div>
                 </div>
             </dialog>`
 
