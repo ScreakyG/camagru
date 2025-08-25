@@ -1,3 +1,8 @@
+For the moment im only working on the authentication part of the app.
+Preview :
+
+<img width="774" height="864" alt="image" src="https://github.com/user-attachments/assets/943972b5-45d0-4e6f-8e23-84adfb64a12a" />
+
 1/ Create a ".env" in "./back/.env", otherwhise API will crash.
 
 PORT : "port for API"<br/>
@@ -25,3 +30,5 @@ Preview of the app design :
 Current handling of register process : 
 
 <img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/9d7a8ab8-02b0-4896-9edf-193f2052dfaa" />
+
+
