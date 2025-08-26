@@ -1,6 +1,7 @@
 import { printAPIResponse, getFormValues, showAccountVerificationModal } from "./utils.js";
 import { router } from "./router.js";
 import { closeLoginModal } from "./utils.js";
+import { redirectTo } from "./navigation.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");
@@ -53,6 +54,7 @@ export function handleLoginModal() {
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
         closeLoginModal();
+        redirectTo("/");
     });
 
     // Handle the login button that send the form.

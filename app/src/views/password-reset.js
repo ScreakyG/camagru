@@ -67,6 +67,12 @@ function showFailure(modal) {
     `
     const requestNewLink = modal.querySelector("a");
     requestNewLink.addEventListener("click", () => modal.close());
+
+    const redCross = modal.querySelector("button");
+    redCross?.addEventListener("click", () => {
+        modal.close();
+        redirectTo("/");
+    })
 }
 
 function showResetForm(modal) {

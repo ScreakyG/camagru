@@ -1,3 +1,4 @@
+import { redirectTo } from "../navigation.js";
 import { printAPIResponse, closeForgotPasswordModal } from "../utils.js";
 
 async function submitForgotPassword(form) {
@@ -57,6 +58,7 @@ function showCheckPasswordMailModal(email) {
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
         modal.close();
+        redirectTo("/");
     });
 
     // Supprime la <div> au dessus pour destroy la modal
@@ -120,6 +122,7 @@ export function showForgotPasswordModal() {
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
         modal.close();
+        redirectTo("/");
     });
 
 }

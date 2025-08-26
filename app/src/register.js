@@ -1,3 +1,4 @@
+import { redirectTo } from "./navigation.js";
 import { printAPIResponse, getFormValues, closeRegisterModal, showAccountVerificationModal } from "./utils.js";
 
 async function submitForm() {
@@ -55,6 +56,7 @@ export function handleRegisterModal() {
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
         closeRegisterModal();
+        redirectTo("/");
     })
 
     // Handle the register button that send the form.
