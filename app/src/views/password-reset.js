@@ -150,6 +150,7 @@ export async function showPasswordResetModal() {
     // Handle closing modal with redcross.
     closeModalBtn?.addEventListener("click", () => {
         modal.close();
+
     });
 
     // Supprime la <div> au dessus pour destroy la modal

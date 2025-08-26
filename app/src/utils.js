@@ -1,3 +1,17 @@
+import { redirectTo } from "./navigation.js";
+
+export function closeResetModal(modal, toReset) {
+    if (!modal)
+        return ;
+
+    modal.close();
+    const currUrl = new URL(location.href);
+    currUrl.searchParams.delete(toReset);
+
+    const newParams = currUrl.search ? `?${currUrl.searchParams}` : "";
+    redirectTo(currUrl.pathname + newParams);
+}
+
 // Afficher la reponse d'un call API.
 export function printAPIResponse(routeAPI, response) {
     console.log("Response from " + routeAPI + " : ", response);
