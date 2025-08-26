@@ -12,6 +12,16 @@ export function closeResetModal(modal, toReset) {
     redirectTo(currUrl.pathname + newParams);
 }
 
+export function closeOpenedModals() {
+    const openedModals = document.querySelectorAll("dialog[open]");
+    for (let i = 0; i < openedModals.length; i++)
+    {
+        console.log(openedModals[i]);
+        openedModals[i].close();
+    }
+    // openedModals?.forEach(modal => modal.close());
+}
+
 // Afficher la reponse d'un call API.
 export function printAPIResponse(routeAPI, response) {
     console.log("Response from " + routeAPI + " : ", response);

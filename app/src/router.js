@@ -2,7 +2,7 @@ import { getCurrentUser, updateAuthUI } from "./auth.js";
 import { showForgotPasswordModal } from "./views/password-forgot.js";
 import { showPasswordResetModal } from "./views/password-reset.js";
 import { showVerifyStatus } from "./views/verify/success.js";
-import { showLoginModal, showRegisterModal } from "./utils.js";
+import { closeOpenedModals, showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
 
 // Catching all events and preventing default behavior of <a> to prevent page refresh.
@@ -30,6 +30,7 @@ export async function router() {
 
     // Update what should be shown if user is logged/not logged.
     await updateAuthUI();
+    closeOpenedModals();
 
     switch (currentPath) {
         case "/verify":

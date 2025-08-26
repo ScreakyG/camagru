@@ -113,12 +113,17 @@ function showResetForm(modal) {
         event.preventDefault();
         submitForm(modal, form);
     })
+
+    const redCross = modal.querySelector("button");
+    redCross?.addEventListener("click", () => {
+        modal.close();
+        redirectTo("/");
+    })
 }
 
 export async function showPasswordResetModal() {
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get("status");
-    console.log(status);
 
 
     const newDiv = document.createElement("div");
@@ -144,14 +149,6 @@ export async function showPasswordResetModal() {
             break;
     }
     modal.showModal();
-
-    // Peut etre changer car il y a egalement un button submit ce qui pourrait poser un probleme.
-    const closeModalBtn = newDiv.querySelector("button");
-    // Handle closing modal with redcross.
-    closeModalBtn?.addEventListener("click", () => {
-        modal.close();
-
-    });
 
     // Supprime la <div> au dessus pour destroy la modal
     modal.addEventListener("close", () => {
