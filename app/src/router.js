@@ -1,7 +1,7 @@
 import { getCurrentUser, updateAuthUI } from "./auth.js";
 import { showForgotPasswordModal } from "./views/password-forgot.js";
 import { showPasswordResetModal } from "./views/password-reset.js";
-import { showVerifyStatus } from "./views/verify/success.js";
+import { showVerifyStatus } from "./views/verify.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
 import { cleanPreviousView } from "./cleaning.js";

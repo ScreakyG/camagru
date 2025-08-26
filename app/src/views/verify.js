@@ -1,4 +1,4 @@
-import { redirectTo } from "../../navigation.js";
+import { redirectTo } from "../navigation.js";
 
 // Fonctions qui changent le contenu de la modal.
 function showSuccess(modal) {
