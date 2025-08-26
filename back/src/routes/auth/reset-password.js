@@ -8,7 +8,7 @@ export async function resetPassword(request, reply) {
      * TODO:
      *  1/ Verifier si le token est valide / expiration.
      *  2/ Consommer le token ?
-     * 
+     *
      *  Envoyer un mail pour dire que le MDP a change ?
      */
     const { token, password } = request.body;
