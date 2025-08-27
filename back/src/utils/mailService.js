@@ -58,7 +58,7 @@ export async function sendPasswordResetMail(user, token) {
             subject: "Reset Password",
             html: /*html*/
              `<h1>Please click the link to reset your password :</h1>
-             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/reset-password?token=${token}>Reset Password</a>
+             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/api/auth/validate-reset-link?token=${token}>Reset Password</a>
              `,
         });
 

@@ -1,4 +1,4 @@
-import { findUserByValidationToken, setVerifiedUser } from "../../db/querys.js";
+import { findUserByResetPasswordToken, findUserByValidationToken, setVerifiedUser } from "../../db/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 
 export async function verifyAccount(request, reply) {
@@ -31,5 +31,28 @@ export async function verifyAccount(request, reply) {
         // It is a error that we did not handle. (We should avoid this at all cost).
         else
             return (reply.code(500).send({success: false, errorMessage: "Internal server error", details: error.message}));
+    }
+}
+
+export async function verifyResetPasswordToken(request, reply) {
+    const token = request.query.token;
+
+    try
+    {
+        if (!token || typeof token !== "string")
+            throw new Error("Missing token");
+        
+        // TODO: Verifier si le token est pas expire.
+        const hashedToken = hashToken(token);
+        const user = await findUserByResetPasswordToken(hashedToken);
+        if (!user)
+            throw new Error("No user found for this token");
+
+        return (reply.redirect(`/reset-password?token=${token}`));
+    }
+    catch (error)
+    {
+        console.error("Error when checking reset password link : ", error);
+        return (reply.redirect("/reset-password?status=invalid"));
     }
 }

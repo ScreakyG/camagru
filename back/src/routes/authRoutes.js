@@ -1,7 +1,7 @@
 import { login } from "./auth/login.js";
 import { register } from "./auth/register.js";
 import { logout } from "./auth/logout.js";
-import { verifyAccount } from "./auth/verify.js";
+import { verifyAccount, verifyResetPasswordToken } from "./auth/verify.js";
 import { forgotPassword } from "./auth/forgot-password.js";
 import { resetPassword } from "./auth/reset-password.js";
 
@@ -69,6 +69,7 @@ async function authRoutes(fastify, options) {
     fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
     fastify.post("/reset-password", resetPassword);
     fastify.get("/verify", verifyAccount);
+    fastify.get("/validate-reset-link", verifyResetPasswordToken);
 }
 
 export default authRoutes;
