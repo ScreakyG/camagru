@@ -14,10 +14,7 @@ export async function verifyAccount(request, reply) {
         const user = await findUserByValidationToken(hashedToken);
 
         if (!user)
-        {
-            reply.redirect("/verify?status=failed");
-            return (reply.code(400).send({success: false, message: "Invalid/expired token"}));
-        }
+            return (reply.redirect("/verify?status=failed"));
 
         // Changer le status verified de l'user a true;
         await setVerifiedUser(user);
@@ -41,7 +38,7 @@ export async function verifyResetPasswordToken(request, reply) {
     {
         if (!token || typeof token !== "string")
             throw new Error("Missing token");
-        
+
         // TODO: Verifier si le token est pas expire.
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);
