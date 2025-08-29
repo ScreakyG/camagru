@@ -1,7 +1,8 @@
-import { printAPIResponse, getFormValues, showAccountVerificationModal } from "./utils.js";
+import { printAPIResponse, getFormValues } from "./utils.js";
 import { router } from "./router.js";
 import { closeLoginModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
+import { showAccountVerificationModal } from "./register.js";
 
 async function submitForm() {
     const loginForm = document.getElementById("login-form");

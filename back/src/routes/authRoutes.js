@@ -4,6 +4,7 @@ import { logout } from "./auth/logout.js";
 import { verifyAccount, verifyResetPasswordToken } from "./auth/verify.js";
 import { forgotPassword } from "./auth/forgot-password.js";
 import { resetPassword } from "./auth/reset-password.js";
+import { resendValidationMail } from "./auth/resend-validation-email.js";
 
 const registerSchema = {
     body: {
@@ -63,13 +64,17 @@ const forgotPasswordSchema = {
 };
 
 async function authRoutes(fastify, options) {
+    // POST
     fastify.post("/register", { schema: registerSchema }, register);
     fastify.post("/login", { schema: loginSchema }, login);
     fastify.post("/logout", logout);
     fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
     fastify.post("/reset-password", resetPassword);
+
+    // GET
     fastify.get("/verify", verifyAccount);
     fastify.get("/validate-reset-link", verifyResetPasswordToken);
+    fastify.get("/resend-validation-mail", resendValidationMail);
 }
 
 export default authRoutes;

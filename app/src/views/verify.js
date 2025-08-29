@@ -7,7 +7,7 @@ function showSuccess(modal) {
             <h2 class="text-center text-2xl font-bold">Verification successful</h2>
             <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
             <div class="m-4 flex flex-col items-center">
-                <p class="m-2 text-center">Your account is now verified, you may now proceed to log in</p>
+                <p class="m-2 text-center">Your account is verified you may now proceed to log in</p>
                 <a href="/login" class="btn btn-primary w-full">Log in</a>
             </div>
         </div>`
