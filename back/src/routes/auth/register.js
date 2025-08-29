@@ -16,7 +16,7 @@ export async function register(request, reply)
 
         // Creer un user , crypte le mdp et store dans la DB.
         const newUser = await createUser(email, username, password);
-        await sendValidationMail(newUser);
+        await sendValidationMail(newUser, newUser.verificationToken);
 
         return (reply.code(201).send({ success: true, message:"Succesfully registered", user: newUser }));
     }

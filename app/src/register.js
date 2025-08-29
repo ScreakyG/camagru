@@ -1,6 +1,26 @@
 import { redirectTo } from "./navigation.js";
 import { printAPIResponse, getFormValues, closeRegisterModal } from "./utils.js";
 
+async function callResendValidationMail(email) {
+    try
+    {
+        const response = await fetch("/api/auth/resend-validation-link", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({email})
+        });
+        const resData = await response.json();
+        console.log(resData);
+    }
+    catch (error)
+    {
+        console.error("Error while fetching API /api/auth/resend-validation-link");
+        console.error(error);
+    }
+}
+
 export function showAccountVerificationModal(email) {
     const newDiv = document.createElement("div");
 
@@ -28,6 +48,12 @@ export function showAccountVerificationModal(email) {
     // Supprime la <div> au dessus pour destroy la modal
     modal.addEventListener("close", () => {
         modal.parentElement.remove();
+    })
+
+    const resendMailBtn = modal.querySelector("button");
+    resendMailBtn?.addEventListener("click", (event) => {
+        event.preventDefault();
+        callResendValidationMail(email);
     })
 }
 

@@ -27,7 +27,7 @@ export async function emailServiceStatus() {
     }
 }
 
-export async function sendValidationMail(user) {
+export async function sendValidationMail(user, token) {
     // TODO: Changer pour le bon lien.
     try
     {
@@ -37,7 +37,7 @@ export async function sendValidationMail(user) {
             subject: "Account Verification",
             html: /*html*/
              `<h1>Please click the verification link to verify your account :</h1>
-             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/api/auth/verify?token=${user.verificationToken}>Verify</a>
+             <a target="_blank" rel="noopener noreferrer" href=http://localhost:8080/api/auth/verify?token=${token}>Verify</a>
              `,
         });
 

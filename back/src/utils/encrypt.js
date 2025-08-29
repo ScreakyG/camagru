@@ -17,8 +17,6 @@ export async function decryptPassword(password, hashedPassword) {
 
 export function hashToken(token) {
     /**
-     * 
-     *
      * createHash = utilise algo sha256
      * update = ajoute des elements a hasher
      * digest = performe le hashage
