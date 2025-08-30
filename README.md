@@ -1,7 +1,7 @@
 # Camagru
 
 <div align="center">
-  <!-- <img src="./logo.png" alt="Camagru Logo" width="200"> -->
+  <img src="./instagram_old_logo.png" alt="Camagru Logo" width="200">
   <p>A light social media app</p>
 </div>
 
