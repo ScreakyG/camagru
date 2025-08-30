@@ -32,7 +32,7 @@ At the moment users can :
 ### Backend
 - **Node.js**
 - **Fastify**
-- **SQLite**
+- **SQLite** -> will be migrating to another later
 - **Nodemailer**
 
 ### Frontend
@@ -62,7 +62,7 @@ At the moment users can :
 ## 🚀 Installation
 
 ### Required
-- Docker et Docker Compose
+- Docker and Docker Compose
 - Git
 
 ### Steps
