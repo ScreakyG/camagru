@@ -1,40 +1,100 @@
-For the moment im only working on the authentication part of the app.<br/>
-Preview :
+# Camagru
+
 <div align="center">
-  <img width="761" height="854" alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" />
+  <!-- <img src="./logo.png" alt="Camagru Logo" width="200"> -->
+  <p>A light social media app</p>
 </div>
 
-1/ Create a ".env" in "./back/.env", otherwhise API will crash.
+## Description
 
-PORT : "port for API"<br/>
-HOST : "host for API"<br/>
+Camagru is a instagram like web app that allow users to take live pictures with their webcam, tweak them then post them.
+</br>
+⚠️ This project is at early stages, i am focusing on creating a good account management first.
 
-EMAIL_HOST: "mail service your using"<br/>
-EMAIL_PORT: "port your service will use if it use one"<br/>
-EMAIL_USER : "username for emailService"<br/>
-EMAIL_PASS "password for emailService"<br/>
-
-JWT_SECRET: "secret key to sign JWTs"
-
-2/<br>
-  Production build :  ./build_script that will run the "docker-compose.yml" file.
-<br/>
-<br/>
-  Dev environnement : ./dev_script that will run the "docker-compose.dev.yml" file (it bind repo volumes to the docker for live editing and set tailwind / node to --watch for changes)
-<br/>
-
-Containers :
+## Preview 
 <div align="center">
-  <img width="1140" height="968" alt="image" src="https://github.com/user-attachments/assets/2d0f7b44-a8a6-418f-ad97-1f46e1a39be7" />
+  <img  style="width:50%, height:auto;" alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" />
 </div>
 
-Preview of the app design : 
+At the moment users can :
+- Create a account with mail verification ✅
+- Request password if forgot ✅
+
+- Takes pictures ❌
+- Edit pictures ❌
+- Like , comment posts ❌
+- Feed with all users content ❌
+- Set notifications ❌
+
+## 🛠️ Stack
+
+### Backend
+- **Node.js**
+- **Fastify**
+- **SQLite**
+- **Nodemailer**
+
+### Frontend
+- **HTML5/CSS3**
+- **JavaScript**
+- **TailwindCSS**
+- **DaisyUI**
+
+### Deployment
+- **Docker/Docker Compose**
+- **Nginx**
+
+## Containers overview
+
 <div align="center">
-  <img width="800" height="696" alt="image" src="https://github.com/user-attachments/assets/9e7db9b0-9e80-44f2-83e3-32d7e9632bf4" />
+  <img style="width:50%, height:auto;" alt="image" src="https://github.com/user-attachments/assets/2d0f7b44-a8a6-418f-ad97-1f46e1a39be7" />
 </div>
 
-Current handling of register process : 
-<div align="center">
-  <img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/9d7a8ab8-02b0-4896-9edf-193f2052dfaa" />
-</div>
+**Nginx** :
+  - Load static files
+  - Reverse proxy "/api/XXX/XX" API's calls to Fastify container
 
+**Fastify** is a REST API :
+  - Handle all endpoints starting with /api/
+  - Handle connection to the database
+
+## 🚀 Installation
+
+### Required
+- Docker et Docker Compose
+- Git
+
+### Steps
+
+1. Clone repo
+   ```bash
+   git clone https://github.com/ScreakyG/camagru
+   cd camagru
+   ```
+
+2. Create a `.env` file in ./back folder
+   ```
+   # Ports
+   NGINX_PORT= 8080
+   FASTIFY_PORT= 3000
+
+   # Email Config
+   EMAIL_HOST=<smtp.ethereal.email>
+   EMAIL_PORT=<587>
+   EMAIL_USER=<your_email@gmail.com>
+   EMAIL_PASS=*****
+
+   # Security
+   JWT_SECRET=******
+   ```
+   _Values between <> and **** should be replaced by yours_
+
+3. Launch the app
+   ```bash
+   ./build_script.sh
+   ```
+
+4. Access the app at http://localhost:8080
+
+### Stop the app
+Ctrl-C where you launched the script
