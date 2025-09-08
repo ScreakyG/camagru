@@ -4,13 +4,6 @@ import { verifyPasswordInput } from "../../utils/validation.js";
 import { updatePassword, deleteTokenFromDatabase } from "../../db/querys.js";
 
 export async function resetPassword(request, reply) {
-    /**
-     * TODO:
-     *  1/ Verifier si le token est valide / expiration.
-     *  2/ Consommer le token ?
-     *
-     *  Envoyer un mail pour dire que le MDP a change ?
-     */
     const { token, password } = request.body;
     try
     {
@@ -26,7 +19,6 @@ export async function resetPassword(request, reply) {
 
         const newPassword = verifyPasswordInput(password)
         await updatePassword(user, newPassword);
-        // Consommer le token dans la database.
         await deleteTokenFromDatabase(hashedToken);
 
         return reply.code(200).send({message: "Password successfuly changed for user = ", user});

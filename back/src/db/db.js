@@ -27,21 +27,6 @@ export async function initDB() {
 }
 
 async function createTables() {
-    // await dbInstance.exec(`
-    //     CREATE TABLE IF NOT EXISTS users (
-    //         id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
-    //         email       TEXT        UNIQUE  NOT     NULL,
-    //         username    TEXT        UNIQUE  NOT     NULL,
-    //         password    TEXT        NOT     NULL,
-    //         createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
-    //         isVerified  BOOLEAN     DEFAULT FALSE,
-
-    //         verification_token_hash TEXT,
-
-
-    //         reset_pw_token_hash  TEXT
-    // )`);
-
     await dbInstance.exec(`
         CREATE TABLE IF NOT EXISTS users (
             id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

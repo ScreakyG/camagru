@@ -90,7 +90,6 @@ export async function setVerifiedUser(user) {
 }
 
 export async function updatePassword(user, password) {
-    //Encrypt the password.
     const hashPass = await encryptPassword(password);
 
     const db = await getDB();
