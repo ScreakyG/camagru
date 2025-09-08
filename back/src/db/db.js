@@ -27,18 +27,38 @@ export async function initDB() {
 }
 
 async function createTables() {
+    // await dbInstance.exec(`
+    //     CREATE TABLE IF NOT EXISTS users (
+    //         id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
+    //         email       TEXT        UNIQUE  NOT     NULL,
+    //         username    TEXT        UNIQUE  NOT     NULL,
+    //         password    TEXT        NOT     NULL,
+    //         createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
+    //         isVerified  BOOLEAN     DEFAULT FALSE,
+
+    //         verification_token_hash TEXT,
+
+
+    //         reset_pw_token_hash  TEXT
+    // )`);
+
     await dbInstance.exec(`
         CREATE TABLE IF NOT EXISTS users (
-            id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
-            email       TEXT        UNIQUE  NOT     NULL,
-            username    TEXT        UNIQUE  NOT     NULL,
-            password    TEXT        NOT     NULL,
-            createdAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
-            isVerified  BOOLEAN     DEFAULT FALSE,
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            username            VARCHAR(150) NOT NULL UNIQUE,
+            email               VARCHAR(150) NOT NULL UNIQUE,
+            password_hash       TEXT NOT NULL,
+            is_verified         BOOLEAN DEFAULT FALSE NOT NULL,
+            created_at          DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+        )`);
 
-            verification_token_hash TEXT,
-
-
-            reset_pw_token_hash  TEXT
-    )`);
+    await dbInstance.exec(`
+        CREATE TABLE IF NOT EXISTS tokens (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            token_hash          TEXT NOT NULL UNIQUE,
+            token_expiration    DATETIME NOT NULL,
+            purpose             VARCHAR(150) NOT NULL,
+            user_id             INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )`);
 }

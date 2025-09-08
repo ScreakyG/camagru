@@ -1,4 +1,4 @@
-import { findUserByEmail, storeTokenDatabase } from "../../db/querys.js";
+import { findUserByEmail, insertTokenDatabase, storeTokenDatabase } from "../../db/querys.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendPasswordResetMail } from "../../utils/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
@@ -17,12 +17,12 @@ export async function forgotPassword(request, reply) {
             throw new Error("No email in body");
 
         const user = await findUserByEmail(email);
-        if (user && user.isVerified)
+        if (user && user.is_verified)
         {
             const token = createValidationToken();
             const hash = hashToken(token);
 
-            await storeTokenDatabase(user, "reset_pw_token_hash", hash);
+            await insertTokenDatabase(user.id, hash, 1234567, "reset_password");
             await sendPasswordResetMail(user, token);
         }
         return reply.send({success: true, message: "If an account exist check your emails."});

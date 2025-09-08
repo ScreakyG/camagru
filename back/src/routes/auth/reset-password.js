@@ -26,6 +26,7 @@ export async function resetPassword(request, reply) {
 
         const newPassword = verifyPasswordInput(password)
         await updatePassword(user, newPassword);
+        // Consommer le token dans la database.
 
         return reply.code(200).send({message: "Password successfuly changed for user = ", user});
     }

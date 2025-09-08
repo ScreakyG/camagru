@@ -1,4 +1,4 @@
-import { findUserByEmail, storeTokenDatabase } from "../../db/querys.js";
+import { findUserByEmail, insertTokenDatabase, storeTokenDatabase } from "../../db/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendValidationMail } from "../../utils/mailService.js";
@@ -14,14 +14,14 @@ export async function resendValidationLink(request, reply) {
         if (!user)
             throw new Error("No user found with this email");
 
-        if (user.isVerified)
+        if (user.is_verified)
             throw new Error("Account is already verified");
 
 
         const token = createValidationToken();
         const hashedToken = hashToken(token);
 
-        await storeTokenDatabase(user, "verification_token_hash", hashedToken);
+        await insertTokenDatabase(user.id, hashedToken, 123456, "validation");
         await sendValidationMail(user, token);
 
         return (reply.send({success: true, message: "Send you new link via mail"}));

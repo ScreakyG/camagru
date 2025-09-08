@@ -13,11 +13,11 @@ export async function login(request, reply) {
         if (!user)
             throw new AuthenticationError("Username/Password not valid");
 
-        const result = await decryptPassword(password, user.password);
+        const result = await decryptPassword(password, user.password_hash);
         if (!result)
             throw new AuthenticationError("Username/Password not valid");
 
-        if (!user.isVerified)
+        if (!user.is_verified)
             return (reply.code(403).send({success: false, errorMessage: "Account is not validated", email: user.email}))
 
         const token = createJWT(user);
