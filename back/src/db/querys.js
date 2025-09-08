@@ -2,6 +2,7 @@ import { getDB } from "./db.js";
 import { ConflictError } from "../utils/errors.js";
 import { encryptPassword, hashToken } from "../utils/encrypt.js";
 import { createValidationToken } from "../utils/jwt.js";
+import { setExpirationDate } from "../utils/time.js";
 
 export async function createUser(email, username, password) {
 
@@ -27,10 +28,10 @@ export async function createUser(email, username, password) {
     const db = await getDB();
     const query = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
     const result = await db.run(query, [username, email, hashPass]);
-    await insertTokenDatabase(result.lastID, hashedToken, 1234567, "validation");
+    await insertTokenDatabase(result.lastID, hashedToken, setExpirationDate(60), "validation");
 
     // We return the id that was used to store in DB and also the users infos.
-    return ({id: result.lastID, email, username, created_at: new Date().toISOString(), verificationToken});
+    return ({id: result.lastID, email, username, verificationToken});
 }
 
 export async function insertTokenDatabase(userId, tokenHash, tokenExp, purpose)
@@ -64,7 +65,7 @@ export async function findUserByUsername(username) {
 
 export async function findUserByValidationToken(tokenHash) {
     const db = await getDB();
-    const query = "SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ?";
+    const query = "SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ? AND tokens.token_expiration > strftime('%s', 'now')";
     const result = await db.get(query, [tokenHash, "validation"]);
 
     return (result);
@@ -72,7 +73,7 @@ export async function findUserByValidationToken(tokenHash) {
 
 export async function findUserByResetPasswordToken(token) {
     const db = await getDB();
-    const query = "SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ?";
+    const query = "SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ? AND tokens.token_expiration > strftime('%s', 'now')";
     const result = db.get(query, [token, "reset_password"]);
 
     return (result);

@@ -2,6 +2,7 @@ import { findUserByEmail, insertTokenDatabase } from "../../db/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendValidationMail } from "../../utils/mailService.js";
+import { setExpirationDate } from "../../utils/time.js";
 
 export async function resendValidationLink(request, reply) {
     try
@@ -21,7 +22,7 @@ export async function resendValidationLink(request, reply) {
         const token = createValidationToken();
         const hashedToken = hashToken(token);
 
-        await insertTokenDatabase(user.id, hashedToken, 123456, "validation");
+        await insertTokenDatabase(user.id, hashedToken, setExpirationDate(60), "validation");
         await sendValidationMail(user, token);
 
         return (reply.send({success: true, message: "Send you new link via mail"}));

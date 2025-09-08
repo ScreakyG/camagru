@@ -2,6 +2,7 @@ import { findUserByEmail, insertTokenDatabase } from "../../db/querys.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendPasswordResetMail } from "../../utils/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
+import { setExpirationDate } from "../../utils/time.js";
 
 export async function forgotPassword(request, reply) {
     /**
@@ -22,7 +23,7 @@ export async function forgotPassword(request, reply) {
             const token = createValidationToken();
             const hash = hashToken(token);
 
-            await insertTokenDatabase(user.id, hash, 1234567, "reset_password");
+            await insertTokenDatabase(user.id, hash, setExpirationDate(15), "reset_password");
             await sendPasswordResetMail(user, token);
         }
         return reply.send({success: true, message: "If an account exist check your emails."});

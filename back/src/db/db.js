@@ -56,7 +56,7 @@ async function createTables() {
         CREATE TABLE IF NOT EXISTS tokens (
             id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             token_hash          TEXT NOT NULL UNIQUE,
-            token_expiration    DATETIME NOT NULL,
+            token_expiration    INTEGER NOT NULL,
             purpose             VARCHAR(150) NOT NULL,
             user_id             INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
