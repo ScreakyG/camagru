@@ -1,4 +1,4 @@
-import { findUserByEmail, insertTokenDatabase, storeTokenDatabase } from "../../db/querys.js";
+import { findUserByEmail, insertTokenDatabase } from "../../db/querys.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendPasswordResetMail } from "../../utils/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";

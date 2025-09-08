@@ -88,14 +88,6 @@ export async function setVerifiedUser(user) {
     await db.run(query, [user.id]);
 }
 
-// Obsolete
-export async function storeTokenDatabase(user, tokenName, token) {
-    const db = await getDB();
-    const query = `UPDATE users SET ${tokenName} = ? WHERE id = ?`;
-    const result = await db.run(query, [token, user.id]);
-
-}
-
 export async function updatePassword(user, password) {
     //Encrypt the password.
     const hashPass = await encryptPassword(password);
@@ -103,4 +95,11 @@ export async function updatePassword(user, password) {
     const db = await getDB();
     const query = "UPDATE users SET password_hash = ? WHERE id = ?";
     const result = await db.run(query, [hashPass, user.id]);
+}
+
+export async function deleteTokenFromDatabase(tokenHash)
+{
+    const db = await getDB();
+    const query = "DELETE FROM tokens WHERE token_hash = ?";
+    const result = db.run(query, [tokenHash]);
 }
