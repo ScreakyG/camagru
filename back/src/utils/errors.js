@@ -30,3 +30,11 @@ export class AccountValidationError extends Error {
         this.name = "AccountValidationError";
     };
 }
+
+export class BadRequestError extends Error {
+    constructor(message) {
+        super(message);
+        this.statusCode = 400;
+        this.name = "BadRequestError";
+    };
+}

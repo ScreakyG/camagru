@@ -3,6 +3,7 @@ import { createValidationToken } from "../../utils/jwt.js";
 import { sendPasswordResetMail } from "../../utils/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { setExpirationDate } from "../../utils/time.js";
+import { BadRequestError } from "../../utils/errors.js";
 
 export async function forgotPassword(request, reply) {
     /**
@@ -15,7 +16,7 @@ export async function forgotPassword(request, reply) {
         let { email } = request.body;
 
         if (!email)
-            throw new Error("No email in body");
+            throw new BadRequestError("Missing email in body.");
 
         const user = await findUserByEmail(email);
         if (user && user.is_verified)
@@ -30,7 +31,9 @@ export async function forgotPassword(request, reply) {
     }
     catch (error)
     {
-        // Je devrais egalement renvoyer un message positif pour ne pas dire si cela a reussi.
-        return reply.code(500).send({success: false, message: error.message});
+        if (error.statusCode)
+            return reply.code(error.statusCode).send({success: false, message: error.message});
+        else
+            return reply.code(500).send({success: false, message: error.message});
     }
 }
