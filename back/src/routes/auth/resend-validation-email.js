@@ -9,7 +9,7 @@ export async function resendValidationLink(request, reply) {
     {
         const { email } = request.body;
         if (!email)
-            throw new Error("No email in request");
+            throw new Error("No email in request body");
 
         let user = await findUserByEmail(email);
         if (!user)

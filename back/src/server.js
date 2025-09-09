@@ -19,6 +19,7 @@ await emailServiceStatus();
 
 fastify.register(cookie);
 
+
 // Register du plugin pour gerer CORS
 // await fastify.register(cors, {
 //     origin: ["http://localhost:8080"],

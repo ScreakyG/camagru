@@ -63,14 +63,39 @@ const forgotPasswordSchema = {
     }
 };
 
+const resetPasswordSchema = {
+    body: {
+        required: ["token", "password"],
+        properties: {
+            token: { type: "string", minLength: 1 },
+            password: { type: "string", minLength: 8, maxLength: 128}
+        }
+    }
+}
+
+const resendValidationSchema = {
+    body: {
+        type: "object",
+        required: ["email"],
+        properties: {
+            email: {
+                type: "string",
+                format: "email",
+                maxLength: 255
+            }
+        }
+    }
+};
+
+
 async function authRoutes(fastify, options) {
     // POST
     fastify.post("/register", { schema: registerSchema }, register);
     fastify.post("/login", { schema: loginSchema }, login);
     fastify.post("/logout", logout);
     fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
-    fastify.post("/reset-password", resetPassword);
-    fastify.post("/resend-validation-link", resendValidationLink);
+    fastify.post("/reset-password", { schema: resetPasswordSchema }, resetPassword);
+    fastify.post("/resend-validation-link", { schema: resendValidationSchema }, resendValidationLink);
 
     // GET
     fastify.get("/verify", verifyAccount);
