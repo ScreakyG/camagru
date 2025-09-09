@@ -12,7 +12,7 @@ Camagru is a instagram like web app that allow users to take live pictures with 
 ⚠️ This project is at early stages, i am focusing on creating a good account management first.
 
 
-## Preview 
+## Preview
 <div align="center">
   <img alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" width=700 />
 </div>
@@ -106,3 +106,4 @@ At the moment users can :
 
 ### Stop the app
 Ctrl-C where you launched the script
+

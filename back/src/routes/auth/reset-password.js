@@ -2,20 +2,20 @@ import { hashToken } from "../../utils/encrypt.js";
 import { findUserByResetPasswordToken } from "../../db/querys.js";
 import { verifyPasswordInput } from "../../utils/validation.js";
 import { updatePassword, deleteTokenFromDatabase } from "../../db/querys.js";
+import { BadRequestError } from "../../utils/errors.js";
 
 export async function resetPassword(request, reply) {
     const { token, password } = request.body;
     try
     {
         if (!token || typeof token !== "string")
-            throw new Error("Missing token");
-
+            throw new BadRequestError("Missing token in body.");
 
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);
 
         if (!user)
-            throw new Error("Invalid / Expired token");
+            throw new BadRequestError("Invalid / Expired token.");
 
         const newPassword = verifyPasswordInput(password)
         await updatePassword(user, newPassword);

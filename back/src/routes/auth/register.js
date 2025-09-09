@@ -6,7 +6,6 @@ export async function register(request, reply)
 {
     try
     {
-        console.log("Request body : ", request.body);
         let { username, email, password } = request.body;
 
         // Verifie le format et rejette en cas de caracteres innatendus.

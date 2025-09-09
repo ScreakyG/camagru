@@ -1,5 +1,6 @@
 import { findUserByResetPasswordToken, findUserByValidationToken, setVerifiedUser } from "../../db/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
+import { BadRequestError } from "../../utils/errors.js";
 
 export async function verifyAccount(request, reply) {
     const token = request.query.token;
@@ -7,7 +8,7 @@ export async function verifyAccount(request, reply) {
     try
     {
         if (!token || typeof token !== "string")
-            return (reply.code(400).send({success: false, message: "Missing token"}));
+            throw new BadRequestError("Missing token.")
 
         const hashedToken = hashToken(token);
         const user = await findUserByValidationToken(hashedToken);
@@ -16,16 +17,12 @@ export async function verifyAccount(request, reply) {
             return (reply.redirect("/verify?status=failed"));
 
         await setVerifiedUser(user);
-        reply.redirect("/verify?status=success");
+        return (reply.redirect("/verify?status=success"));
     }
     catch (error)
     {
-        // It means that its a error that we throw ourself.
-        if (error.statusCode)
-            return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}));
-        // It is a error that we did not handle. (We should avoid this at all cost).
-        else
-            return (reply.code(500).send({success: false, errorMessage: "Internal server error", details: error.message}));
+        console.error("Error when validating account : ", error);
+        return (reply.redirect("/verify?status=failed"));
     }
 }
 
@@ -35,12 +32,12 @@ export async function verifyResetPasswordToken(request, reply) {
     try
     {
         if (!token || typeof token !== "string")
-            throw new Error("Missing token");
+            throw new BadRequestError("Missing token.")
 
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);
         if (!user)
-            throw new Error("No user found for this token");
+            throw new BadRequestError("No user found for this token.")
 
         return (reply.redirect(`/reset-password?token=${token}`));
     }
