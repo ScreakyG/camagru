@@ -6,11 +6,6 @@ import { forgotPassword } from "../controllers/auth/forgot-password.js";
 import { resetPassword } from "../controllers/auth/reset-password.js";
 import { resendValidationLink } from "../controllers/auth/resend-validation-email.js";
 
-import registerSchema from "../validators/auth/registerSchema.js";
-import loginSchema from "../validators/auth/loginSchema.js";
-import forgotPasswordSchema from "../validators/auth/forgotPasswordSchema.js"
-import resetPasswordSchema from "../validators/auth/resetPasswordSchema.js";
-import resendValidationSchema from "../validators/auth/resendValidationSchema.js";
 
 async function authRoutes(fastify, options) {
     // POST

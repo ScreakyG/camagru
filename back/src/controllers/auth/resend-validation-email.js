@@ -4,6 +4,7 @@ import { BadRequestError } from "../../utils/errors.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendValidationMail } from "../../services/mailService.js";
 import { setExpirationDate } from "../../utils/time.js";
+import { verifyEmailInput } from "../../utils/validation.js";
 
 export async function resendValidationLink(request, reply) {
     try
@@ -11,11 +12,8 @@ export async function resendValidationLink(request, reply) {
         if (!request.body)
             throw new BadRequestError("Missing body content in request.");
 
-        const { email } = request.body;
-        if (!email)
-            throw new BadRequestError("No email in request body.");
-
-        // TODO: Verifier le format de l'email ?
+        let { email } = request.body;
+        email = verifyEmailInput(email);
 
         let user = await findUserByEmail(email);
         if (!user)

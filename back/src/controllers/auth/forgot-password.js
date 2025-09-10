@@ -4,13 +4,9 @@ import { sendPasswordResetMail } from "../../services/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { setExpirationDate } from "../../utils/time.js";
 import { BadRequestError } from "../../utils/errors.js";
+import { verifyEmailInput } from "../../utils/validation.js";
 
 export async function forgotPassword(request, reply) {
-    /**
-     * TODO:
-     *  Envoyer une reponse positive dans tout les cas ?
-     *  les users ne devrait pas savoir si une requete a reussi ou pas a des fins de securite.
-     */
     try
     {
         if (!request.body)
@@ -18,10 +14,7 @@ export async function forgotPassword(request, reply) {
 
         let { email } = request.body;
 
-        if (!email)
-            throw new BadRequestError("Missing email in body.");
-
-        // TODO: Verifier le format de l'email ?
+        email = verifyEmailInput(email);
 
         const user = await findUserByEmail(email);
         if (user && user.is_verified)
