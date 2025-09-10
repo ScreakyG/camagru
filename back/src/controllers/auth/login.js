@@ -2,7 +2,7 @@ import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
-import { basicInputChecks } from "../../validators/basic_checks.js";
+import { verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
 
 
 export async function login(request, reply) {
@@ -13,8 +13,8 @@ export async function login(request, reply) {
 
         let {username, password} = request.body;
 
-        basicInputChecks(username, "string", "username", "body");
-        basicInputChecks(password, "string", "password", "body");
+        username = verifyUsernameInput(username);
+        password = verifyPasswordInput(password);
 
         const user = await findUserByUsername(username);
         if (!user)
@@ -39,6 +39,14 @@ export async function login(request, reply) {
     }
     catch(error)
     {
+        /*
+        *   If the username or password is not respecting our rules it already means it
+        *   failed, instead of saying why we just say its not valid.
+        *   This we can still verify that inputs meets what is expected.
+        */
+        if (error.name === "ValidationError")
+            return (reply.code(401).send({success: false, errorMessage: "Username/Password not valid"}));
+
         // It means that its a error that we throw ourself.
         if (error.statusCode)
             return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}));
