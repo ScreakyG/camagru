@@ -1,7 +1,7 @@
 import { hashToken } from "../../utils/encrypt.js";
-import { findUserByResetPasswordToken } from "../../db/querys.js";
+import { findUserByResetPasswordToken } from "../../models/querys.js";
 import { verifyPasswordInput } from "../../utils/validation.js";
-import { updatePassword, deleteTokenFromDatabase } from "../../db/querys.js";
+import { updatePassword, deleteTokenFromDatabase } from "../../models/querys.js";
 import { BadRequestError } from "../../utils/errors.js";
 
 export async function resetPassword(request, reply) {

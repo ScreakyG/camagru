@@ -1,6 +1,6 @@
 import { decryptPassword } from "../../utils/encrypt.js";
-import { findUserByUsername, findUserByEmail } from "../../db/querys.js";
-import { AuthenticationError, AccountValidationError } from "../../utils/errors.js";
+import { findUserByUsername } from "../../models/querys.js";
+import { AuthenticationError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
 
 

@@ -1,8 +1,8 @@
-import { findUserByEmail, insertTokenDatabase } from "../../db/querys.js";
+import { findUserByEmail, insertTokenDatabase } from "../../models/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { BadRequestError } from "../../utils/errors.js";
 import { createValidationToken } from "../../utils/jwt.js";
-import { sendValidationMail } from "../../utils/mailService.js";
+import { sendValidationMail } from "../../services/mailService.js";
 import { setExpirationDate } from "../../utils/time.js";
 
 export async function resendValidationLink(request, reply) {

@@ -1,6 +1,6 @@
-import { createUser } from "../../db/querys.js";
+import { createUser } from "../../models/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
-import { sendValidationMail } from "../../utils/mailService.js";
+import { sendValidationMail } from "../../services/mailService.js";
 
 export async function register(request, reply)
 {

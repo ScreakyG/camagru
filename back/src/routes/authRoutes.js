@@ -1,101 +1,22 @@
-import { login } from "./auth/login.js";
-import { register } from "./auth/register.js";
-import { logout } from "./auth/logout.js";
-import { verifyAccount, verifyResetPasswordToken } from "./auth/verify.js";
-import { forgotPassword } from "./auth/forgot-password.js";
-import { resetPassword } from "./auth/reset-password.js";
-import { resendValidationLink } from "./auth/resend-validation-email.js";
+import { login } from "../controllers/auth/login.js";
+import { register } from "../controllers/auth/register.js";
+import { logout } from "../controllers/auth/logout.js";
+import { verifyAccount, verifyResetPasswordToken } from "../controllers/auth/verify.js";
+import { forgotPassword } from "../controllers/auth/forgot-password.js";
+import { resetPassword } from "../controllers/auth/reset-password.js";
+import { resendValidationLink } from "../controllers/auth/resend-validation-email.js";
 
-const registerSchema = {
-    body: {
-        type: 'object',
-        required: ["username", "email", "password"],
-        properties: {
-            username: {
-                type: "string",
-                minLength: 3,
-                maxLength: 30
-            },
-            email: {
-                type: "string",
-                format: 'email',
-                maxLength: 255
-            },
-            password: {
-                type: "string",
-                minLength: 8,
-                maxLength: 128
-            }
-        },
-        additionalProperties: false
-    }
-};
-
-const loginSchema = {
-    body: {
-        type: 'object',
-        required: ["username", "password"],
-        properties: {
-            username: {
-                type: "string",
-                maxLength: 30
-            },
-            password: {
-                type: "string",
-                maxLength: 128
-            }
-        },
-        additionalProperties: false
-    }
-};
-
-const forgotPasswordSchema = {
-    body: {
-        type: "object",
-        required: ["email"],
-        properties: {
-            email: {
-                type: "string",
-                format: "email",
-                maxLength: 255
-            }
-        }
-    }
-};
-
-const resetPasswordSchema = {
-    body: {
-        required: ["token", "password"],
-        properties: {
-            token: { type: "string", minLength: 1 },
-            password: { type: "string", minLength: 8, maxLength: 128}
-        }
-    }
-}
-
-const resendValidationSchema = {
-    body: {
-        type: "object",
-        required: ["email"],
-        properties: {
-            email: {
-                type: "string",
-                format: "email",
-                maxLength: 255
-            }
-        }
-    }
-};
+import schemas from "../validators/authSchemas.js"
 
 
 async function authRoutes(fastify, options) {
     // POST
-    fastify.post("/register", { schema: registerSchema }, register);
-    fastify.post("/login", { schema: loginSchema }, login);
+    fastify.post("/register", { schema: schemas.registerSchema }, register);
+    fastify.post("/login", { schema: schemas.loginSchema }, login);
     fastify.post("/logout", logout);
-    fastify.post("/forgot-password", { schema: forgotPasswordSchema } ,forgotPassword);
-    fastify.post("/reset-password", { schema: resetPasswordSchema }, resetPassword);
-    fastify.post("/resend-validation-link", { schema: resendValidationSchema }, resendValidationLink);
+    fastify.post("/forgot-password", { schema: schemas.forgotPasswordSchema } ,forgotPassword);
+    fastify.post("/reset-password", { schema: schemas.resetPasswordSchema }, resetPassword);
+    fastify.post("/resend-validation-link", { schema: schemas.resendValidationSchema }, resendValidationLink);
 
     // GET
     fastify.get("/verify", verifyAccount);

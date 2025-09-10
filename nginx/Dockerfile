@@ -8,7 +8,6 @@ RUN npm run build
 FROM nginx:alpine
 #Copy my nginx config file.
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
 COPY --from=builder /app /var/www/static
 
 EXPOSE 8080

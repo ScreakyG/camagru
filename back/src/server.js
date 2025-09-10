@@ -4,8 +4,8 @@ import cookie from "@fastify/cookie"
 
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
-import { initDB } from "./db/db.js"
-import { initEmailService, emailServiceStatus } from "./utils/mailService.js"
+import { initDB } from "./services/db.js"
+import { initEmailService, emailServiceStatus } from "./services/mailService.js"
 
 // Instance setup
 const fastify = Fastify({

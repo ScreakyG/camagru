@@ -1,4 +1,4 @@
-import { findUserByResetPasswordToken, findUserByValidationToken, setVerifiedUser } from "../../db/querys.js";
+import { findUserByResetPasswordToken, findUserByValidationToken, setVerifiedUser } from "../../models/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { BadRequestError } from "../../utils/errors.js";
 

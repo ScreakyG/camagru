@@ -1,6 +1,6 @@
-import { findUserByEmail, insertTokenDatabase } from "../../db/querys.js";
+import { findUserByEmail, insertTokenDatabase } from "../../models/querys.js";
 import { createValidationToken } from "../../utils/jwt.js";
-import { sendPasswordResetMail } from "../../utils/mailService.js";
+import { sendPasswordResetMail } from "../../services/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { setExpirationDate } from "../../utils/time.js";
 import { BadRequestError } from "../../utils/errors.js";

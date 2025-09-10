@@ -1,4 +1,4 @@
-import { getDB } from "./db.js";
+import { getDB } from "../services/db.js";
 import { ConflictError } from "../utils/errors.js";
 import { encryptPassword, hashToken } from "../utils/encrypt.js";
 import { createValidationToken } from "../utils/jwt.js";
