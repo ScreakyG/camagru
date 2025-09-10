@@ -6,17 +6,20 @@ import { forgotPassword } from "../controllers/auth/forgot-password.js";
 import { resetPassword } from "../controllers/auth/reset-password.js";
 import { resendValidationLink } from "../controllers/auth/resend-validation-email.js";
 
-import schemas from "../validators/authSchemas.js"
-
+import registerSchema from "../validators/auth/registerSchema.js";
+import loginSchema from "../validators/auth/loginSchema.js";
+import forgotPasswordSchema from "../validators/auth/forgotPasswordSchema.js"
+import resetPasswordSchema from "../validators/auth/resetPasswordSchema.js";
+import resendValidationSchema from "../validators/auth/resendValidationSchema.js";
 
 async function authRoutes(fastify, options) {
     // POST
-    fastify.post("/register", { schema: schemas.registerSchema }, register);
-    fastify.post("/login", { schema: schemas.loginSchema }, login);
+    fastify.post("/register", registerSchema, register);
+    fastify.post("/login", loginSchema, login);
     fastify.post("/logout", logout);
-    fastify.post("/forgot-password", { schema: schemas.forgotPasswordSchema } ,forgotPassword);
-    fastify.post("/reset-password", { schema: schemas.resetPasswordSchema }, resetPassword);
-    fastify.post("/resend-validation-link", { schema: schemas.resendValidationSchema }, resendValidationLink);
+    fastify.post("/forgot-password", forgotPasswordSchema ,forgotPassword);
+    fastify.post("/reset-password", resetPasswordSchema, resetPassword);
+    fastify.post("/resend-validation-link", resendValidationSchema , resendValidationLink);
 
     // GET
     fastify.get("/verify", verifyAccount);
