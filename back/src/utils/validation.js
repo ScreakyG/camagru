@@ -1,11 +1,8 @@
-import { typesValidator } from "../validators/types_validator.js";
-import { BadRequestError, ValidationError } from "./errors.js";
+import { basicInputChecks } from "../validators/basic_checks.js";
+import { ValidationError } from "./errors.js";
 
 export function verifyEmailInput(email) {
-    if (!email)
-        throw new BadRequestError("Missing email in body.");
-
-    typesValidator(email, "string", "email");
+    basicInputChecks(email, "string", "email", "body");
 
     // Remove les espaces autour du mail.
     const trimmedEmail = email.trim();
@@ -26,10 +23,7 @@ export function verifyEmailInput(email) {
 }
 
 export function verifyPasswordInput(password) {
-    if (!password)
-        throw new BadRequestError("Missing password in body.");
-
-    typesValidator(password, "string", "password");
+    basicInputChecks(password, "string", "password", "body");
 
     if (!password || password.length < 8)
         throw new ValidationError("Password does not meet length requirements (at least 8 characters)");
@@ -50,13 +44,10 @@ export function verifyPasswordInput(password) {
 }
 
 export function verifyUsernameInput(username) {
-    if (!username)
-        throw new BadRequestError("Missing username in body.");
-
-    typesValidator(username, "string", "username");
+    basicInputChecks(username, "string", "username", "body");
 
     const trimmedUsername = username.trim();
-    
+
     if (!username || trimmedUsername.length < 3 || trimmedUsername.length > 30)
         throw new ValidationError("Username does not meet length requirements (between 3 and 30 characters)");
 

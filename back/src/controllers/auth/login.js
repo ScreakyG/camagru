@@ -2,7 +2,6 @@ import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
-import { typesValidator } from "../../validators/types_validator.js";
 import { basicInputChecks } from "../../validators/basic_checks.js";
 
 
