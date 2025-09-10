@@ -5,11 +5,17 @@ import { updatePassword, deleteTokenFromDatabase } from "../../models/querys.js"
 import { BadRequestError } from "../../utils/errors.js";
 
 export async function resetPassword(request, reply) {
-    const { token, password } = request.body;
     try
     {
+        if (!request.body)
+            throw new BadRequestError("Missing body content in request.");
+
+        const { token, password } = request.body;
+
         if (!token || typeof token !== "string")
             throw new BadRequestError("Missing token in body.");
+
+        // TODO: Verifier le format du token ?
 
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);

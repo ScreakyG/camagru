@@ -8,9 +8,14 @@ import { setExpirationDate } from "../../utils/time.js";
 export async function resendValidationLink(request, reply) {
     try
     {
+        if (!request.body)
+            throw new BadRequestError("Missing body content in request.");
+
         const { email } = request.body;
         if (!email)
             throw new BadRequestError("No email in request body.");
+
+        // TODO: Verifier le format de l'email ?
 
         let user = await findUserByEmail(email);
         if (!user)

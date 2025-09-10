@@ -1,13 +1,24 @@
 import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
-import { AuthenticationError } from "../../utils/errors.js";
+import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
 
 
 export async function login(request, reply) {
     try
     {
+        if (!request.body)
+            throw new BadRequestError("Missing body content in request.");
+
         let {username, password} = request.body;
+
+        if (!username)
+            throw new BadRequestError("Missing username in body.");
+
+        if (!password)
+            throw new BadRequestError("Missing password in body.");
+
+        // TODO: Verifier le format de l'username et du mot de passe?
 
         const user = await findUserByUsername(username);
         if (!user)

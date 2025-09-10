@@ -1,11 +1,15 @@
 import { createUser } from "../../models/querys.js";
 import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
 import { sendValidationMail } from "../../services/mailService.js";
+import { BadRequestError } from "../../utils/errors.js";
 
 export async function register(request, reply)
 {
     try
     {
+        if (!request.body)
+            throw new BadRequestError("Missing body content in request.");
+
         let { username, email, password } = request.body;
 
         // Verifie le format et rejette en cas de caracteres innatendus.

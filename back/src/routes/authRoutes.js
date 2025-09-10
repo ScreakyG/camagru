@@ -14,12 +14,12 @@ import resendValidationSchema from "../validators/auth/resendValidationSchema.js
 
 async function authRoutes(fastify, options) {
     // POST
-    fastify.post("/register", registerSchema, register);
-    fastify.post("/login", loginSchema, login);
+    fastify.post("/register", register);
+    fastify.post("/login", login);
     fastify.post("/logout", logout);
-    fastify.post("/forgot-password", forgotPasswordSchema ,forgotPassword);
-    fastify.post("/reset-password", resetPasswordSchema, resetPassword);
-    fastify.post("/resend-validation-link", resendValidationSchema , resendValidationLink);
+    fastify.post("/forgot-password", forgotPassword);
+    fastify.post("/reset-password", resetPassword);
+    fastify.post("/resend-validation-link", resendValidationLink);
 
     // GET
     fastify.get("/verify", verifyAccount);

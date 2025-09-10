@@ -13,10 +13,15 @@ export async function forgotPassword(request, reply) {
      */
     try
     {
+        if (!request.body)
+            throw new BadRequestError("Missing body content in request.");
+
         let { email } = request.body;
 
         if (!email)
             throw new BadRequestError("Missing email in body.");
+
+        // TODO: Verifier le format de l'email ?
 
         const user = await findUserByEmail(email);
         if (user && user.is_verified)

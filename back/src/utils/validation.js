@@ -1,6 +1,8 @@
-import { ValidationError } from "./errors.js";
+import { BadRequestError, ValidationError } from "./errors.js";
 
 export function verifyEmailInput(email) {
+    if (!email)
+        throw new BadRequestError("Missing email in body.");
 
     if (typeof email !== "string")
         throw new ValidationError("Invalid email format (not a string)");
@@ -24,6 +26,8 @@ export function verifyEmailInput(email) {
 }
 
 export function verifyPasswordInput(password) {
+    if (!password)
+        throw new BadRequestError("Missing password in body.");
 
     if (typeof password !== "string")
         throw new ValidationError("Invalid password format (not a string)");
@@ -47,6 +51,9 @@ export function verifyPasswordInput(password) {
 }
 
 export function verifyUsernameInput(username) {
+    if (!username)
+        throw new BadRequestError("Missing username in body.");
+
     const trimmedUsername = username.trim();
 
     if (typeof username !== "string")
