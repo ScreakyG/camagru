@@ -10,6 +10,8 @@ export async function verifyAccount(request, reply) {
         if (!token || typeof token !== "string")
             throw new BadRequestError("Missing token.")
 
+        // TODO: Verifier le format du token ?
+
         const hashedToken = hashToken(token);
         const user = await findUserByValidationToken(hashedToken);
 
@@ -33,6 +35,8 @@ export async function verifyResetPasswordToken(request, reply) {
     {
         if (!token || typeof token !== "string")
             throw new BadRequestError("Missing token.")
+
+        // TODO: Verifier le format du token ?
 
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);
