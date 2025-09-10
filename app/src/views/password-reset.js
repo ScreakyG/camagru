@@ -98,10 +98,10 @@ function showResetForm(modal) {
                                 <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
                             </g>
                         </svg>
-                        <input name="password" type="password" placeholder="Password" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}" minlength="8"/>
+                        <input name="password" type="password" placeholder="Password" required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,128}" minlength="8"/>
                     </label>
                     <div class="validator-hint hidden">
-                        Must be more than 8 characters, including<br />
+                        Must be between 8 and 128 characters, including<br />
                         At least one number <br />
                         At least one lowercase letter <br />
                         At least one uppercase letter <br />

@@ -25,8 +25,8 @@ export function verifyEmailInput(email) {
 export function verifyPasswordInput(password) {
     basicInputChecks(password, "string", "password", "body");
 
-    if (!password || password.length < 8)
-        throw new ValidationError("Password does not meet length requirements (at least 8 characters)");
+    if (!password || password.length < 8 || password.length > 128)
+        throw new ValidationError("Password does not meet length requirements (Between 8 and 128 characters)");
 
     if (!/\d/.test(password))
         throw new ValidationError("Password must contain at least one number");
