@@ -2,6 +2,8 @@ import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
+import { typesValidator } from "../../validators/types_validator.js";
+import { basicInputChecks } from "../../validators/basic_checks.js";
 
 
 export async function login(request, reply) {
@@ -12,13 +14,8 @@ export async function login(request, reply) {
 
         let {username, password} = request.body;
 
-        if (!username)
-            throw new BadRequestError("Missing username in body.");
-
-        if (!password)
-            throw new BadRequestError("Missing password in body.");
-
-        // TODO: Verifier le format de l'username et du mot de passe?
+        basicInputChecks(username, "string", "username", "body");
+        basicInputChecks(password, "string", "password", "body");
 
         const user = await findUserByUsername(username);
         if (!user)

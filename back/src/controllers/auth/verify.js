@@ -1,16 +1,14 @@
 import { findUserByResetPasswordToken, findUserByValidationToken, setVerifiedUser } from "../../models/querys.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { BadRequestError } from "../../utils/errors.js";
+import { basicInputChecks } from "../../validators/basic_checks.js";
 
 export async function verifyAccount(request, reply) {
     const token = request.query.token;
 
     try
     {
-        if (!token || typeof token !== "string")
-            throw new BadRequestError("Missing token.")
-
-        // TODO: Verifier le format du token ?
+        basicInputChecks(token, "string", "token", "query");
 
         const hashedToken = hashToken(token);
         const user = await findUserByValidationToken(hashedToken);
@@ -33,10 +31,7 @@ export async function verifyResetPasswordToken(request, reply) {
 
     try
     {
-        if (!token || typeof token !== "string")
-            throw new BadRequestError("Missing token.")
-
-        // TODO: Verifier le format du token ?
+        basicInputChecks(token, "string", "token", "query");
 
         const hashedToken = hashToken(token);
         const user = await findUserByResetPasswordToken(hashedToken);

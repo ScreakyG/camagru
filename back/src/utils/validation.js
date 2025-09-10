@@ -1,11 +1,11 @@
+import { typesValidator } from "../validators/types_validator.js";
 import { BadRequestError, ValidationError } from "./errors.js";
 
 export function verifyEmailInput(email) {
     if (!email)
         throw new BadRequestError("Missing email in body.");
 
-    if (typeof email !== "string")
-        throw new ValidationError("Invalid email format (not a string)");
+    typesValidator(email, "string", "email");
 
     // Remove les espaces autour du mail.
     const trimmedEmail = email.trim();
@@ -29,8 +29,7 @@ export function verifyPasswordInput(password) {
     if (!password)
         throw new BadRequestError("Missing password in body.");
 
-    if (typeof password !== "string")
-        throw new ValidationError("Invalid password format (not a string)");
+    typesValidator(password, "string", "password");
 
     if (!password || password.length < 8)
         throw new ValidationError("Password does not meet length requirements (at least 8 characters)");
@@ -54,11 +53,10 @@ export function verifyUsernameInput(username) {
     if (!username)
         throw new BadRequestError("Missing username in body.");
 
+    typesValidator(username, "string", "username");
+
     const trimmedUsername = username.trim();
-
-    if (typeof username !== "string")
-        throw new ValidationError("Invalid username format (not a string)");
-
+    
     if (!username || trimmedUsername.length < 3 || trimmedUsername.length > 30)
         throw new ValidationError("Username does not meet length requirements (between 3 and 30 characters)");
 
