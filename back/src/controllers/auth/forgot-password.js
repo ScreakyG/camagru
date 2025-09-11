@@ -4,7 +4,7 @@ import { sendPasswordResetMail } from "../../services/mailService.js";
 import { hashToken } from "../../utils/encrypt.js";
 import { setExpirationDate } from "../../utils/time.js";
 import { BadRequestError } from "../../utils/errors.js";
-import { verifyEmailInput } from "../../utils/validation.js";
+import { verifyEmailInput } from "../../validators/validation_rules.js";
 
 export async function forgotPassword(request, reply) {
     try

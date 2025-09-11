@@ -1,6 +1,6 @@
 import { hashToken } from "../../utils/encrypt.js";
 import { findUserByResetPasswordToken } from "../../models/querys.js";
-import { verifyPasswordInput } from "../../utils/validation.js";
+import { verifyPasswordInput } from "../../validators/validation_rules.js";
 import { updatePassword, deleteTokenFromDatabase } from "../../models/querys.js";
 import { BadRequestError } from "../../utils/errors.js";
 import { basicInputChecks } from "../../validators/basic_checks.js";

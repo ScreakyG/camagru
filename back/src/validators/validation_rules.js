@@ -1,5 +1,5 @@
-import { basicInputChecks } from "../validators/basic_checks.js";
-import { ValidationError } from "./errors.js";
+import { basicInputChecks } from "./basic_checks.js";
+import { ValidationError } from "../utils/errors.js";
 
 export function verifyEmailInput(email) {
     basicInputChecks(email, "string", "email", "body");

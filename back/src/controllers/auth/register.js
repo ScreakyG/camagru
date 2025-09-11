@@ -1,5 +1,5 @@
 import { createUser } from "../../models/querys.js";
-import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
+import { verifyEmailInput, verifyPasswordInput, verifyUsernameInput } from "../../validators/validation_rules.js";
 import { sendValidationMail } from "../../services/mailService.js";
 import { BadRequestError } from "../../utils/errors.js";
 

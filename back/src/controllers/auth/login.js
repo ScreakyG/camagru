@@ -2,7 +2,7 @@ import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { createJWT } from "../../utils/jwt.js";
-import { verifyPasswordInput, verifyUsernameInput } from "../../utils/validation.js";
+import { verifyPasswordInput, verifyUsernameInput } from "../../validators/validation_rules.js";
 
 
 export async function login(request, reply) {

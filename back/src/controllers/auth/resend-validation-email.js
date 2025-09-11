@@ -4,7 +4,7 @@ import { BadRequestError } from "../../utils/errors.js";
 import { createValidationToken } from "../../utils/jwt.js";
 import { sendValidationMail } from "../../services/mailService.js";
 import { setExpirationDate } from "../../utils/time.js";
-import { verifyEmailInput } from "../../utils/validation.js";
+import { verifyEmailInput } from "../../validators/validation_rules.js";
 
 export async function resendValidationLink(request, reply) {
     try
