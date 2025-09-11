@@ -5,6 +5,7 @@ import { showVerifyStatus } from "./views/verify.js";
 import { showLoginModal, showRegisterModal } from "./utils.js";
 import { redirectTo } from "./navigation.js";
 import { cleanPreviousView } from "./cleaning.js";
+import { showSettingsView } from "./views/settings.js";
 
 // Catching all events and preventing default behavior of <a> to prevent page refresh.
 export function handleAnchors() {
@@ -53,6 +54,11 @@ export async function router() {
             break;
 
         case "/forgot-password":
+            if (currentUser)
+            {
+                redirectTo("/");
+                break ;
+            }
             showForgotPasswordModal();
             break;
 
@@ -66,7 +72,21 @@ export async function router() {
             break;
 
         case "/reset-password":
+            if (currentUser)
+            {
+                redirectTo("/");
+                break ;
+            }
             showPasswordResetModal();
+            break;
+
+        case "/settings":
+            if (!currentUser)
+            {
+                redirectTo("/login");
+                break;
+            }
+            showSettingsView();
             break;
 
         default:
