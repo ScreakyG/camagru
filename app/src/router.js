@@ -81,11 +81,11 @@ export async function router() {
             break;
 
         case "/settings":
-            if (!currentUser)
-            {
-                redirectTo("/login");
-                break;
-            }
+            // if (!currentUser)
+            // {
+            //     redirectTo("/login");
+            //     break;
+            // }
             showSettingsView();
             break;
 
