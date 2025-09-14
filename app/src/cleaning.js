@@ -1,5 +1,6 @@
 export function cleanPreviousView() {
     closeOpenedModals();
+    cleanAppDiv();
 }
 
 export function closeOpenedModals() {
@@ -10,4 +11,12 @@ export function closeOpenedModals() {
         openedModals[i].close();
     }
     // openedModals?.forEach(modal => modal.close());
+}
+
+export function cleanAppDiv() {
+    const appEl = document.getElementById("app");
+    const appContent = appEl.firstElementChild;
+
+    if (appContent)
+        appEl.removeChild(appContent)
 }

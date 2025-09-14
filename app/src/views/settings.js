@@ -43,4 +43,5 @@ export function showSettingsView() {
             </div>
         </div>
     `;
+    appEl.appendChild(settingsDiv);
 }
