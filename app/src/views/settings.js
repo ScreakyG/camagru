@@ -1,6 +1,6 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
-async function submitProfileForm(profileForm) {
+async function submitPasswordForm(profileForm) {
     const formValues = getFormValues(profileForm);
     console.log(formValues);
 
@@ -49,7 +49,6 @@ function handleSettingsForms() {
     updateProfileForm?.addEventListener("submit", async (event) => {
         event.preventDefault()
         // Verifier les inputs pour le front;
-        submitProfileForm(updateProfileForm);
     });
 
     updatePasswordForm?.addEventListener("submit", (event) => {
@@ -59,8 +58,7 @@ function handleSettingsForms() {
             repeatPasswordInput.classList.add("border-error");
             return;
         }
-        console.log("Submiting password change form");
-        // Subbmit le form.
+        submitPasswordForm(updatePasswordForm);
     });
 }
 
