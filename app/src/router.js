@@ -86,7 +86,7 @@ export async function router() {
             //     redirectTo("/login");
             //     break;
             // }
-            showSettingsView();
+            showSettingsView(currentUser);
             break;
 
         default:
