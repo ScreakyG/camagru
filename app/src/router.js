@@ -27,7 +27,7 @@ export function handleAnchors() {
 export async function router() {
     const currentUser = await getCurrentUser();
     const currentPath = window.location.pathname;
-    console.log("Current User = ", currentUser ? currentUser.user : null);
+    console.log("Current User = ", currentUser ? currentUser : null);
     console.log("Current Path = ", currentPath);
 
     cleanPreviousView();

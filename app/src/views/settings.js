@@ -64,8 +64,8 @@ function handleSettingsForms() {
 
 export function showSettingsView(currentUser) {
     let user = {
-        username: currentUser.user.username,
-        email: currentUser.user.email
+        username: currentUser.username,
+        email: currentUser.email
     };
 
     const appEl = document.getElementById('app');

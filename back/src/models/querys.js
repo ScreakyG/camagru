@@ -47,6 +47,14 @@ export async function insertTokenDatabase(userId, tokenHash, tokenExp, purpose)
     await db.run(query2, [tokenHash, tokenExp, purpose, userId]);
 }
 
+export async function findUserById(id) {
+    const db = await getDB();
+    const query = "SELECT * FROM users WHERE id = ?";
+    const result = await db.get(query, [id]);
+
+    return (result);
+}
+
 export async function findUserByEmail(email) {
     const db = await getDB();
     const query = "SELECT * FROM users WHERE email = ?";

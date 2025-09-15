@@ -1,4 +1,3 @@
-import { requireAuth } from "../utils/preHandlers.js";
 import { userInfos } from "../controllers/user/userInfos.js";
 import { modifyPassword } from "../controllers/user/modifyPassword.js";
 
@@ -7,7 +6,7 @@ async function userRoutes(fastify, options) {
     fastify.post("/modify-password", modifyPassword);
 
     // GET
-    fastify.get("/me", { preHandler: requireAuth }, userInfos);
+    fastify.get("/me", userInfos);
 }
 
 

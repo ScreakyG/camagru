@@ -29,11 +29,12 @@ export async function getCurrentUser() {
     try
     {
         const response = await fetch("/api/user/me");
-        const user = await response.json();
+        const resData = await response.json();
 
+        printAPIResponse("/api/user/me", resData);
         if (!response.ok)
             return (null);
-        return (user);
+        return (resData.user);
     }
     catch (error)
     {
