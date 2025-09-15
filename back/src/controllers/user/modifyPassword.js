@@ -1,6 +1,7 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyPasswordInput } from "../../validators/validation_rules.js";
 import { verifyJWT } from "../../utils/jwt.js";
+import { findUserById, updatePassword } from "../../models/querys.js";
 
 export async function modifyPassword(request, reply) {
     try
@@ -25,7 +26,13 @@ export async function modifyPassword(request, reply) {
         let { newPassword } = request.body;
         newPassword = verifyPasswordInput(newPassword);
 
-         return ({success: true, message: "Password successfully changed.", newPassword: newPassword});
+        const user = await findUserById(decodedToken.id);
+        if (!user)
+            throw new AuthenticationError(`Couldn't find a user with id: ${decodedToken.id}`);
+
+        await updatePassword(user, newPassword);
+
+         return (reply.code(200).send({success: true, message: "Password successfully changed.", newPassword: newPassword}));
     }
     catch (error)
     {
