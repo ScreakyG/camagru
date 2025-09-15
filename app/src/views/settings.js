@@ -31,7 +31,7 @@ async function submitPasswordForm(profileForm) {
 function repeatPasswordMatch(updatePasswordForm) {
     const form = getFormValues(updatePasswordForm);
 
-    if (form.password !== form.repeatPassword)
+    if (form.newPassword !== form.repeatPassword)
         return (false);
     return (true);
 }
@@ -99,7 +99,7 @@ export function showSettingsView(currentUser) {
                 <form id="update-password-form" name="update-password-form">
                     <div class="flex flex-col">
                         <label class="mb-1">New password</label>
-                        <input type="password" name="password" class="validator input input-bordered text-white ml-1" required required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,128}" minlength="8"></input>
+                        <input type="password" name="newPassword" class="validator input input-bordered text-white ml-1" required required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,128}" minlength="8"></input>
                         <div class="validator-hint hidden ml-1">
                             Must be between 8 and 128 characters, including<br />
                             At least one number <br />
