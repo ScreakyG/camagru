@@ -11,10 +11,7 @@ export function requireAuth(request, reply, done) {
         throw new AuthenticationError("Auth_token is invalid/expired");
 
     request.user = {
-        id: decodedToken.id,
-        username: decodedToken.username,
-        email: decodedToken.email
+        id: decodedToken.id
     };
-
     done();
 }

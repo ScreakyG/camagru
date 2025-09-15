@@ -4,7 +4,7 @@ import { modifyPassword } from "../controllers/user/modifyPassword.js";
 
 async function userRoutes(fastify, options) {
     // POST
-    fastify.post("/modify-password", { preHandler: requireAuth } , modifyPassword);
+    fastify.post("/modify-password", modifyPassword);
 
     // GET
     fastify.get("/me", { preHandler: requireAuth }, userInfos);

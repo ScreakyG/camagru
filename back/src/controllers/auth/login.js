@@ -27,7 +27,7 @@ export async function login(request, reply) {
         if (!user.is_verified)
             return (reply.code(403).send({success: false, errorMessage: "Account is not validated", email: user.email}))
 
-        const token = createJWT(user);
+        const token = createJWT({ id: user.id });
         reply.setCookie("auth_token", token, {
             httpOnly: true, // Non accessible avec JavaScript.
             secure: false, // Mettre en true si en HTTPS.
