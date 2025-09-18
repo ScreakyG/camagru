@@ -30,6 +30,7 @@ export async function modifyPassword(request, reply) {
         if (!user)
             throw new AuthenticationError(`Couldn't find a user with id: ${decodedToken.id}`);
 
+        // Password in hashed in this function.
         await updatePassword(user, newPassword);
 
          return (reply.code(200).send({success: true, message: "Password successfully changed.", newPassword: newPassword}));
