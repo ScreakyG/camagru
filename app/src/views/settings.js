@@ -1,6 +1,7 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
 function showError(errorElement, errorMsg) {
+    console.log(errorElement);
     if (!errorElement)
         return ;
 
@@ -59,6 +60,7 @@ function handleSettingsForms() {
     repeatPasswordInput?.addEventListener("focus", () => {
         repeatPasswordInput.classList.remove("border-error");
         repeatPasswordInput.classList.remove("border-success");
+        hideError(repeatPasswordError);
     })
 
     updateProfileForm?.addEventListener("submit", async (event) => {
@@ -67,14 +69,21 @@ function handleSettingsForms() {
     });
 
     const newPasswordError = updatePasswordForm.querySelector("div[id=new-pw-error-div]")
+    const repeatPasswordError = updatePasswordForm.querySelector("div[id=repeat-pw-error-div]")
     const newPasswordInput = updatePasswordForm.querySelector("input[name=newPassword");
-    newPasswordInput.addEventListener("input", () => hideError(newPasswordError));
+    newPasswordInput.addEventListener("input", () => {
+        hideError(newPasswordError);
+        hideError(repeatPasswordError);
+        repeatPasswordInput.classList.remove("border-error");
+        repeatPasswordInput.classList.remove("border-success");
+    });
 
     updatePasswordForm?.addEventListener("submit", (event) => {
         event.preventDefault();
         if (!repeatPasswordMatch(updatePasswordForm))
         {
             repeatPasswordInput.classList.add("border-error");
+            showError(repeatPasswordError, "Passwords does not match.");
             return;
         }
         submitPasswordForm(updatePasswordForm);
@@ -126,13 +135,13 @@ export function showSettingsView(currentUser) {
                             At least one uppercase letter <br />
                             At least one special character !@#$%^&*
                         </div>
-                        <div id="new-pw-error-div" class="my-4 text-error hidden">
-                        </div>
+                        <div id="new-pw-error-div" class="my-4 text-error hidden"></div>
                     </div>
                     <div class="flex flex-col my-5">
                         <label class="mb-1">Repeat new password</label>
                         <input type="password" name="repeatPassword" class="input text-white ml-1" required></input>
                     </div>
+                    <div id="repeat-pw-error-div" class="my-4 text-error hidden"></div>
                     <button type="submit" class="btn btn-primary ml-1">Save</button>
                 </form>
             </div>
