@@ -1,5 +1,18 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
+function showError(errorElement, errorMsg) {
+    if (!errorElement)
+        return ;
+
+    errorElement.textContent = errorMsg;
+    errorElement.classList.remove("hidden");
+}
+
+function hideError(errorElement) {
+    errorElement.textContent = "";
+    errorElement.classList.add("hidden");
+}
+
 async function submitPasswordForm(profileForm) {
     const formValues = getFormValues(profileForm);
     console.log(formValues);
@@ -17,6 +30,8 @@ async function submitPasswordForm(profileForm) {
         if (!response.ok)
         {
             printAPIResponse("/api/user/modify-password", resData);
+            const errorMsgEl = document.getElementById("new-pw-error-div");
+            showError(errorMsgEl, resData.errorMsg);
             return;
         }
         printAPIResponse("/api/user/modify-password", resData);
@@ -51,6 +66,10 @@ function handleSettingsForms() {
         // Verifier les inputs pour le front;
     });
 
+    const newPasswordError = updatePasswordForm.querySelector("div[id=new-pw-error-div]")
+    const newPasswordInput = updatePasswordForm.querySelector("input[name=newPassword");
+    newPasswordInput.addEventListener("input", () => hideError(newPasswordError));
+
     updatePasswordForm?.addEventListener("submit", (event) => {
         event.preventDefault();
         if (!repeatPasswordMatch(updatePasswordForm))
@@ -64,8 +83,8 @@ function handleSettingsForms() {
 
 export function showSettingsView(currentUser) {
     let user = {
-        username: currentUser.username,
-        email: currentUser.email
+        username : currentUser ? currentUser.username : null,
+        email: currentUser ? currentUser.email : null
     };
 
     const appEl = document.getElementById('app');
@@ -106,6 +125,8 @@ export function showSettingsView(currentUser) {
                             At least one lowercase letter <br />
                             At least one uppercase letter <br />
                             At least one special character !@#$%^&*
+                        </div>
+                        <div id="new-pw-error-div" class="my-4 text-error hidden">
                         </div>
                     </div>
                     <div class="flex flex-col my-5">
