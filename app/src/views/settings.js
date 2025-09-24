@@ -147,7 +147,7 @@ export function showSettingsView(currentUser) {
                 <form id="update-profile-form" name="update-profile-form">
                     <div class="flex flex-col">
                         <label class="mb-1">Username</label>
-                        <input type="text" name="username" class="input input-bordered text-white ml-1" placeholder=${user.username} value=${user.username} pattern="[A-Za-z][A-Za-z0-9\-]*"minlength="3" maxlength="30" required></input>
+                        <input type="text" name="username" class="input input-bordered text-white ml-1" placeholder=${user.username} value=${user.username} pattern="^(?=.*[A-Za-z])(?:[A-Za-z0-9]|-)+$" minlength="3" maxlength="30" required></input>
                     </div>
                     <div class="flex flex-col my-5">
                         <label class="mb-1">Email address</label>
