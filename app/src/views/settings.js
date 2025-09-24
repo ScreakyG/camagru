@@ -38,7 +38,7 @@ async function submitProfileForm(profileForm) {
     }
     catch (error)
     {
-        console.error("Error while fetching API /api/user/modify-user-infos");
+        console.error("Error while fetching API /api/user/modify-user-infos : ", error);
     }
 }
 

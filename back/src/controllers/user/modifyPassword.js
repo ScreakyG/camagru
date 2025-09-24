@@ -6,10 +6,6 @@ import { findUserById, updatePassword } from "../../models/querys.js";
 export async function modifyPassword(request, reply) {
     try
     {
-        /**
-         * TODO:
-         *  - Update le password dans la DB.
-         */
         const auth_token = request.cookies.auth_token;
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
@@ -17,8 +13,6 @@ export async function modifyPassword(request, reply) {
         const decodedToken = verifyJWT(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
-
-        console.log(decodedToken);
 
         if (!request.body)
             throw new BadRequestError("Missing body in request.");
@@ -30,7 +24,7 @@ export async function modifyPassword(request, reply) {
         if (!user)
             throw new AuthenticationError(`Couldn't find a user with id: ${decodedToken.id}`);
 
-        // Password in hashed in this function.
+        // Password is hashed in this function.
         await updatePassword(user, newPassword);
 
          return (reply.code(200).send({success: true, message: "Password successfully changed.", newPassword: newPassword}));
