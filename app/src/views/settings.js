@@ -14,6 +14,34 @@ function hideError(errorElement) {
     errorElement.classList.add("hidden");
 }
 
+async function submitProfileForm(profileForm) {
+    const formValues = getFormValues(profileForm);
+    console.log(formValues);
+
+    try
+    {
+        const response = await fetch("/api/user/modify-user-infos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formValues)
+        });
+        const restData = await response.json();
+
+        if (!response.ok)
+        {
+            printAPIResponse("/api/user/modify-user-infos", restData);
+            return;
+        }
+        printAPIResponse("/api/user/modify-user-infos", restData);
+    }
+    catch (error)
+    {
+        console.error("Error while fetching API /api/user/modify-user-infos");
+    }
+}
+
 async function submitPasswordForm(profileForm) {
     const formValues = getFormValues(profileForm);
     console.log(formValues);
@@ -52,25 +80,20 @@ function repeatPasswordMatch(updatePasswordForm) {
     return (true);
 }
 
-function handleSettingsForms() {
-    const updateProfileForm = document.getElementById("update-profile-form");
+function handleChangePasswordForm() {
     const updatePasswordForm = document.getElementById("update-password-form");
-
     const repeatPasswordInput = document.querySelector("input[name=repeatPassword]");
+
     repeatPasswordInput?.addEventListener("focus", () => {
         repeatPasswordInput.classList.remove("border-error");
         repeatPasswordInput.classList.remove("border-success");
         hideError(repeatPasswordError);
     })
 
-    updateProfileForm?.addEventListener("submit", async (event) => {
-        event.preventDefault()
-        // Verifier les inputs pour le front;
-    });
-
     const newPasswordError = updatePasswordForm.querySelector("div[id=new-pw-error-div]")
     const repeatPasswordError = updatePasswordForm.querySelector("div[id=repeat-pw-error-div]")
     const newPasswordInput = updatePasswordForm.querySelector("input[name=newPassword");
+
     newPasswordInput.addEventListener("input", () => {
         hideError(newPasswordError);
         hideError(repeatPasswordError);
@@ -88,6 +111,20 @@ function handleSettingsForms() {
         }
         submitPasswordForm(updatePasswordForm);
     });
+}
+
+function handleChangeProfileForm() {
+    const updateProfileForm = document.getElementById("update-profile-form");
+
+    updateProfileForm?.addEventListener("submit", async (event) => {
+        event.preventDefault()
+        submitProfileForm(updateProfileForm);
+    });
+}
+
+function handleSettingsForms() {
+    handleChangePasswordForm();
+    handleChangeProfileForm();
 }
 
 export function showSettingsView(currentUser) {
@@ -110,11 +147,11 @@ export function showSettingsView(currentUser) {
                 <form id="update-profile-form" name="update-profile-form">
                     <div class="flex flex-col">
                         <label class="mb-1">Username</label>
-                        <input type="text" name="username" class="input input-bordered text-white ml-1"placeholder=${user.username} value=${user.username}></input>
+                        <input type="text" name="username" class="input input-bordered text-white ml-1" placeholder=${user.username} value=${user.username} pattern="[A-Za-z][A-Za-z0-9\-]*"minlength="3" maxlength="30" required></input>
                     </div>
                     <div class="flex flex-col my-5">
                         <label class="mb-1">Email address</label>
-                        <input type="email" name="email" class="input text-white ml-1" placeholder=${user.email} value=${user.email}></input>
+                        <input type="email" name="email" class="input text-white ml-1" placeholder=${user.email} value=${user.email} required></input>
                     </div>
                     <button type="submit" class="btn btn-primary ml-1">Save</button>
                 </form>
