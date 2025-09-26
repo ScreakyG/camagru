@@ -33,6 +33,13 @@ async function tryUpdateUsername(user, newUsername) {
 export async function modifyUserInfos(request, reply) {
     try
     {
+        /**
+         * TODO:
+         *  - Faut il renvoyer un lien d'activation de mail si on change ?
+         *  - Filtrer les erreurs dans les tryUpdate
+         *  - Renvoyer les champs qui on ete changes.
+         */
+
         const auth_token = request.cookies.auth_token;
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
