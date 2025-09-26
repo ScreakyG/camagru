@@ -111,3 +111,17 @@ export async function deleteTokenFromDatabase(tokenHash)
     const query = "DELETE FROM tokens WHERE token_hash = ?";
     const result = db.run(query, [tokenHash]);
 }
+
+export async function updateEmail(user, newEmail) {
+    const db = await getDB();
+
+    const query = "UPDATE users SET email=? WHERE id=?";
+    const result = await db.run(query, [newEmail, user.id]);
+}
+
+export async function updateUsername(user, newUsername) {
+    const db = await getDB();
+
+    const query = "UPDATE users SET username=? WHERE id=?";
+    const result = await db.run(query, [newUsername, user.id]);
+}
