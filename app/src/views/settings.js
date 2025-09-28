@@ -1,6 +1,18 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
-function showError(errorElement, errorMsg) {
+function showError(field, errorMsg) {
+    if (field.inputElement)
+        field.inputElement.classList.add("border-error");
+    showErrorDiv(field.errorDivElement, errorMsg);
+}
+
+function hideError(field) {
+    if (field.inputElement)
+        field.inputElement.classList.remove("border-error");
+    hideErrorDiv(field.errorDivElement);
+}
+
+function showErrorDiv(errorElement, errorMsg) {
     console.log(errorElement);
     if (!errorElement)
         return ;
@@ -9,7 +21,7 @@ function showError(errorElement, errorMsg) {
     errorElement.classList.remove("hidden");
 }
 
-function hideError(errorElement) {
+function hideErrorDiv(errorElement) {
     errorElement.textContent = "";
     errorElement.classList.add("hidden");
 }
@@ -38,13 +50,15 @@ async function submitProfileForm(profileForm) {
                 resData.conflict_errors.forEach(element => {
                     if (element.field === "username")
                     {
-                        const newUsernameEl = document.getElementById("new-username-error-div");
-                        showError(newUsernameEl, element.message);
+                        const newUsernameError = document.getElementById("new-username-error-div");
+                        const newUsernameInput = profileForm.querySelector("input[name=username]");
+                        showError({inputElement: newUsernameInput, errorDivElement: newUsernameError}, element.message);
                     }
                     else if (element.field === "email")
                     {
-                        const newEmailEl = document.getElementById("new-email-error-div");
-                        showError(newEmailEl, element.message);
+                        const newEmailError = document.getElementById("new-email-error-div");
+                        const newEmailInput = profileForm.querySelector("input[name=email]");
+                        showError({inputElement: newEmailInput, errorDivElement: newEmailError}, element.message);
                     }
                 });
             }
@@ -101,9 +115,8 @@ function handleChangePasswordForm() {
     const repeatPasswordInput = document.querySelector("input[name=repeatPassword]");
 
     repeatPasswordInput?.addEventListener("focus", () => {
-        repeatPasswordInput.classList.remove("border-error");
         repeatPasswordInput.classList.remove("border-success");
-        hideError(repeatPasswordError);
+        hideError({inputElement: repeatPasswordInput, errorDivElement: repeatPasswordError});
     })
 
     const newPasswordError = updatePasswordForm.querySelector("div[id=new-pw-error-div]")
@@ -111,9 +124,8 @@ function handleChangePasswordForm() {
     const newPasswordInput = updatePasswordForm.querySelector("input[name=newPassword");
 
     newPasswordInput.addEventListener("input", () => {
-        hideError(newPasswordError);
-        hideError(repeatPasswordError);
-        repeatPasswordInput.classList.remove("border-error");
+        hideError({inputElement: null, errorDivElement: newPasswordError});
+        hideError({inputElement: repeatPasswordInput, errorDivElement: repeatPasswordError});
         repeatPasswordInput.classList.remove("border-success");
     });
 
@@ -121,8 +133,7 @@ function handleChangePasswordForm() {
         event.preventDefault();
         if (!repeatPasswordMatch(updatePasswordForm))
         {
-            repeatPasswordInput.classList.add("border-error");
-            showError(repeatPasswordError, "Passwords does not match.");
+            showError({inputElement: repeatPasswordInput, errorDivElement: repeatPasswordError}, "Passwords does not match.")
             return;
         }
         submitPasswordForm(updatePasswordForm);
@@ -139,11 +150,11 @@ function handleChangeProfileForm() {
 
     const newUsernameInput = updateProfileForm.querySelector("input[name=username]");
     const newUsernameError = document.getElementById("new-username-error-div");
-    newUsernameInput.addEventListener("input", () => hideError(newUsernameError));
+    newUsernameInput.addEventListener("input", () => hideError({inputElement: newUsernameInput, errorDivElement: newUsernameError}));
 
     const newEmailInput = updateProfileForm.querySelector("input[name=email]")
     const newEmailError = document.getElementById("new-email-error-div")
-    newEmailInput.addEventListener("input", () => hideError(newEmailError));
+    newEmailInput.addEventListener("input", () => hideError({inputElement: newEmailInput, errorDivElement: newEmailError}));
 }
 
 function handleSettingsForms() {
