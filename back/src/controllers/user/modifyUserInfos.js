@@ -13,7 +13,9 @@ async function tryUpdateEmail(user, newEmail) {
     catch (error)
     {
         console.log(error);
-        return ({field: "email", message: "Email is already in use."});
+        if (error.code === "SQLITE_CONSTRAINT")
+            return ({field: "email", message: "Email is already in use."});
+        return ({field: "email", message: error.code});
     }
 }
 
@@ -25,7 +27,9 @@ async function tryUpdateUsername(user, newUsername) {
     catch (error)
     {
         console.log(error);
-        return ({field: "username", message: "Username is already in use."});
+        if (error.code === "SQLITE_CONSTRAINT")
+            return ({field: "username", message: "Username is already in use."});
+        return ({field: "username", message: error.code});
     }
 }
 
@@ -34,9 +38,8 @@ export async function modifyUserInfos(request, reply) {
     try
     {
         /**
-         * TODO:
+         * AMELIORATIONS POSSIBLES:
          *  - Faut il renvoyer un lien d'activation de mail si on change ?
-         *  - Filtrer les erreurs dans les tryUpdate
          *  - Renvoyer les champs qui on ete changes.
          */
 
@@ -58,10 +61,6 @@ export async function modifyUserInfos(request, reply) {
         const user = await findUserById(decodedToken.id);
         if (!user)
            throw new AuthenticationError("Auth_token is invalid/expired.");
-
-        console.log("user : ", user);
-        console.log("new username : " + newUsername);
-        console.log("new email : " + newEmail);
 
         if (newEmail === user.email && newUsername === user.username)
             return (reply.code(204)); // Rien ne se passe donc on renvoi une reponse vide.
