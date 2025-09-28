@@ -27,14 +27,30 @@ async function submitProfileForm(profileForm) {
             },
             body: JSON.stringify(formValues)
         });
-        const restData = await response.json();
+        const resData = await response.json();
 
         if (!response.ok)
         {
-            printAPIResponse("/api/user/modify-user-infos", restData);
+            printAPIResponse("/api/user/modify-user-infos", resData);
+            // Si j'ai une erreur de conflit j'affiche quel champ pose probleme et pourquoi.
+            if (response.status === 409)
+            {
+                resData.conflict_errors.forEach(element => {
+                    if (element.field === "username")
+                    {
+                        const newUsernameEl = document.getElementById("new-username-error-div");
+                        showError(newUsernameEl, element.message);
+                    }
+                    else if (element.field === "email")
+                    {
+                        const newEmailEl = document.getElementById("new-email-error-div");
+                        showError(newEmailEl, element.message);
+                    }
+                });
+            }
             return;
         }
-        printAPIResponse("/api/user/modify-user-infos", restData);
+        printAPIResponse("/api/user/modify-user-infos", resData);
     }
     catch (error)
     {
@@ -120,6 +136,14 @@ function handleChangeProfileForm() {
         event.preventDefault()
         submitProfileForm(updateProfileForm);
     });
+
+    const newUsernameInput = updateProfileForm.querySelector("input[name=username]");
+    const newUsernameError = document.getElementById("new-username-error-div");
+    newUsernameInput.addEventListener("input", () => hideError(newUsernameError));
+
+    const newEmailInput = updateProfileForm.querySelector("input[name=email]")
+    const newEmailError = document.getElementById("new-email-error-div")
+    newEmailInput.addEventListener("input", () => hideError(newEmailError));
 }
 
 function handleSettingsForms() {
@@ -153,6 +177,7 @@ export function showSettingsView(currentUser) {
                             containing only letters, numbers or dash.
                         </p>
                     </div>
+                    <div id="new-username-error-div" class="my-4 text-error hidden"></div>
                     <div class="flex flex-col my-5">
                         <label class="mb-1">Email address</label>
                         <input type="email" name="email" class="validator input text-white ml-1" placeholder=${user.email} value=${user.email} required></input>
@@ -160,6 +185,7 @@ export function showSettingsView(currentUser) {
                             Email is not valid.
                         </p>
                     </div>
+                    <div id="new-email-error-div" class="my-4 text-error hidden"></div>
                     <button type="submit" class="btn btn-primary ml-1">Save</button>
                 </form>
             </div>
