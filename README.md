@@ -23,6 +23,7 @@ Handle profile changements in user settings and make endpoitn.
 At the moment users can :
 - Create a account with mail verification ✅
 - Request password if forgot ✅
+- Edit their username / email in account settings page ✅
 
 - Takes pictures ❌
 - Edit pictures ❌
