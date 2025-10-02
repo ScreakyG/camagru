@@ -23,11 +23,11 @@ function updateImageDisplay(inputElement) {
     const previewDiv = document.getElementById("upload_preview");
 
     // Nettoyage de la div a chaque changements dans l'input.
-    // while (previewDiv.firstChild)
-    // {
-    //     console.log(previewDiv.firstChild)
-    //     previewDiv.remove(previewDiv.firstChild);
-    // }
+    while (previewDiv.firstChild)
+    {
+        console.log(previewDiv.firstChild)
+        previewDiv.removeChild(previewDiv.firstChild);
+    }
 
     const inputFiles = inputElement.files;
     console.log(inputFiles);
