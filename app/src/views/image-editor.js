@@ -14,11 +14,11 @@ function inputFileDebugger(inputElement) {
 function updateImageDisplay(inputElement) {
  /*
   * TODO:
-  *     1/ Nettoyer le contenu de la div preview.
-  *     2/ Recuperer le file dans input.
-  *     3/ Verifier que il y'a un bien un fichier.
-  *     4/ Verifier a nouveau que le format est adequate a l'attribit "accept" de l'input.
-  *     5/ Afficher l'image ou un message d'erreur si invalide.
+  *     1/ Verifier que il y'a un bien un fichier.
+  *     2/ Verifier a nouveau que le format est adequate a l'attribit "accept" de l'input.
+  *     3/ Convertir les bytes en une valeur plus lisible
+  *     4/ Afficher l'image ou un message d'erreur si invalide.
+  *     5/ Change the ui of the display
   */
     const previewDiv = document.getElementById("upload_preview");
 
@@ -67,8 +67,6 @@ function updateImageDisplay(inputElement) {
 }
 
 export function showImageEditorView() {
-    console.log("This is the editor view");
-
     const app = document.getElementById("app");
     console.log(app);
 
