@@ -1,3 +1,9 @@
+// Lister ici les types d'images que l'on accepte.
+const fileTypes = [
+    "image/jpeg",
+    "image/png",
+];
+
 function inputFileDebugger(inputElement) {
     console.log(inputElement);
 
@@ -11,23 +17,26 @@ function inputFileDebugger(inputElement) {
     });
 }
 
+function isValidInputFile(file) {
+    if (file && fileTypes.includes(file.type))
+        return (true);
+    return (false);
+}
+
+function returnFileSize(number) {
+    if (number < 1e3)
+        return `${number} bytes`;
+    else if (number >= 1e3 && number < 1e6)
+        return `${(number / 1e3).toFixed(1)} KB`;
+    return `${(number / 1e6).toFixed(1)} MB`;
+}
+
 function updateImageDisplay(inputElement) {
- /*
-  * TODO:
-  *     1/ Verifier que il y'a un bien un fichier.
-  *     2/ Verifier a nouveau que le format est adequate a l'attribit "accept" de l'input.
-  *     3/ Convertir les bytes en une valeur plus lisible
-  *     4/ Afficher l'image ou un message d'erreur si invalide.
-  *     5/ Change the ui of the display
-  */
     const previewDiv = document.getElementById("upload_preview");
 
     // Nettoyage de la div a chaque changements dans l'input.
     while (previewDiv.firstChild)
-    {
-        console.log(previewDiv.firstChild)
         previewDiv.removeChild(previewDiv.firstChild);
-    }
 
     const inputFiles = inputElement.files;
     console.log(inputFiles);
@@ -46,23 +55,23 @@ function updateImageDisplay(inputElement) {
         for (const file of inputFiles)
         {
             const listItem = document.createElement("li");
-            listItem.className = "mt-2 p-4 flex justify-between items-center border rounded-md";
-
             const para = document.createElement("p");
+            listItem.className = "mt-2 p-4 flex justify-between items-center border rounded-md";
+            if (isValidInputFile(file))
+            {
+                para.textContent = `File name ${file.name}, file size  ${returnFileSize(file.size)}.`;
+                const image = document.createElement("img");
+                image.src = URL.createObjectURL(file);
+                image.alt = image.title = file.name;
+                image.className = "size-16"
 
-            // Verifier le type du fichier (png, jpg..);
-            para.textContent = `File name ${file.name}, file size ${file.size} bytes.`;
-
-            const image = document.createElement("img");
-            image.src = URL.createObjectURL(file);
-            image.alt = image.title = file.name;
-            image.className = "size-16"
-
+                listItem.appendChild(image);
+            }
+            else
+                para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
             listItem.appendChild(para);
-            listItem.appendChild(image);
             list.appendChild(listItem);
         }
-
     }
 }
 
