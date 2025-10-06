@@ -23,7 +23,7 @@ Camagru is a instagram like web app that allow users to take live pictures with 
 At the moment users can :
 - Create a account with mail verification ✅
 - Request new password link if forgot ✅
-- Edit their email / username / password
+- Edit their email / username / password ✅
 
 - Takes pictures ❌
 - Edit pictures ❌
