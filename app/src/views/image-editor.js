@@ -81,16 +81,25 @@ function testFillPreview(inputFile) {
     const image = document.createElement("img");
     image.src = URL.createObjectURL(file);
     image.alt = file.name;
-    image.className = "absolute inset-0 w-full h-full object-cover pointer-events-none";
+    image.className = "absolute inset-0 size-20 object-cover pointer-events-none rounded-xl";
 
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "absolute top-2 left-2 btn btn-error";
     cancelBtn.textContent = "Cancel";
     cancelBtn.type = "button";
 
-    const prewiewDiv = document.getElementById("preview");
-    prewiewDiv.appendChild(image);
-    prewiewDiv.appendChild(cancelBtn);
+    const testImg = document.createElement("img");
+    const imgUrl = URL.createObjectURL(file);
+    console.log(imgUrl);
+    testImg.src = URL.createObjectURL(file);
+    testImg.alt = file.name;
+    testImg.className = "size-20";
+
+    const previewDiv = document.getElementById("preview");
+    previewDiv.classList.add(`bg-[url(${imgUrl})]`)
+    // previewDiv.appendChild(image);
+    // previewDiv.appendChild(testImg);
+    previewDiv.appendChild(cancelBtn);
 }
 
 export function showImageEditorView() {
@@ -122,7 +131,11 @@ export function showImageEditorView() {
                 <label for="image_upload_input" class="btn max-w-48">Upload a image</label>
                 <input class="opacity-0 hidden" type="file" id="" name="image_upload" accept="image/*" required></input>
             </div>
-
+            <div class="flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-3" id="overlays">
+                <img class="border-2 rounded-xl p-2 border-zinc-400" alt="Smile" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjRkZEQjAwIiBzdHJva2U9IiNGRkM1MDAiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMzMzMzMzIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDAiIHI9IjUiIGZpbGw9IiMzMzMzMzMiLz4KPHBhdGggZD0iTTMwIDY1IFE1MCA3NSA3MCA2NSIgc3Ryb2tlPSIjMzMzMzMzIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4="></img>
+                <img class="border-2 rounded-xl p-2 border-zinc-400" alt="Smile" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjRkZEQjAwIiBzdHJva2U9IiNGRkM1MDAiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMzMzMzMzIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDAiIHI9IjUiIGZpbGw9IiMzMzMzMzMiLz4KPHBhdGggZD0iTTMwIDY1IFE1MCA3NSA3MCA2NSIgc3Ryb2tlPSIjMzMzMzMzIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4="></img>
+                <img class="border-2 rounded-xl p-2 border-zinc-400" alt="Smile" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjRkZEQjAwIiBzdHJva2U9IiNGRkM1MDAiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMzMzMzMzIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDAiIHI9IjUiIGZpbGw9IiMzMzMzMzMiLz4KPHBhdGggZD0iTTMwIDY1IFE1MCA3NSA3MCA2NSIgc3Ryb2tlPSIjMzMzMzMzIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4="></img>
+            <div>
         </div>
     `
 
