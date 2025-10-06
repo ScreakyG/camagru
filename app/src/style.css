@@ -992,22 +992,31 @@
     width: var(--size);
     height: var(--size);
   }
-  .size-1\/2 {
-    width: calc(1/2 * 100%);
-    height: calc(1/2 * 100%);
-  }
   .size-16 {
     width: calc(var(--spacing) * 16);
     height: calc(var(--spacing) * 16);
   }
+  .size-52 {
+    width: calc(var(--spacing) * 52);
+    height: calc(var(--spacing) * 52);
+  }
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .h-28 {
-    height: calc(var(--spacing) * 28);
-  }
   .h-\[1em\] {
     height: 1em;
+  }
+  .h-\[40vh\] {
+    height: 40vh;
+  }
+  .h-full {
+    height: 100%;
+  }
+  .max-h-full {
+    max-height: 100%;
+  }
+  .min-h-0 {
+    min-height: calc(var(--spacing) * 0);
   }
   .min-h-50 {
     min-height: calc(var(--spacing) * 50);
@@ -1026,6 +1035,12 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-full {
+    max-width: 100%;
+  }
+  .min-w-0 {
+    min-width: calc(var(--spacing) * 0);
   }
   .flex-1 {
     flex: 1;
@@ -1079,6 +1094,12 @@
   .gap-5 {
     gap: calc(var(--spacing) * 5);
   }
+  .overflow-auto {
+    overflow: auto;
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
   .menu-sm {
     :where(li:not(.menu-title) > *:not(ul, details, .menu-title)), :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
       border-radius: var(--radius-field);
@@ -1110,10 +1131,6 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .border-2 {
-    border-style: var(--tw-border-style);
-    border-width: 2px;
-  }
   .border-error {
     border-color: var(--color-error);
   }
@@ -1134,6 +1151,9 @@
   }
   .fill-current {
     fill: currentcolor;
+  }
+  .object-contain {
+    object-fit: contain;
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
