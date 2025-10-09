@@ -1704,6 +1704,9 @@
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
+  .min-h-30 {
+    min-height: calc(var(--spacing) * 30);
+  }
   .min-h-50 {
     min-height: calc(var(--spacing) * 50);
   }
@@ -1841,6 +1844,13 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
+  .border-black {
+    border-color: var(--color-black);
   }
   .border-error {
     border-color: var(--color-error);
@@ -2075,6 +2085,31 @@
   .btn-success {
     --btn-color: var(--color-success);
     --btn-fg: var(--color-success-content);
+  }
+  .peer-checked\:border-black {
+    &:is(:where(.peer):checked ~ *) {
+      border-color: var(--color-black);
+    }
+  }
+  .peer-checked\/overlay1\:border-black {
+    &:is(:where(.peer\/overlay1):checked ~ *) {
+      border-color: var(--color-black);
+    }
+  }
+  .peer-checked\/overlay2\:border-black {
+    &:is(:where(.peer\/overlay2):checked ~ *) {
+      border-color: var(--color-black);
+    }
+  }
+  .peer-checked\/overlay3\:border-black {
+    &:is(:where(.peer\/overlay3):checked ~ *) {
+      border-color: var(--color-black);
+    }
+  }
+  .checked\:border-black {
+    &:checked {
+      border-color: var(--color-black);
+    }
   }
   .sm\:max-w-5xl {
     @media (width >= 40rem) {
