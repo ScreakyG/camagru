@@ -84,6 +84,16 @@ function previewTest(inputElement) {
     img.src = URL.createObjectURL(file);
 }
 
+function handleSubmitButtonInteraction(viewDiv, form) {
+    const submitBtn = viewDiv.querySelector("button[type=submit]");
+    const formValues = getFormValues(form);
+
+    if (formValues.image_upload && isValidInputFile(formValues.image_upload) && formValues.overlay)
+        submitBtn.removeAttribute("disabled")
+    else
+        submitBtn.setAttribute("disabled", "");
+}
+
 export function showImageEditorView() {
     const app = document.getElementById("app");
     console.log(app);
@@ -116,7 +126,7 @@ export function showImageEditorView() {
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
                         <p class="text-center">Select a Overlay</p>
-                        <input id="smile1" type="radio" name="overlay" value="smile1" class="peer/overlay1 hidden"checked></input>
+                        <input id="smile1" type="radio" name="overlay" value="smile1" class="peer/overlay1 hidden" required></input>
                         <label for="smile1" class="peer-checked/overlay1:border-black flex items-center justify-center aspect-square border rounded-xl p-2 border-zinc-400">
                             <img class="" alt="Smile" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjRkZEQjAwIiBzdHJva2U9IiNGRkM1MDAiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMzMzMzMzIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDAiIHI9IjUiIGZpbGw9IiMzMzMzMzMiLz4KPHBhdGggZD0iTTMwIDY1IFE1MCA3NSA3MCA2NSIgc3Ryb2tlPSIjMzMzMzMzIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4="></img>
                         </label>
@@ -137,7 +147,7 @@ export function showImageEditorView() {
                         <img class="aspect-square rounded-xl" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg==" alt="Image_preview"></img>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success mx-auto" disable>Publish</button>
+                <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
         </div>
     `
@@ -148,6 +158,8 @@ export function showImageEditorView() {
     inputElement.addEventListener("change", () => previewTest(inputElement));
 
     const editorForm = imageEditorDiv.querySelector("form");
+
+    editorForm.addEventListener("change", () => handleSubmitButtonInteraction(imageEditorDiv, editorForm));
     editorForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const data = getFormValues(editorForm);
