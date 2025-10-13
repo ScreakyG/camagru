@@ -88,6 +88,27 @@ function previewTest(inputElement) {
         img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg==";
 }
 
+async function webcamTests(viewDiv) {
+    console.log("Clicked webcam btn");
+    try
+    {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        for (let i = 0; i < devices.length; i++)
+            console.log("Available devices : ", devices[i]);
+
+        const mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
+        console.log(mediaStream);
+
+        const video = viewDiv.querySelector("video");
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = () => {video.play()};
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
+}
+
 function handleSubmitButtonInteraction(viewDiv, form) {
     const submitBtn = viewDiv.querySelector("button[type=submit]");
     const formValues = getFormValues(form);
@@ -114,7 +135,7 @@ export function showImageEditorView() {
                             <div>
                                 <label for="image_upload_input" class="btn">Upload a image (PNG, JPG)</label>
                                 <input class="opacity-0 sr-only" type="file" id="image_upload_input" name="image_upload" accept="image/*" required></input>
-                                <button type="button" class="btn">Use webcam</button>
+                                <button id="request_webcam" type="button" class="btn">Use webcam</button>
                             </div>
                         </div>
                         <div id="upload_preview">
@@ -152,6 +173,10 @@ export function showImageEditorView() {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
+                <div id="camera_tests" class="border-2">
+                    <video id="video">Video stream not available.</video>
+                    <button id="start-button" class="btn">Capture</button>
+                </div>
             </form>
         </div>
     `
@@ -160,6 +185,9 @@ export function showImageEditorView() {
     inputFileDebugger(inputElement);
     inputElement.addEventListener("change", () => updateImageDisplay(inputElement));
     inputElement.addEventListener("change", () => previewTest(inputElement));
+
+    const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
+    useWebcamBtn.addEventListener("click", () => webcamTests(imageEditorDiv));
 
     const editorForm = imageEditorDiv.querySelector("form");
 
