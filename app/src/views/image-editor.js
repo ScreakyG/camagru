@@ -6,6 +6,7 @@ const fileTypes = [
     "image/png",
 ];
 
+// Valeurs a revoir
 let streaming = false;
 let height = 0;
 let width = 1080;
@@ -108,8 +109,13 @@ function previewTest(inputElement) {
  * Recupere le stream du media et l'affiche dans l'element video.
  */
 async function webcamTests(viewDiv) {
+    // Clean l'element input au cas ou l'user avant selectionner un fichier a upload avant de clicker sur la camera.
+    const inputElement = document.getElementById("file-viewer").querySelector("input[type=file]");
+    inputElement.value = "";
+    inputElement.dispatchEvent(new Event("change", { bubbles: true }));
+
     const img = document.getElementById("preview-img").querySelector("img");
-    // TODO : Vider le input file au cas ou il y avait deja un fichier ?
+
     try
     {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -149,6 +155,10 @@ function hideVideoStream() {
     img.classList.remove("hidden");
 }
 
+/**
+ * Converti un canvas en un fichier utilisable dans un input.
+ * Declenche un event change dans l'input pour que il soit gerer dans mon autre fonction d'affichage.
+ */
 async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92, name = "capture.jpg" } = {}) {
     const inputElement = document.getElementById("file-viewer").querySelector("input[type=file]");
 
