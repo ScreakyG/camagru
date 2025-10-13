@@ -8,7 +8,7 @@ const fileTypes = [
 
 let streaming = false;
 let height = 0;
-let width = 720;
+let width = 1080;
 
 function inputFileDebugger(inputElement) {
     console.log(inputElement);
@@ -103,6 +103,7 @@ function previewTest(inputElement) {
 }
 
 async function webcamTests(viewDiv) {
+    const img = document.getElementById("preview-img").querySelector("img");
     console.log("Clicked webcam btn");
     try
     {
@@ -116,6 +117,10 @@ async function webcamTests(viewDiv) {
         const video = viewDiv.querySelector("video");
         video.srcObject = mediaStream;
         video.play();
+
+        //Afficher la video a la place de l'image
+        video.classList.remove("hidden");
+        img.classList.add("hidden");
     }
     catch (error)
     {
@@ -137,7 +142,7 @@ function clearPhoto(viewDiv) {
 function takePicture(viewDiv) {
     const video = viewDiv.querySelector("video");
     const canvasEl = viewDiv.querySelector("canvas");
-    const context = canvas.getContext("2d");
+    const context = canvasEl.getContext("2d");
     if (width && height)
     {
         canvasEl.width = width;
@@ -148,6 +153,10 @@ function takePicture(viewDiv) {
         console.log(data);
         const img = document.getElementById("preview-img").querySelector("img");
         img.setAttribute("src", data);
+
+        //Cache la preview video et affiche l'image prise.
+        video.classList.add("hidden");
+        img.classList.remove("hidden");
     }
     else
         clearPhoto();
@@ -179,6 +188,7 @@ export function showImageEditorView() {
                 <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
                     <div id="preview-img" class="flex relative justify-center items-center min-w-0 min-h-0 overflow-hidden col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
                         <div class="w-full aspect-video">
+                            <video class="w-full h-full hidden" id="video">Video stream not available.</video>
                             <img class="w-full h-full max-w-full max-h-full object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg==" alt="Image_preview"></img>
                         </div>
                     </div>
@@ -206,10 +216,9 @@ export function showImageEditorView() {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
-                <div id="camera_tests" class="border-2 flex">
-                    <video id="video">Video stream not available.</video>
+                <div>
                     <button type="button" id="start-button" class="btn">Capture</button>
-                    <canvas id="canvas"></canvas>
+                    <canvas class="hidden" id="canvas"></canvas>
                 </div>
             </form>
         </div>
