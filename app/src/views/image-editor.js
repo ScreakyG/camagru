@@ -6,6 +6,10 @@ const fileTypes = [
     "image/png",
 ];
 
+let streaming = false;
+let height = 0;
+let width = 720;
+
 function inputFileDebugger(inputElement) {
     console.log(inputElement);
 
@@ -77,6 +81,16 @@ function updateImageDisplay(inputElement) {
     }
 }
 
+function handleSubmitButtonInteraction(viewDiv, form) {
+    const submitBtn = viewDiv.querySelector("button[type=submit]");
+    const formValues = getFormValues(form);
+
+    if (formValues.image_upload && isValidInputFile(formValues.image_upload) && formValues.overlay)
+        submitBtn.removeAttribute("disabled")
+    else
+        submitBtn.setAttribute("disabled", "");
+}
+
 function previewTest(inputElement) {
     const file = inputElement.files[0];
     const img = document.getElementById("preview-img").querySelector("img");
@@ -101,7 +115,7 @@ async function webcamTests(viewDiv) {
 
         const video = viewDiv.querySelector("video");
         video.srcObject = mediaStream;
-        video.onloadedmetadata = () => {video.play()};
+        video.play();
     }
     catch (error)
     {
@@ -109,19 +123,38 @@ async function webcamTests(viewDiv) {
     }
 }
 
-function handleSubmitButtonInteraction(viewDiv, form) {
-    const submitBtn = viewDiv.querySelector("button[type=submit]");
-    const formValues = getFormValues(form);
+function clearPhoto(viewDiv) {
+    const canvasEl = viewDiv.querySelector("canvas");
+    const context = canvasEl.getContext("2d");
+    context.fillStyle = "#aaaaaa";
+    context.fillRect(0, 0, canvasEl.witdh, canvasEl.height);
 
-    if (formValues.image_upload && isValidInputFile(formValues.image_upload) && formValues.overlay)
-        submitBtn.removeAttribute("disabled")
+    const data = canvasEl.toDataURL("image/png");
+    const img = document.getElementById("preview-img").querySelector("img");
+    img.setAttribute("src", data);
+}
+
+function takePicture(viewDiv) {
+    const video = viewDiv.querySelector("video");
+    const canvasEl = viewDiv.querySelector("canvas");
+    const context = canvas.getContext("2d");
+    if (width && height)
+    {
+        canvasEl.width = width;
+        canvasEl.height = height;
+        context.drawImage(video, 0, 0, width, height);
+
+        const data = canvasEl.toDataURL("image/png");
+        console.log(data);
+        const img = document.getElementById("preview-img").querySelector("img");
+        img.setAttribute("src", data);
+    }
     else
-        submitBtn.setAttribute("disabled", "");
+        clearPhoto();
 }
 
 export function showImageEditorView() {
     const app = document.getElementById("app");
-    console.log(app);
 
     const imageEditorDiv = document.createElement("div");
     imageEditorDiv.innerHTML = /*html*/ `
@@ -173,9 +206,10 @@ export function showImageEditorView() {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
-                <div id="camera_tests" class="border-2">
+                <div id="camera_tests" class="border-2 flex">
                     <video id="video">Video stream not available.</video>
-                    <button id="start-button" class="btn">Capture</button>
+                    <button type="button" id="start-button" class="btn">Capture</button>
+                    <canvas id="canvas"></canvas>
                 </div>
             </form>
         </div>
@@ -189,8 +223,25 @@ export function showImageEditorView() {
     const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
     useWebcamBtn.addEventListener("click", () => webcamTests(imageEditorDiv));
 
-    const editorForm = imageEditorDiv.querySelector("form");
+    const canvasEl = imageEditorDiv.querySelector("canvas");
+    const videoEl = imageEditorDiv.querySelector("video");
+    videoEl.addEventListener("canplay", (event) => {
+        if (!streaming)
+            height = videoEl.videoHeight / (videoEl.videoWidth / width);
 
+        videoEl.setAttribute("width", width);
+        videoEl.setAttribute("height", height);
+        canvasEl.setAttribute("width", width);
+        canvasEl.setAttribute("height", height);
+        streaming = true;
+    });
+    const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
+    startBtn.addEventListener("click", (event) => {
+        takePicture(imageEditorDiv);
+        event.preventDefault();
+    })
+
+    const editorForm = imageEditorDiv.querySelector("form");
     editorForm.addEventListener("change", () => handleSubmitButtonInteraction(imageEditorDiv, editorForm));
     editorForm.addEventListener("submit", (event) => {
         event.preventDefault();
