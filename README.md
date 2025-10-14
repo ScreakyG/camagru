@@ -13,6 +13,10 @@ Camagru is a instagram like web app that allow users to take live pictures with 
 
 
 ## TODO:
+- Revoir le format du stream, video, canvas.
+- Check les switchs entre webcam et upload pour l'UX
+- Couper le stream quand termine avec ?
+- Gerer les cas d'erreurs (exemple : User refuse sa cam).
 - Make the preview with the choosen overlay in front.
 - Call endpoint to store the image.
 
