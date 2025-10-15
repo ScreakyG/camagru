@@ -135,7 +135,7 @@ function previewTest(inputElement) {
  */
 async function webcamTests(viewDiv) {
     resetInputElement();
-
+    hideWebcamErrors();
     const img = document.getElementById("preview-img").querySelector("img");
 
     try
@@ -156,6 +156,7 @@ async function webcamTests(viewDiv) {
     catch (error)
     {
         console.log(error);
+        showWebcamErrors(error.message);
     }
 }
 
@@ -217,6 +218,22 @@ function takePicture(viewDiv) {
         clearPhoto();
 }
 
+function showWebcamErrors(errorMessage) {
+    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
+    const error = document.createElement("p");
+    error.innerHTML = `Can't access webcam. Please allow access to webcam to use your camera as image source.</br> Details : ${errorMessage}`;
+    errorDiv.appendChild(error);
+    errorDiv.classList.remove("hidden");
+}
+
+function hideWebcamErrors() {
+    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
+    const error = errorDiv.querySelector("p");
+    if (error)
+        error.remove();
+    errorDiv.classList.add("hidden");
+}
+
 export function showImageEditorView() {
     const app = document.getElementById("app");
 
@@ -234,6 +251,8 @@ export function showImageEditorView() {
                                 <input class="opacity-0 sr-only" type="file" id="image_upload_input" name="image_upload" accept="image/*" required></input>
                                 <button id="request_webcam" type="button" class="btn">Use webcam</button>
                             </div>
+                        </div>
+                        <div id="webcam-errors" class="border py-2 px-3 border-red-300 bg-red-200 text-red-700 rounded-md hidden">
                         </div>
                         <div id="upload_preview">
                             <p>No files currently selected for upload.</p>
