@@ -38,6 +38,31 @@ function returnFileSize(number) {
     return `${(number / 1e6).toFixed(1)} MB`;
 }
 
+// Clean les fichiers selectionnees dans l'input.
+function resetInputElement() {
+    const inputElement = document.getElementById("file-viewer").querySelector("input[type=file]");
+    inputElement.value = "";
+    inputElement.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+// Show <video> element and hide <img>
+function showVideoStream() {
+    const video = document.getElementById("preview-img").querySelector("video");
+    const img = document.getElementById("preview-img").querySelector("img");
+
+    video.classList.remove("hidden");
+    img.classList.add("hidden");
+}
+
+// Hide <video> element and show <img>
+function hideVideoStream() {
+    const video = document.getElementById("preview-img").querySelector("video");
+    const img = document.getElementById("preview-img").querySelector("img");
+
+    video.classList.add("hidden");
+    img.classList.remove("hidden");
+}
+
 function updateImageDisplay(inputElement) {
     const previewDiv = document.getElementById("upload_preview");
 
@@ -109,10 +134,7 @@ function previewTest(inputElement) {
  * Recupere le stream du media et l'affiche dans l'element video.
  */
 async function webcamTests(viewDiv) {
-    // Clean l'element input au cas ou l'user avant selectionner un fichier a upload avant de clicker sur la camera.
-    const inputElement = document.getElementById("file-viewer").querySelector("input[type=file]");
-    inputElement.value = "";
-    inputElement.dispatchEvent(new Event("change", { bubbles: true }));
+    resetInputElement();
 
     const img = document.getElementById("preview-img").querySelector("img");
 
@@ -135,24 +157,6 @@ async function webcamTests(viewDiv) {
     {
         console.log(error);
     }
-}
-
-// Show <video> element and hide <img>
-function showVideoStream() {
-    const video = document.getElementById("preview-img").querySelector("video");
-    const img = document.getElementById("preview-img").querySelector("img");
-
-    video.classList.remove("hidden");
-    img.classList.add("hidden");
-}
-
-// Hide <video> element and show <img>
-function hideVideoStream() {
-    const video = document.getElementById("preview-img").querySelector("video");
-    const img = document.getElementById("preview-img").querySelector("img");
-
-    video.classList.add("hidden");
-    img.classList.remove("hidden");
 }
 
 /**
@@ -295,6 +299,7 @@ export function showImageEditorView() {
         canvasEl.setAttribute("height", height);
         streaming = true;
     });
+
     const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
     startBtn.addEventListener("click", (event) => {
         takePicture(imageEditorDiv);
