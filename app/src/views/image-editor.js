@@ -8,8 +8,10 @@ const fileTypes = [
 
 // Valeurs a revoir
 let streaming = false;
+let mediaStream = null;
 let height = 0;
 let width = 1080;
+
 
 function inputFileDebugger(inputElement) {
     console.log(inputElement);
@@ -59,11 +61,33 @@ function hideVideoStream() {
     const video = document.getElementById("preview-img").querySelector("video");
     const img = document.getElementById("preview-img").querySelector("img");
 
+    stopWebcam();
     video.classList.add("hidden");
     img.classList.remove("hidden");
 }
 
+function stopWebcam() {
+    const video = document.getElementById("preview-img").querySelector("video");
+    try
+    {
+        video.pause();
+        if (mediaStream)
+        {
+            const activeStreams = mediaStream.getTracks();
+            for (let i = 0; i < activeStreams.length; i++)
+                activeStreams[i].stop();
+            mediaStream = null;
+        }
+        video.srcObject = null;
+    }
+    catch (error)
+    {
+        console.log("Error while stopping webcam : ", error);
+    }
+}
+
 function updateImageDisplay(inputElement) {
+    hideWebcamErrors();
     const previewDiv = document.getElementById("upload_preview");
 
     // Nettoyage de la div a chaque changements dans l'input.
@@ -144,7 +168,7 @@ async function webcamTests(viewDiv) {
         for (let i = 0; i < devices.length; i++)
             console.log("Available devices : ", devices[i]);
 
-        const mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
+        mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
         console.log(mediaStream);
 
         const video = viewDiv.querySelector("video");
