@@ -49,8 +49,8 @@ function resetInputElement() {
 
 // Show <video> element and hide <img>
 function showVideoStream() {
-    const video = document.getElementById("preview-img").querySelector("video");
-    const canvas = document.getElementById("preview-img").querySelector("canvas");
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
 
     video.classList.remove("hidden");
     canvas.classList.add("hidden");
@@ -58,8 +58,8 @@ function showVideoStream() {
 
 // Hide <video> element and show <img>
 function hideVideoStream() {
-    const video = document.getElementById("preview-img").querySelector("video");
-    const canvas = document.getElementById("preview-img").querySelector("canvas");
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
 
     stopWebcam();
     video.classList.add("hidden");
@@ -67,7 +67,7 @@ function hideVideoStream() {
 }
 
 function stopWebcam() {
-    const video = document.getElementById("preview-img").querySelector("video");
+    const video = document.getElementById("video");
     try
     {
         video.pause();
@@ -192,7 +192,7 @@ async function webcamTests(viewDiv) {
         });
         console.log(mediaStream);
 
-        const video = viewDiv.querySelector("video");
+        const video = document.getElementById("video");
         video.srcObject = mediaStream;
         video.play();
 
@@ -236,10 +236,10 @@ async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92
  * Prend une capture du stream de video en le dessinant sur un canvas.
  */
 function takePicture(viewDiv) {
-    const video = viewDiv.querySelector("video");
-    const canvasEl = viewDiv.querySelector("canvas");
+    const video = document.getElementById("video");
+    const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
-    if (width && height)
+    if (canvasWidth && canvasHeight)
     {
         canvasEl.width = canvasWidth;
         canvasEl.height = canvasHeight;
@@ -257,8 +257,8 @@ async function drawImageToCanvas(file) {
     const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
 
 
-    canvasEl.width = 1080;
-    canvasEl.height = 1080;
+    canvasEl.width = canvasWidth;
+    canvasEl.height = canvasHeight;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
 }
@@ -291,9 +291,8 @@ export function showImageEditorView() {
                 </div>
                 <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
                     <div id="preview-img" class="flex relative justify-center items-center min-w-0 min-h-0 overflow-hidden col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
-                        <div class="relative aspect-square w-full">
-                            <video class="absolute inset-0 w-full h-full hidden" id="video">Video stream not available.</video>
-                            <canvas class="absolute inset-0 w-full h-full" id="canvas"></canvas>
+                        <div class="w-full">
+                            <p>Remettre video et canvas ici </p>
                         </div>
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
@@ -322,8 +321,9 @@ export function showImageEditorView() {
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
                 <div>
                     <button type="button" id="start-button" class="btn">Capture</button>
-                    <div class="relative aspect-square w-full max-w-[480px] mx-auto">
-                        <canvas class="bg-amber-200 absolute inset-0 w-full h-full" id="canvas"></canvas>
+                    <div class="relative aspect-square w-full">
+                        <video class="absolute inset-0 w-full h-full hidden" id="video">Video stream not available.</video>
+                        <canvas class="absolute inset-0 w-full h-full bg-amber-200 " id="canvas"></canvas>
                     </div>
                 </div>
             </form>
