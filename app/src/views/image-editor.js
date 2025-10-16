@@ -9,8 +9,8 @@ const fileTypes = [
 // Valeurs a revoir
 let streaming = false;
 let mediaStream = null;
-let height = 0;
-let width = 1080;
+let canvasHeight = 1080;
+let canvasWidth = 1080;
 
 
 function inputFileDebugger(inputElement) {
@@ -50,20 +50,20 @@ function resetInputElement() {
 // Show <video> element and hide <img>
 function showVideoStream() {
     const video = document.getElementById("preview-img").querySelector("video");
-    const img = document.getElementById("preview-img").querySelector("img");
+    const canvas = document.getElementById("preview-img").querySelector("canvas");
 
     video.classList.remove("hidden");
-    img.classList.add("hidden");
+    canvas.classList.add("hidden");
 }
 
 // Hide <video> element and show <img>
 function hideVideoStream() {
     const video = document.getElementById("preview-img").querySelector("video");
-    const img = document.getElementById("preview-img").querySelector("img");
+    const canvas = document.getElementById("preview-img").querySelector("canvas");
 
     stopWebcam();
     video.classList.add("hidden");
-    img.classList.remove("hidden");
+    canvas.classList.remove("hidden");
 }
 
 function stopWebcam() {
@@ -85,6 +85,23 @@ function stopWebcam() {
         console.log("Error while stopping webcam : ", error);
     }
 }
+
+function showWebcamErrors(errorMessage) {
+    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
+    const error = document.createElement("p");
+    error.innerHTML = `Can't access webcam. Please allow access to webcam to use your camera as image source.</br> Details : ${errorMessage}`;
+    errorDiv.appendChild(error);
+    errorDiv.classList.remove("hidden");
+}
+
+function hideWebcamErrors() {
+    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
+    const error = errorDiv.querySelector("p");
+    if (error)
+        error.remove();
+    errorDiv.classList.add("hidden");
+}
+
 
 function updateImageDisplay(inputElement) {
     hideWebcamErrors();
@@ -143,14 +160,13 @@ function handleSubmitButtonInteraction(viewDiv, form) {
 
 function previewTest(inputElement) {
     const file = inputElement.files[0];
-    const img = document.getElementById("preview-img").querySelector("img");
 
     hideVideoStream();
     // Si le fichier n'est pas valide on affiche le default placeholder.
     if (isValidInputFile(file))
-        img.src = URL.createObjectURL(file);
-    else
-        img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg==";
+        drawImageToCanvas(file);
+    // else
+    //     Dessiner le placeholder sur le canvas ?
 }
 
 /**
@@ -160,7 +176,6 @@ function previewTest(inputElement) {
 async function webcamTests(viewDiv) {
     resetInputElement();
     hideWebcamErrors();
-    const img = document.getElementById("preview-img").querySelector("img");
 
     try
     {
@@ -168,7 +183,13 @@ async function webcamTests(viewDiv) {
         for (let i = 0; i < devices.length; i++)
             console.log("Available devices : ", devices[i]);
 
-        mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                width: { ideal: canvasWidth },
+                height: { ideal: canvasHeight }
+            },
+            audio: false
+        });
         console.log(mediaStream);
 
         const video = viewDiv.querySelector("video");
@@ -211,17 +232,6 @@ async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92
 
 }
 
-function clearPhoto(viewDiv) {
-    const canvasEl = viewDiv.querySelector("canvas");
-    const context = canvasEl.getContext("2d");
-    context.fillStyle = "#aaaaaa";
-    context.fillRect(0, 0, canvasEl.witdh, canvasEl.height);
-
-    const data = canvasEl.toDataURL("image/png");
-    const img = document.getElementById("preview-img").querySelector("img");
-    img.setAttribute("src", data);
-}
-
 /**
  * Prend une capture du stream de video en le dessinant sur un canvas.
  */
@@ -231,32 +241,28 @@ function takePicture(viewDiv) {
     const context = canvasEl.getContext("2d");
     if (width && height)
     {
-        canvasEl.width = width;
-        canvasEl.height = height;
-        context.drawImage(video, 0, 0, width, height);
+        canvasEl.width = canvasWidth;
+        canvasEl.height = canvasHeight;
+        context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
 
         hideVideoStream();
         convertCanvasToFile(canvasEl);
     }
-    else
-        clearPhoto();
 }
 
-function showWebcamErrors(errorMessage) {
-    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
-    const error = document.createElement("p");
-    error.innerHTML = `Can't access webcam. Please allow access to webcam to use your camera as image source.</br> Details : ${errorMessage}`;
-    errorDiv.appendChild(error);
-    errorDiv.classList.remove("hidden");
+async function drawImageToCanvas(file) {
+    const canvasEl = document.getElementById("canvas");
+    const context = canvasEl.getContext("2d");
+
+    const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
+
+
+    canvasEl.width = 1080;
+    canvasEl.height = 1080;
+    context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
 }
 
-function hideWebcamErrors() {
-    const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
-    const error = errorDiv.querySelector("p");
-    if (error)
-        error.remove();
-    errorDiv.classList.add("hidden");
-}
 
 export function showImageEditorView() {
     const app = document.getElementById("app");
@@ -285,9 +291,9 @@ export function showImageEditorView() {
                 </div>
                 <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
                     <div id="preview-img" class="flex relative justify-center items-center min-w-0 min-h-0 overflow-hidden col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
-                        <div class="w-full aspect-video">
-                            <video class="w-full h-full hidden" id="video">Video stream not available.</video>
-                            <img class="w-full h-full max-w-full max-h-full object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg==" alt="Image_preview"></img>
+                        <div class="relative aspect-square w-full">
+                            <video class="absolute inset-0 w-full h-full hidden" id="video">Video stream not available.</video>
+                            <canvas class="absolute inset-0 w-full h-full" id="canvas"></canvas>
                         </div>
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
@@ -316,11 +322,18 @@ export function showImageEditorView() {
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
                 <div>
                     <button type="button" id="start-button" class="btn">Capture</button>
-                    <canvas class="hidden" id="canvas"></canvas>
+                    <div class="relative aspect-square w-full max-w-[480px] mx-auto">
+                        <canvas class="bg-amber-200 absolute inset-0 w-full h-full" id="canvas"></canvas>
+                    </div>
                 </div>
             </form>
         </div>
     `
+
+
+
+    // Placeholder
+    // src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg=="
 
     const inputElement = imageEditorDiv.querySelector("input[type=file]");
     inputFileDebugger(inputElement);
@@ -329,19 +342,6 @@ export function showImageEditorView() {
 
     const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
     useWebcamBtn.addEventListener("click", () => webcamTests(imageEditorDiv));
-
-    const canvasEl = imageEditorDiv.querySelector("canvas");
-    const videoEl = imageEditorDiv.querySelector("video");
-    videoEl.addEventListener("canplay", (event) => {
-        if (!streaming)
-            height = videoEl.videoHeight / (videoEl.videoWidth / width);
-
-        videoEl.setAttribute("width", width);
-        videoEl.setAttribute("height", height);
-        canvasEl.setAttribute("width", width);
-        canvasEl.setAttribute("height", height);
-        streaming = true;
-    });
 
     const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
     startBtn.addEventListener("click", (event) => {
