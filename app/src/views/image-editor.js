@@ -186,11 +186,15 @@ async function webcamTests(viewDiv) {
         mediaStream = await navigator.mediaDevices.getUserMedia({
             video: {
                 width: { ideal: canvasWidth },
-                height: { ideal: canvasHeight }
+                height: { ideal: canvasHeight },
+                aspectRatio: { ideal: 1 },
+                resizeMode: "crop-and-scale"
             },
             audio: false
         });
-        console.log(mediaStream);
+
+        console.log("Object mediaStream = ", mediaStream);
+        console.log("Stream settings = ", mediaStream.getVideoTracks()[0].getSettings());
 
         const video = document.getElementById("video");
         video.srcObject = mediaStream;
@@ -250,11 +254,36 @@ function takePicture(viewDiv) {
     }
 }
 
+// Function that will act as object-cover to crop a image if not ratio 1:1
+function drawCanvasCover(imageSrc) {
+    const canvasEl = document.getElementById("canvas");
+    const context = canvasEl.getContext("2d");
+
+    const sw = imageSrc.width;
+    const sh = imageSrc.height;
+
+    const s = Math.max(canvasWidth / sw, canvasHeight / sh);
+
+    const dw = Math.round(sw * s);
+    const dh = Math.round(sh * s);
+
+    // Centrer le crop
+    const dx = Math.floor((canvasWidth - dw) / 2);
+    const dy = Math.floor((canvasHeight - dh) / 2);
+
+    canvasEl.width = canvasWidth;
+    canvasEl.height = canvasHeight;
+
+    context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    context.drawImage(imageSrc, dx, dy, dw, dh);
+}
+
 async function drawImageToCanvas(file) {
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
     const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    console.log("imageSrc = ", imageSrc);
 
 
     canvasEl.width = canvasWidth;
@@ -321,12 +350,12 @@ export function showImageEditorView() {
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
                 <div>
                     <button type="button" id="start-button" class="btn">Capture</button>
-                    <div class="relative aspect-square w-full">
-                        <video class="absolute inset-0 w-full h-full hidden" id="video">Video stream not available.</video>
-                        <canvas class="absolute inset-0 w-full h-full bg-amber-200 " id="canvas"></canvas>
-                    </div>
                 </div>
             </form>
+            <div class="aspect-square max-w-[760px] bg-red-500">
+                <video class="hidden w-full h-full" id="video">Video stream not available.</video>
+                <canvas class="w-full h-full bg-zinc-300" width=${canvasWidth} height=${canvasHeight} id="canvas"></canvas>
+            </div>
         </div>
     `
 
