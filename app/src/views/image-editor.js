@@ -10,7 +10,7 @@ const fileTypes = [
 let streaming = false;
 let mediaStream = null;
 let canvasHeight = 1080;
-let canvasWidth = 1080;
+let canvasWidth = 1920;
 
 
 function inputFileDebugger(inputElement) {
@@ -285,6 +285,11 @@ async function drawImageToCanvas(file) {
     const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
     console.log("imageSrc = ", imageSrc);
 
+    const rawImg = document.getElementById("raw-image");
+    rawImg.src = URL.createObjectURL(file);
+
+    // drawCanvasCover(imageSrc);
+    // return;
 
     canvasEl.width = canvasWidth;
     canvasEl.height = canvasHeight;
@@ -352,7 +357,10 @@ export function showImageEditorView() {
                     <button type="button" id="start-button" class="btn">Capture</button>
                 </div>
             </form>
-            <div class="aspect-square max-w-[760px] bg-red-500">
+            <div class="w-[468px] bg-red-400 my-2">
+                <img id="raw-image" src=""></img>
+            </div>
+            <div class="w-[468px] bg-red-500">
                 <video class="hidden w-full h-full" id="video">Video stream not available.</video>
                 <canvas class="w-full h-full bg-zinc-300" width=${canvasWidth} height=${canvasHeight} id="canvas"></canvas>
             </div>
