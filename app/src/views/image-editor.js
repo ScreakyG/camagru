@@ -265,10 +265,11 @@ async function drawImageToCanvas(file) {
 
     console.log("Image source ratio = ", imageSrc.width / imageSrc.height);
     const imgRatio = imageSrc.height / imageSrc.width;
-    const height = Math.round(canvasWidth * imgRatio);
-    console.log(`Canvas dimensions : width = ${canvasWidth}, height = ${height}, ratio = ${canvasWidth / height}`);
+    const width = imageSrc.width < canvasWidth ? imageSrc.width : canvasWidth;
+    const height = Math.round(width * imgRatio);
+    console.log(`Canvas dimensions : width = ${width}, height = ${height}, ratio = ${width / height}`);
 
-    canvasEl.width = canvasWidth;
+    canvasEl.width = width;
     canvasEl.height = height;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
