@@ -7,10 +7,9 @@ const fileTypes = [
 ];
 
 // Valeurs a revoir
-let streaming = false;
 let mediaStream = null;
 let canvasHeight = 1080;
-let canvasWidth = 1920;
+let canvasWidth = 1080;
 
 
 function inputFileDebugger(inputElement) {
@@ -117,7 +116,7 @@ function updateImageDisplay(inputElement) {
     if (inputFiles.length === 0)
     {
         const para = document.createElement("p");
-        para.textContent = "No files currently selected for upload";
+        para.textContent = "No files currently selected for upload";name
         previewDiv.appendChild(para);
     }
     else
@@ -254,30 +253,6 @@ function takePicture(viewDiv) {
     }
 }
 
-// Function that will act as object-cover to crop a image if not ratio 1:1
-function drawCanvasCover(imageSrc) {
-    const canvasEl = document.getElementById("canvas");
-    const context = canvasEl.getContext("2d");
-
-    const sw = imageSrc.width;
-    const sh = imageSrc.height;
-
-    const s = Math.max(canvasWidth / sw, canvasHeight / sh);
-
-    const dw = Math.round(sw * s);
-    const dh = Math.round(sh * s);
-
-    // Centrer le crop
-    const dx = Math.floor((canvasWidth - dw) / 2);
-    const dy = Math.floor((canvasHeight - dh) / 2);
-
-    canvasEl.width = canvasWidth;
-    canvasEl.height = canvasHeight;
-
-    context.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    context.drawImage(imageSrc, dx, dy, dw, dh);
-}
-
 async function drawImageToCanvas(file) {
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
@@ -288,11 +263,13 @@ async function drawImageToCanvas(file) {
     const rawImg = document.getElementById("raw-image");
     rawImg.src = URL.createObjectURL(file);
 
-    // drawCanvasCover(imageSrc);
-    // return;
+    console.log("Image source ratio = ", imageSrc.width / imageSrc.height);
+    const imgRatio = imageSrc.height / imageSrc.width;
+    const height = Math.round(canvasWidth * imgRatio);
+    console.log(`Canvas dimensions : width = ${canvasWidth}, height = ${height}, ratio = ${canvasWidth / height}`);
 
     canvasEl.width = canvasWidth;
-    canvasEl.height = canvasHeight;
+    canvasEl.height = height;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
 }
@@ -362,7 +339,7 @@ export function showImageEditorView() {
             </div>
             <div class="w-[468px] bg-red-500">
                 <video class="hidden w-full h-full" id="video">Video stream not available.</video>
-                <canvas class="w-full h-full bg-zinc-300" width=${canvasWidth} height=${canvasHeight} id="canvas"></canvas>
+                <canvas class="w-full h-full bg-zinc-300" id="canvas" width=${canvasWidth} height=${canvasHeight}></canvas>
             </div>
         </div>
     `
