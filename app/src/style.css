@@ -1710,6 +1710,9 @@
   .h-full {
     height: 100%;
   }
+  .max-h-full {
+    max-height: 100%;
+  }
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
@@ -1760,6 +1763,9 @@
   }
   .max-w-\[760px\] {
     max-width: 760px;
+  }
+  .max-w-full {
+    max-width: 100%;
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);

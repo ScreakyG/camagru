@@ -247,9 +247,22 @@ function takePicture(viewDiv) {
         canvasEl.width = canvasWidth;
         canvasEl.height = canvasHeight;
         context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+        drawOverlay();
 
         hideVideoStream();
         convertCanvasToFile(canvasEl);
+    }
+}
+
+function drawOverlay() {
+    const canvasEl = document.getElementById("canvas");
+    const context = canvasEl.getContext("2d");
+
+    const overlay = new Image();
+    overlay.src = "/src/images/frost_frame.png";
+    overlay.onload = () => {
+        console.log(overlay);
+        context.drawImage(overlay, 0, 0, canvasEl.width, canvasEl.height)
     }
 }
 
@@ -259,9 +272,6 @@ async function drawImageToCanvas(file) {
 
     const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
     console.log("imageSrc = ", imageSrc);
-
-    const rawImg = document.getElementById("raw-image");
-    rawImg.src = URL.createObjectURL(file);
 
     console.log("Image source ratio = ", imageSrc.width / imageSrc.height);
     const imgRatio = imageSrc.height / imageSrc.width;
@@ -273,6 +283,8 @@ async function drawImageToCanvas(file) {
     canvasEl.height = height;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
+
+    drawOverlay();
 }
 
 
@@ -302,9 +314,10 @@ export function showImageEditorView() {
                     </div>
                 </div>
                 <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
-                    <div id="preview-img" class="flex relative justify-center items-center min-w-0 min-h-0 overflow-hidden col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
-                        <div class="w-full">
-                            <p>Remettre video et canvas ici </p>
+                    <div id="preview-img" class="col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
+                        <div class="w-full h-full bg-red-500 flex justify-center items-center">
+                            <video class="hidden w-full h-full" id="video">Video stream not available.</video>
+                            <canvas class="max-w-full max-h-full bg-zinc-300" id="canvas"></canvas>
                         </div>
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
@@ -335,13 +348,6 @@ export function showImageEditorView() {
                     <button type="button" id="start-button" class="btn">Capture</button>
                 </div>
             </form>
-            <div class="w-[468px] bg-red-400 my-2">
-                <img id="raw-image" src=""></img>
-            </div>
-            <div class="w-[468px] bg-red-500">
-                <video class="hidden w-full h-full" id="video">Video stream not available.</video>
-                <canvas class="w-full h-full bg-zinc-300" id="canvas" width=${canvasWidth} height=${canvasHeight}></canvas>
-            </div>
         </div>
     `
 
