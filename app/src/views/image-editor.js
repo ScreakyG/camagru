@@ -6,6 +6,11 @@ const fileTypes = [
     "image/png",
 ];
 
+const overlays = [
+    { id: 0, name: "frost_frame", path: "/src/images/frost_frame.png"},
+    { id: 1, name: "pixel_glasses", path:"/src/images/pixel_glasses.png"}
+];
+
 // Valeurs a revoir
 let mediaStream = null;
 let canvasHeight = 1080;
@@ -242,27 +247,28 @@ function takePicture(viewDiv) {
     const video = document.getElementById("video");
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
+
     if (canvasWidth && canvasHeight)
     {
         canvasEl.width = canvasWidth;
         canvasEl.height = canvasHeight;
+        context.clearRect(0, 0, canvasEl.width, canvasEl.height);
         context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-        drawOverlay();
 
         hideVideoStream();
         convertCanvasToFile(canvasEl);
     }
 }
 
-function drawOverlay() {
+function drawOverlay(overlay) {
+    console.log(`Drawing overlay = `, overlay);
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
-    const overlay = new Image();
-    overlay.src = "/src/images/frost_frame.png";
-    overlay.onload = () => {
-        console.log(overlay);
-        context.drawImage(overlay, 0, 0, canvasEl.width, canvasEl.height)
+    const overlayImg = new Image();
+    overlayImg.src = overlay.path;
+    overlayImg.onload = () => {
+        context.drawImage(overlayImg, 0, 0, canvasEl.width, canvasEl.height)
     }
 }
 
@@ -284,7 +290,8 @@ async function drawImageToCanvas(file) {
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
 
-    drawOverlay();
+    drawOverlay(overlays[0]);
+    drawOverlay(overlays[1]);
 }
 
 
@@ -315,9 +322,9 @@ export function showImageEditorView() {
                 </div>
                 <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
                     <div id="preview-img" class="col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
-                        <div class="w-full h-full bg-red-500 flex justify-center items-center">
-                            <video class="hidden w-full h-full" id="video">Video stream not available.</video>
-                            <canvas class="max-w-full max-h-full bg-zinc-300" id="canvas"></canvas>
+                        <div class="w-full h-full flex justify-center items-center overflow-hidden">
+                            <video class="hidden" id="video">Video stream not available.</video>
+                            <canvas class="max-w-full max-h-full bg-zinc-500" id="canvas"></canvas>
                         </div>
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
