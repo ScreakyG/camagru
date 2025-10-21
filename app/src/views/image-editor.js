@@ -169,7 +169,7 @@ function handleSubmitButtonInteraction(viewDiv, form) {
     const submitBtn = viewDiv.querySelector("button[type=submit]");
     const formValues = getFormValues(form);
 
-    if (formValues.image_upload && isValidInputFile(formValues.image_upload) && formValues.overlay)
+    if (((formValues.image_upload && isValidInputFile(formValues.image_upload)) || mediaStream) && formValues.overlay)
         submitBtn.removeAttribute("disabled")
     else
         submitBtn.setAttribute("disabled", "");
@@ -422,6 +422,16 @@ export function showImageEditorView() {
         const data = getFormValues(editorForm);
         console.log(data);
     });
+
+    // Rend les overlays selectionables uniquement si une image est presente dans input/stream.
+    const overlayBtns = imageEditorDiv.querySelectorAll("input[type=radio]");
+    for (let i = 0; i < overlayBtns.length; i++)
+    {
+        overlayBtns[i].addEventListener("click", (event) => {
+            if (!mediaStream && !inputElement.files[0])
+                event.preventDefault();
+        });
+    }
 
 
     app.appendChild(imageEditorDiv);
