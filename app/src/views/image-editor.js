@@ -302,6 +302,9 @@ function takePicture() {
 
 function drawOverlay(overlay) {
     console.log(`Drawing overlay = `, overlay);
+    if (!overlay)
+        return ;
+
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
@@ -325,9 +328,6 @@ async function drawImageToCanvas(file) {
     canvasEl.height = height;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
-
-    // drawOverlay(overlays[0]);
-    // drawOverlay(overlays[1]);
 }
 
 
@@ -428,8 +428,12 @@ export function showImageEditorView() {
     for (let i = 0; i < overlayBtns.length; i++)
     {
         overlayBtns[i].addEventListener("click", (event) => {
-            if (!mediaStream && !inputElement.files[0])
+            if (!mediaStream && (!inputElement.files[0] || !isValidInputFile(inputElement.files[0])))
                 event.preventDefault();
+            else
+            {
+                drawOverlay(overlays[i]);
+            }
         });
     }
 
