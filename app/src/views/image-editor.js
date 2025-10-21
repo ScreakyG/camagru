@@ -16,6 +16,7 @@ let mediaStream = null;
 let canvasHeight = 1080;
 let canvasWidth = 1080;
 
+let raf;
 
 function inputFileDebugger(inputElement) {
     console.log(inputElement);
@@ -74,6 +75,7 @@ function stopWebcam() {
     const video = document.getElementById("video");
     try
     {
+        cancelAnimationFrame(raf);
         video.pause();
         if (mediaStream)
         {
@@ -93,6 +95,7 @@ function stopWebcam() {
 function showWebcamErrors(errorMessage) {
     const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
     const error = document.createElement("p");
+
     error.innerHTML = `Can't access webcam. Please allow access to webcam to use your camera as image source.</br> Details : ${errorMessage}`;
     errorDiv.appendChild(error);
     errorDiv.classList.remove("hidden");
@@ -101,6 +104,7 @@ function showWebcamErrors(errorMessage) {
 function hideWebcamErrors() {
     const errorDiv = document.getElementById("file-viewer").querySelector("div[id=webcam-errors]");
     const error = errorDiv.querySelector("p");
+
     if (error)
         error.remove();
     errorDiv.classList.add("hidden");
@@ -202,15 +206,37 @@ async function webcamTests(viewDiv) {
 
         const video = document.getElementById("video");
         video.srcObject = mediaStream;
-        video.play();
+        await video.play();
 
-        showVideoStream()
+        // showVideoStream()
+        loopVideoOnCanvas(video)
     }
     catch (error)
     {
         console.log(error);
         showWebcamErrors(error.message);
     }
+}
+
+// Affiche les frames d'une video sur un canvas.
+function drawVideoToCanvas() {
+    const video = document.getElementById("video");
+    const canvasEl = document.getElementById("canvas");
+    const context = canvasEl.getContext("2d");
+
+    console.log(`Video in drawContainFromVideo, width =  ${video.videoWidth}, height = ${video.videoHeight}`);
+
+    canvasEl.width = video.videoWidth;
+    canvasEl.height = video.videoHeight;
+
+    context.clearRect(0, 0, video.videoWidth, video.videoHeight);
+    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+}
+
+function loopVideoOnCanvas()
+{
+    drawVideoToCanvas();
+    raf = requestAnimationFrame(loopVideoOnCanvas);
 }
 
 /**
@@ -237,23 +263,27 @@ async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92
     {
         console.log(error);
     }
-
 }
 
 /**
  * Prend une capture du stream de video en le dessinant sur un canvas.
  */
-function takePicture(viewDiv) {
+function takePicture() {
     const video = document.getElementById("video");
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
-    if (canvasWidth && canvasHeight)
+    if (mediaStream)
     {
-        canvasEl.width = canvasWidth;
-        canvasEl.height = canvasHeight;
+        console.log("Current stream settings in take Picture : ", mediaStream.getVideoTracks()[0].getSettings());
+        const width = mediaStream.getVideoTracks()[0].getSettings().width;
+        const height = mediaStream.getVideoTracks()[0].getSettings().height;
+
+        canvasEl.width = width;
+        canvasEl.height = height;
+
         context.clearRect(0, 0, canvasEl.width, canvasEl.height);
-        context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+        context.drawImage(video, 0, 0, canvasEl.width, canvasEl.height);
 
         hideVideoStream();
         convertCanvasToFile(canvasEl);
@@ -290,8 +320,8 @@ async function drawImageToCanvas(file) {
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
 
-    drawOverlay(overlays[0]);
-    drawOverlay(overlays[1]);
+    // drawOverlay(overlays[0]);
+    // drawOverlay(overlays[1]);
 }
 
 
@@ -373,7 +403,7 @@ export function showImageEditorView() {
 
     const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
     startBtn.addEventListener("click", (event) => {
-        takePicture(imageEditorDiv);
+        takePicture();
         event.preventDefault();
     })
 
@@ -384,6 +414,7 @@ export function showImageEditorView() {
         const data = getFormValues(editorForm);
         console.log(data);
     });
+
 
     app.appendChild(imageEditorDiv);
 }
