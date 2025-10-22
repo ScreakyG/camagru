@@ -6,17 +6,29 @@ const fileTypes = [
     "image/png",
 ];
 
+// Array qui contient les infos de mes overlays et une variable contenant l'objet image a dessiner sur le canvas.
 const overlays = [
     { id: 0, name: "frost_frame", path: "/src/images/frost_frame.png", imgEl : null},
     { id: 1, name: "pixel_glasses", path:"/src/images/pixel_glasses.png", imgEl : null}
 ];
 
-// Valeurs a revoir
+/**
+ * Dimensions que l'on prefere sur la webcam.
+ * canvasWidth sera la largeur max applique aux images.
+ * Si une image/video a une dimensions > canvasWidth, elle sera downscale a canvasWidth.
+ */
 let mediaStream = null;
 let canvasHeight = 1080;
 let canvasWidth = 1080;
 
+// Utile pour stopper le request animation frame de la webcam.
 let raf;
+
+// Utilise par la fonction qui dessine sur le canvas.
+let imageBuild = {
+    baseImg : null,
+    activeOverlay : null
+};
 
 function loadOverlays() {
     for (let i = 0; i < overlays.length; i++)
@@ -175,13 +187,20 @@ function handleSubmitButtonInteraction(viewDiv, form) {
         submitBtn.setAttribute("disabled", "");
 }
 
-function previewTest(inputElement) {
+async function previewTest(inputElement) {
     const file = inputElement.files[0];
 
     hideVideoStream();
+
     // Si le fichier n'est pas valide on affiche le default placeholder.
     if (isValidInputFile(file))
-        drawImageToCanvas(file);
+    {
+        const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
+
+        console.log("imageSrc = ", imageSrc);
+        imageBuild.baseImg = imageSrc;
+        drawToCanvasV2();
+    }
     // else
     //     Dessiner le placeholder sur le canvas ?
 }
@@ -218,6 +237,7 @@ async function webcamTests(viewDiv) {
         await video.play();
 
         // showVideoStream()
+        imageBuild.baseImg = video;
         loopVideoOnCanvas(video)
     }
     catch (error)
@@ -228,24 +248,9 @@ async function webcamTests(viewDiv) {
 }
 
 // Affiche les frames d'une video sur un canvas.
-function drawVideoToCanvas() {
-    const video = document.getElementById("video");
-    const canvasEl = document.getElementById("canvas");
-    const context = canvasEl.getContext("2d");
-
-    console.log(`Video in drawContainFromVideo, width =  ${video.videoWidth}, height = ${video.videoHeight}`);
-
-    canvasEl.width = video.videoWidth;
-    canvasEl.height = video.videoHeight;
-
-    context.clearRect(0, 0, video.videoWidth, video.videoHeight);
-    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-}
-
 function loopVideoOnCanvas()
 {
-    drawVideoToCanvas();
-    // drawOverlay(overlays[1]);
+    drawToCanvasV2();
     raf = requestAnimationFrame(loopVideoOnCanvas);
 }
 
@@ -311,23 +316,44 @@ function drawOverlay(overlay) {
     context.drawImage(overlay.imgEl, 0, 0, canvasEl.width, canvasEl.height);
 }
 
-async function drawImageToCanvas(file) {
+async function drawToCanvasV2() {
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
-    const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
-    console.log("imageSrc = ", imageSrc);
+    let sourceWidth = 0;
+    let sourceHeight = 0;
+    let imgRatio = 0;
 
-    console.log("Image source ratio = ", imageSrc.width / imageSrc.height);
-    const imgRatio = imageSrc.height / imageSrc.width;
-    const width = imageSrc.width < canvasWidth ? imageSrc.width : canvasWidth;
-    const height = Math.round(width * imgRatio);
-    console.log(`Canvas dimensions : width = ${width}, height = ${height}, ratio = ${width / height}`);
+    if (!imageBuild.baseImg)
+        return ;
 
-    canvasEl.width = width;
-    canvasEl.height = height;
+    // On regarde si la base img provient d'un upload (donc file converti en ImageBitmap) ou de la webcam (stream -> video) car les variables de dimensions ne sont pas appelee pareil.
+    if (imageBuild.baseImg instanceof HTMLVideoElement)
+    {
+        console.log("C'est une video !!!!");
+        sourceWidth = imageBuild.baseImg.videoWidth;
+        sourceHeight = imageBuild.baseImg.videoHeight;
+    }
+    else if (imageBuild.baseImg instanceof ImageBitmap)
+    {
+        console.log("C'est une bitmap !!!!");
+        sourceWidth = imageBuild.baseImg.width;
+        sourceHeight = imageBuild.baseImg.height;
+    }
+    else
+        return ;
+
+    // Downscale si necessaire pour que elle est une width max de 'canvasWidth' soit 1080px;
+    console.log(`Base source dimensions : width = ${sourceWidth}, height = ${sourceHeight}, ratio = ${sourceWidth / sourceHeight}`);
+    imgRatio = sourceHeight / sourceWidth;
+    sourceWidth = sourceWidth < canvasWidth ? sourceWidth : canvasWidth;
+    sourceHeight = Math.round(sourceWidth * imgRatio);
+    console.log(`Canvas dimensions : width = ${sourceWidth}, height = ${sourceHeight}, ratio = ${sourceWidth / sourceHeight}`);
+
+    canvasEl.width = sourceWidth;
+    canvasEl.height = sourceHeight;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    context.drawImage(imageSrc, 0, 0, canvasEl.width, canvasEl.height);
+    context.drawImage(imageBuild.baseImg, 0, 0, canvasEl.width, canvasEl.height);
 }
 
 
@@ -404,10 +430,10 @@ export function showImageEditorView() {
     const inputElement = imageEditorDiv.querySelector("input[type=file]");
     inputFileDebugger(inputElement);
     inputElement.addEventListener("change", () => updateImageDisplay(inputElement));
-    inputElement.addEventListener("change", () => previewTest(inputElement));
+    inputElement.addEventListener("change", async () => previewTest(inputElement));
 
     const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
-    useWebcamBtn.addEventListener("click", () => webcamTests(imageEditorDiv));
+    useWebcamBtn.addEventListener("click", async () => webcamTests(imageEditorDiv));
 
     const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
     startBtn.addEventListener("click", (event) => {
