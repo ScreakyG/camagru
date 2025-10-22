@@ -199,7 +199,7 @@ async function previewTest(inputElement) {
 
         console.log("imageSrc = ", imageSrc);
         imageBuild.baseImg = imageSrc;
-        drawToCanvasV2();
+        drawToCanvas();
     }
     // else
     //     Dessiner le placeholder sur le canvas ?
@@ -250,7 +250,7 @@ async function webcamTests(viewDiv) {
 // Affiche les frames d'une video sur un canvas.
 function loopVideoOnCanvas()
 {
-    drawToCanvasV2();
+    drawToCanvas();
     raf = requestAnimationFrame(loopVideoOnCanvas);
 }
 
@@ -305,6 +305,7 @@ function takePicture() {
     }
 }
 
+// Dessine simplement l'overlay sur le canvas en se mettant aux dimensions du canvas.
 function drawOverlay(overlay) {
     console.log(`Drawing overlay = `, overlay);
     if (!overlay)
@@ -316,7 +317,13 @@ function drawOverlay(overlay) {
     context.drawImage(overlay.imgEl, 0, 0, canvasEl.width, canvasEl.height);
 }
 
-async function drawToCanvasV2() {
+/**
+ * Fonction principale qui dessine sur le canvas.
+ * Regarde la variable imageBuild et va dessiner ce qu'il y a dedans.
+ * Redimensionne la source si besoin pour la downscale a une largeur de 1080px
+ * Dessine l'overlay selectionne ou non.
+ */
+async function drawToCanvas() {
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
 
@@ -354,6 +361,9 @@ async function drawToCanvasV2() {
     canvasEl.height = sourceHeight;
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(imageBuild.baseImg, 0, 0, canvasEl.width, canvasEl.height);
+
+    if (imageBuild.activeOverlay)
+        drawOverlay(imageBuild.activeOverlay);
 }
 
 
@@ -458,7 +468,8 @@ export function showImageEditorView() {
                 event.preventDefault();
             else
             {
-                drawOverlay(overlays[i]);
+                imageBuild.activeOverlay = overlays[i];
+                drawToCanvas();
             }
         });
     }
