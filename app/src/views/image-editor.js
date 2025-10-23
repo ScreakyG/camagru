@@ -295,7 +295,7 @@ async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92
         dt.items.add(file);
         inputElement.files = dt.files;
 
-        inputElement.dispatchEvent(new Event("change", { bubbles: true }));
+        // inputElement.dispatchEvent(new Event("change", { bubbles: true }));
     }
     catch (error)
     {
@@ -305,8 +305,9 @@ async function convertCanvasToFile(canvas, { type = "image/jpeg", quality = 0.92
 
 /**
  * Prend une capture du stream de video en le dessinant sur un canvas.
+ * Converti une image a partir de la video pour avoir la qualite originale avant de downscale cote serveur.
  */
-function takePicture() {
+async function takePicture() {
     const video = document.getElementById("video");
     const canvasEl = document.getElementById("canvas");
     const context = canvasEl.getContext("2d");
@@ -324,7 +325,7 @@ function takePicture() {
         context.drawImage(video, 0, 0, canvasEl.width, canvasEl.height);
 
         hideVideoStream();
-        convertCanvasToFile(canvasEl);
+        await convertCanvasToFile(canvasEl);
     }
 }
 
@@ -432,7 +433,7 @@ export function showImageEditorView() {
                             <h2>Choose a image</h2>
                             <div>
                                 <label for="image_upload_input" class="btn">Upload a image (PNG, JPG)</label>
-                                <input class="opacity-0 sr-only" type="file" id="image_upload_input" name="image_upload" accept="image/*" required></input>
+                                <input class="opacity-0 sr-only" type="file" id="image_upload_input" name="image_upload" accept="image/*"></input>
                                 <button id="request_webcam" type="button" class="btn">Use webcam</button>
                             </div>
                         </div>
@@ -474,9 +475,6 @@ export function showImageEditorView() {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
-                <div>
-                    <button type="button" id="start-button" class="btn">Capture</button>
-                </div>
             </form>
         </div>
     `
@@ -496,18 +494,16 @@ export function showImageEditorView() {
     const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
     useWebcamBtn.addEventListener("click", async () => webcamTests(imageEditorDiv));
 
-    const startBtn = imageEditorDiv.querySelector("button[id=start-button]");
-    startBtn.addEventListener("click", (event) => {
-        takePicture();
-        event.preventDefault();
-    })
-
     const editorForm = imageEditorDiv.querySelector("form");
     editorForm.addEventListener("change", () => handleSubmitButtonInteraction(imageEditorDiv, editorForm));
-    editorForm.addEventListener("submit", (event) => {
+    editorForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (mediaStream)
+            await takePicture();
+
         const data = getFormValues(editorForm);
-        console.log(data);
+        console.log("Sending form to API : ",data);
+        resetEditor();
     });
 
     // Rend les overlays selectionables uniquement si une image est presente dans input/stream.
