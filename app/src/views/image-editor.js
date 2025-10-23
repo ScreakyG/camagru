@@ -32,6 +32,27 @@ let imageBuild = {
 
 let webcamPlaceholder = null;
 
+/**
+ * Fonction a mettre :
+ * - Quand on switch sur la webcam.
+ * - Quand on valide la picture ?.
+ */
+function resetEditor() {
+    resetOverlays();
+    resetInputElement();
+    drawPlaceholder(); // Pas necessaire car resetInputElement() va declancher un drawToCanvas qui va dessiner le placeholder.
+}
+
+function resetOverlays() {
+    //TODO : Clear reelement les radio buttons checked pour reset.
+    const overlaysRadiosInputs = document.getElementById("overlays").querySelectorAll("input[type=radio]");
+    for (let i = 0; i < overlaysRadiosInputs.length; i++)
+        overlaysRadiosInputs[i].checked = false;
+
+    imageBuild.baseImg = null;
+    imageBuild.activeOverlay = null;
+}
+
 function loadOverlays() {
     for (let i = 0; i < overlays.length; i++)
     {
@@ -192,6 +213,7 @@ function handleSubmitButtonInteraction(viewDiv, form) {
 async function previewTest(inputElement) {
     const file = inputElement.files[0];
 
+    resetOverlays();
     hideVideoStream();
     // Si le fichier n'est pas valide on affiche le default placeholder.
     if (isValidInputFile(file))
@@ -203,10 +225,7 @@ async function previewTest(inputElement) {
         drawToCanvas();
     }
     else
-    {
-        // Dessiner le placeholder ?
         drawPlaceholder();
-    }
 }
 
 /**
@@ -214,7 +233,7 @@ async function previewTest(inputElement) {
  * Recupere le stream du media et l'affiche dans l'element video.
  */
 async function webcamTests(viewDiv) {
-    resetInputElement();
+    resetEditor();
     hideWebcamErrors();
 
     try
@@ -330,7 +349,6 @@ function drawPlaceholder() {
     canvasEl.width = sourceWidth;
     canvasEl.height = sourceHeight;
 
-    console.log(`Sourcewidth = ${sourceWidth}, Sourceheight = ${sourceHeight}, placeholder = ${webcamPlaceholder}`);
     context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     context.drawImage(webcamPlaceholder, 0, 0, sourceWidth, sourceHeight);
 }
