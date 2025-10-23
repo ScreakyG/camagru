@@ -30,6 +30,14 @@ let imageBuild = {
     activeOverlay : null
 };
 
+let webcamPlaceholder = null;
+
+function loadWebcamPlaceholder() {
+    let img = document.createElement("img");
+    img.src = "/src/images/image_placeholder.png";
+    webcamPlaceholder = img;
+}
+
 function loadOverlays() {
     for (let i = 0; i < overlays.length; i++)
     {
@@ -191,7 +199,6 @@ async function previewTest(inputElement) {
     const file = inputElement.files[0];
 
     hideVideoStream();
-
     // Si le fichier n'est pas valide on affiche le default placeholder.
     if (isValidInputFile(file))
     {
@@ -201,8 +208,11 @@ async function previewTest(inputElement) {
         imageBuild.baseImg = imageSrc;
         drawToCanvas();
     }
-    // else
-    //     Dessiner le placeholder sur le canvas ?
+    else
+    {
+        // Dessiner le placeholder ?
+        drawPlaceholder();
+    }
 }
 
 /**
@@ -305,6 +315,22 @@ function takePicture() {
     }
 }
 
+function drawPlaceholder() {
+    console.log("Drawing placeholder...")
+    const canvasEl = document.getElementById("canvas");
+    const context = canvasEl.getContext("2d");
+
+
+    const sourceWidth = webcamPlaceholder.width;
+    const sourceHeight = webcamPlaceholder.height;
+    canvasEl.width = sourceWidth;
+    canvasEl.height = sourceHeight;
+
+    console.log(`Sourcewidth = ${sourceWidth}, Sourceheight = ${sourceHeight}, placeholder = ${webcamPlaceholder}`);
+    context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    context.drawImage(webcamPlaceholder, 0, 0, sourceWidth, sourceHeight);
+}
+
 // Dessine simplement l'overlay sur le canvas en se mettant aux dimensions du canvas.
 function drawOverlay(overlay) {
     console.log(`Drawing overlay = `, overlay);
@@ -332,7 +358,10 @@ async function drawToCanvas() {
     let imgRatio = 0;
 
     if (!imageBuild.baseImg)
+    {
+        drawPlaceholder();
         return ;
+    }
 
     // On regarde si la base img provient d'un upload (donc file converti en ImageBitmap) ou de la webcam (stream -> video) car les variables de dimensions ne sont pas appelee pareil.
     if (imageBuild.baseImg instanceof HTMLVideoElement)
@@ -435,6 +464,7 @@ export function showImageEditorView() {
     // Placeholder
     // src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAAPFBMVEX///+rq6unp6fMzMykpKTp6enx8fHU1NS0tLS6urr6+vqwsLDHx8fPz8/w8PD19fXa2trh4eHl5eXAwMAzrysnAAADpklEQVR4nO2c2ZKDIBAAE6KJmsPr//91c69yKKREHav7dctl6YVhGJTdDgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZqE5LMU1XbrvVupELUe9dO9t5PsFyZfuvY1FjWRL994GRnQeRs5NOj+rNpIVCzSMER2M6GBEByM6GNHBiI4cI+mhbdtLE12SFCO3XKnH36ryJnLDQoxU/xm2usZtWIaRWu1nUyLCSNnfh6moE0eEkYvqK4lavpBgpNA368ktYsMSjKSJbqSK2LAEI7VuRB0iNizBSGUYuURsWIIRc4zEXH8lGDkacSTm6YEEI7tMX2zKiA2LMFL185HAMJJWdcj2UIQRfZCEDJEyT5JkH7BcyzBSnrujJORY9r0BSPzXaxlGHv/pz5TJQoQUn4Mw5T1KhBi5x5LseUadnYJKRlcVPLLEGNkVt7qq0rASWtOZa7nno3KM/EB5/mGF2rSRvLdqe+Z1WzZy0Moq6ujz1IaNNJoQz1CyXSO9IPIeJD5ZyXaN6KXIJx6hZLNGKpuQ/Xl8A7BVI6nNx+MAbPTJjRopjAKCdyjZqJHWOmeeSsay+W0asQcRv1CySSM3t4/7IGmHH96ikW8JwKHkNPj0Fo3o2bvBYCiRayRt84u1a/WYkOHfK9bISam92lvW0qOZvRvzZqgwINXI+5zP0rd8dIgMHxwLNdI4+zYaRF643y6QaaT4nxlaxtXo538O3LJlGmk7fetlXKW9/ybuUCLSSC8l7WZchTt7N5S4QolEI1pK2sm4Tt5C7mPLEUoEGjH3tZ++OUoAjkHiKAwINGIWx86vHxTjmUhPib0wIM+IZV/7DpOhn/bZjyvEGbHOjGffQoLIG1thQJoRV3HsFhZEXqjWolyaEUdKqvLyl89hbYUBYUbcKWlYVP1i7p5lGfFOSb05G9JlGfHZ14ZhZiWijFwnF2IJJZKM1NP7eKCFEkFGLEfbk5D1sxJBRvz3tWFohQE5Rk6etaAflPQKA2KMpJFGyJNuYUCKkdJ1tD0JXfVSjFjfj5mMbigRYmToaHsSJf+FARlGftjXhvJ9j1GEEef7MdOhvu8xijASN4i8lXy+dJNgxPhOLw7vL80FGDnO4uN7FCbAyGx3xb0KA+s3cpntysnkGUpWb6Q8zcjjP7B6I7ODEZ1VGznfjrNzW7WRfbIA6zayFBjRWeWtxhU3X+vUi92Ofoh9CR0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA2+AN7/TZH3Ls1kQAAAABJRU5ErkJggg=="
 
+    loadWebcamPlaceholder();
     loadOverlays();
 
     const inputElement = imageEditorDiv.querySelector("input[type=file]");
@@ -473,7 +503,5 @@ export function showImageEditorView() {
             }
         });
     }
-
-
     app.appendChild(imageEditorDiv);
 }
