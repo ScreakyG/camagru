@@ -9,7 +9,9 @@ const fileTypes = [
 // Array qui contient les infos de mes overlays et une variable contenant l'objet image a dessiner sur le canvas.
 const overlays = [
     { id: 0, name: "frost_frame", path: "/src/images/frost_frame.png", imgEl : null},
-    { id: 1, name: "pixel_glasses", path:"/src/images/pixel_glasses.png", imgEl : null}
+    { id: 1, name: "pixel_glasses", path:"/src/images/pixel_glasses.png", imgEl : null},
+    { id: 3, name: "cat_selfie", path: "/src/images/cat_selfie.png", imgEl: null},
+    { id: 4, name: "smile_glasses", path: "/src/images/smile_glasses.png", imgEl: null}
 ];
 
 /**
