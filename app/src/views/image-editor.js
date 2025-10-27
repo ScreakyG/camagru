@@ -34,11 +34,22 @@ let imageBuild = {
 
 let webcamPlaceholder = null;
 
-/**
- * Fonction a mettre :
- * - Quand on switch sur la webcam.
- * - Quand on valide la picture ?.
- */
+async function sendEditorForm(data) {
+    console.log("Sending form to API : ",data);
+    try
+    {
+        const response = await fetch("/api/user/publish-image", {
+            method: "POST"
+        });
+        const resData = await response.json();
+        printAPIResponse("/api/user/publish-image", resData);
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
+
 function resetEditor() {
     resetOverlays();
     resetInputElement();
@@ -519,8 +530,8 @@ export function showImageEditorView() {
         if (mediaStream)
             await takePicture();
 
-        const data = getFormValues(editorForm);
-        console.log("Sending form to API : ",data);
+        const data = getFormValues(editorForm);;
+        await sendEditorForm(data);
         resetEditor();
     });
 
