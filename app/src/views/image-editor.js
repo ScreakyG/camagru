@@ -39,7 +39,9 @@ async function sendEditorForm(data) {
     try
     {
         const response = await fetch("/api/user/publish-image", {
-            method: "POST"
+            method: "POST",
+            body: data,
+            credentials: "include"
         });
         const resData = await response.json();
         printAPIResponse("/api/user/publish-image", resData);
@@ -530,7 +532,7 @@ export function showImageEditorView() {
         if (mediaStream)
             await takePicture();
 
-        const data = getFormValues(editorForm);;
+        const data = new FormData(editorForm);
         await sendEditorForm(data);
         resetEditor();
     });

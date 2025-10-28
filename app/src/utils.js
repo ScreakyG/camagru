@@ -55,4 +55,3 @@ export function closeForgotPasswordModal() {
     const forgotPasswordModal = document.getElementById("forgot-password-modal");
     forgotPasswordModal?.close();
 }
-

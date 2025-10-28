@@ -2,6 +2,7 @@ import Fastify from "fastify"
 import cors from "@fastify/cors"
 import cookie from "@fastify/cookie"
 
+
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import { initDB } from "./services/db.js"
@@ -17,7 +18,8 @@ await initDB();
 initEmailService();
 await emailServiceStatus();
 
-fastify.register(cookie);
+await fastify.register(cookie);
+await fastify.register(import('@fastify/multipart'));
 
 
 // Register du plugin pour gerer CORS
