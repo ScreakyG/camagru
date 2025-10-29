@@ -19,7 +19,11 @@ initEmailService();
 await emailServiceStatus();
 
 await fastify.register(cookie);
-await fastify.register(import('@fastify/multipart'));
+await fastify.register(import('@fastify/multipart'), {
+    limits: {
+        parts: 2
+    }
+});
 
 
 // Register du plugin pour gerer CORS
