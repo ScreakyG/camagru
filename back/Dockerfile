@@ -9,6 +9,8 @@ COPY back/package*.json ./
 RUN npm install
 # Copy les fichiers sources.
 COPY back/src/ ./src/
+#Copy les overlays
+COPY back/overlays ./overlays/
 # L'API communique via le port 3000.
 EXPOSE 3000
 # Lance le server au demmarage du container.

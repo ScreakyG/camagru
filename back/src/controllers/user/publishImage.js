@@ -1,4 +1,13 @@
 import { BadRequestError } from "../../utils/errors.js";
+import path from "node:path";
+import fs from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import sharp from "sharp";
+
+const uploadDir = path.join(process.cwd(), "uploads");
+
+// Create uploads DIR (does nothing is already exists)
+await fs.mkdir(uploadDir, { recursive: true });
 
 const availableOverlays = [
     "frost_frame",
@@ -42,6 +51,38 @@ function isValidImageFile(inputFile) {
     return (false);
 }
 
+async function createComposedImage(imageFile, overlay) {
+    // Redimensionnement image de base.
+    const downscaled = await sharp(imageFile)
+        .rotate()
+        .resize({width: 1080, withoutEnlargement: true})
+        .jpeg({quality: 92})
+        .toBuffer();
+
+    // Recupere les dimensions de l'image uploadee.
+    const base = sharp(downscaled).rotate();
+    const meta = await base.metadata();
+    console.log("Metadata base image = ", meta);
+
+    // Chargement + redimensionner l'overlay pour fit sur l'image uploadee.
+    const overlayPath = path.join(process.cwd(), "overlays", `${overlay}.png`);
+    const overlayImgResized = await sharp(overlayPath)
+        .resize({ width: meta.width, height: meta.height, fit: "fill" })
+        .png()
+        .toBuffer();
+
+    // Fusion des 2 images.
+    const composed = await base.composite([{input : overlayImgResized}])
+        .png()
+        .toBuffer();
+
+    // Sauvegarder le resultat.
+    const uuid = randomUUID();
+    const imageSavePath = path.join(uploadDir, `${uuid}.png`);
+    await fs.writeFile(imageSavePath, composed);
+    //
+}
+
 export async function publishImage(request, reply) {
     let uploadedFile = null;
     let uploadedFileMetadata = null
@@ -61,7 +102,7 @@ export async function publishImage(request, reply) {
             else if (part.type === "field")
                 overlayRequested = part;
         }
-        
+
         if (!isValidImageFile(uploadedFileMetadata))
             throw new BadRequestError("Uploaded file is not a image.");
 
@@ -69,7 +110,9 @@ export async function publishImage(request, reply) {
         if (!overlayParsed)
             throw new BadRequestError("Requested filter is not valid.");
 
-        return (reply.send({success: true, message: "Endpoint success call"}));
+        await createComposedImage(uploadedFile, overlayParsed);
+
+        return (reply.send({success: true, message: "Image successfuly composed and saved."}));
     }
     catch(error)
     {
