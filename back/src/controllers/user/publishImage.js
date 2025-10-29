@@ -4,8 +4,8 @@ import fs from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 
+// Dossier ou seront stock les images des users.
 const uploadDir = path.join(process.cwd(), "uploads");
-
 // Create uploads DIR (does nothing is already exists)
 await fs.mkdir(uploadDir, { recursive: true });
 

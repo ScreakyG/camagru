@@ -496,7 +496,7 @@ export function showImageEditorView() {
                     <div id="preview-img" class="col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
                         <div class="w-full h-full flex justify-center items-center overflow-hidden">
                             <video class="hidden max-w-full max-h-full" id="video">Video stream not available.</video>
-                            <canvas class="max-w-full max-h-full bg-zinc-500" id="canvas"></canvas>
+                            <canvas class="max-w-full max-h-full bg-black" id="canvas"></canvas>
                         </div>
                     </div>
                     <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
