@@ -1,8 +1,12 @@
-import { BadRequestError } from "../../utils/errors.js";
+import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
+import { verifyJWT } from "../../utils/jwt.js";
+import { findUserById } from "../../models/querys.js";
+
 import path from "node:path";
 import fs from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
+
 
 // Dossier ou seront stock les images des users.
 const uploadDir = path.join(process.cwd(), "uploads");
@@ -91,6 +95,21 @@ export async function publishImage(request, reply) {
 
     try
     {
+        // Auth check
+        const auth_token = request.cookies.auth_token;
+        if (!auth_token)
+            throw new AuthenticationError("Could not find auth_token in cookies.");
+
+        const decodedToken = verifyJWT(auth_token);
+        if (!decodedToken)
+            throw new AuthenticationError("Auth_token is invalid/expired.");
+
+        const user = await findUserById(decodedToken.id);
+        if (!user)
+            throw new AuthenticationError(`Couldn't find a user with id: ${decodedToken.id}`);
+        //
+
+
         const parts = request.parts();
         for await (const part of parts)
         {
