@@ -125,3 +125,10 @@ export async function updateUsername(user, newUsername) {
     const query = "UPDATE users SET username=? WHERE id=?";
     const result = await db.run(query, [newUsername, user.id]);
 }
+
+export async function linkImageToUser(path, user) {
+    const db = await getDB();
+
+    const query = `INSERT INTO images (img_path, user_id) VALUES (?, ?)`
+    const result = await db.run(query, [path, user.id]);
+}

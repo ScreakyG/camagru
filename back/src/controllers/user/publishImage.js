@@ -1,6 +1,6 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
-import { findUserById } from "../../models/querys.js";
+import { findUserById, linkImageToUser } from "../../models/querys.js";
 
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -84,6 +84,8 @@ async function createComposedImage(imageFile, overlay) {
     const uuid = randomUUID();
     const imageSavePath = path.join(uploadDir, `${uuid}.png`);
     await fs.writeFile(imageSavePath, composed);
+
+    return (imageSavePath);
     //
 }
 
@@ -129,7 +131,8 @@ export async function publishImage(request, reply) {
         if (!overlayParsed)
             throw new BadRequestError("Requested filter is not valid.");
 
-        await createComposedImage(uploadedFile, overlayParsed);
+        const imagePath = await createComposedImage(uploadedFile, overlayParsed);
+        await linkImageToUser(imagePath, user);
 
         return (reply.send({success: true, message: "Image successfuly composed and saved."}));
     }

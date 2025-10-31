@@ -6,6 +6,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./app:/var/www/static
+      - ./back/uploads:/var/www/uploads:ro
     networks:
       - camagru-network
 
