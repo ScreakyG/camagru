@@ -1137,6 +1137,9 @@
   .w-52 {
     width: calc(var(--spacing) * 52);
   }
+  .w-\[518px\] {
+    width: 518px;
+  }
   .w-full {
     width: 100%;
   }

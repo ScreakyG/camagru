@@ -51,7 +51,7 @@ async function createTables() {
         CREATE TABLE IF NOT EXISTS images (
             id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             img_path            TEXT NOT NULL UNIQUE,
-            created_at          DATETIME DEFAULT CURENT_TIMESTAMP NOT NULL,
+            created_at          DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
             user_id             INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )`)

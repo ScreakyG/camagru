@@ -26,7 +26,7 @@ const allowedInputFileFormat = [
 ];
 
 function parseOverlay(overlayRequested) {
-    console.log("Selected overlay = ", overlayRequested);
+    // console.log("Selected overlay = ", overlayRequested);
 
     if (!overlayRequested)
         return (null);
@@ -42,7 +42,7 @@ function parseOverlay(overlayRequested) {
 }
 
 function isValidImageFile(inputFile) {
-    console.log("Uploaded file = ", inputFile);
+    // console.log("Uploaded file = ", inputFile);
 
     if (!inputFile)
         return (false);
@@ -66,7 +66,7 @@ async function createComposedImage(imageFile, overlay) {
     // Recupere les dimensions de l'image uploadee.
     const base = sharp(downscaled).rotate();
     const meta = await base.metadata();
-    console.log("Metadata base image = ", meta);
+    // console.log("Metadata base image = ", meta);
 
     // Chargement + redimensionner l'overlay pour fit sur l'image uploadee.
     const overlayPath = path.join(process.cwd(), "overlays", `${overlay}.png`);
@@ -85,7 +85,9 @@ async function createComposedImage(imageFile, overlay) {
     const imageSavePath = path.join(uploadDir, `${uuid}.png`);
     await fs.writeFile(imageSavePath, composed);
 
-    return (imageSavePath);
+    const frontPath = path.join(`/uploads/${uuid}.png`);
+
+    return (frontPath);
     //
 }
 
@@ -132,9 +134,9 @@ export async function publishImage(request, reply) {
             throw new BadRequestError("Requested filter is not valid.");
 
         const imagePath = await createComposedImage(uploadedFile, overlayParsed);
-        await linkImageToUser(imagePath, user);
+        const imageId = await linkImageToUser(imagePath, user);
 
-        return (reply.send({success: true, message: "Image successfuly composed and saved."}));
+        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: { id: imageId, path: imagePath }}));
     }
     catch(error)
     {

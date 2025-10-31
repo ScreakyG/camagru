@@ -45,6 +45,12 @@ async function sendEditorForm(data) {
         });
         const resData = await response.json();
         printAPIResponse("/api/user/publish-image", resData);
+
+        if (response.ok)
+        {
+            const imageResult = document.getElementById("compose-result");
+            imageResult.src = resData.image_metadata.path;
+        }
     }
     catch(error)
     {
@@ -512,6 +518,7 @@ export function showImageEditorView() {
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
+            <img class="w-[518px]" id="compose-result"src="/uploads/7be4cbd4-c52b-4e67-9a58-ddc5cf102fde.png"></img>
         </div>
     `
 

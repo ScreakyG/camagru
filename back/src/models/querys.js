@@ -131,4 +131,6 @@ export async function linkImageToUser(path, user) {
 
     const query = `INSERT INTO images (img_path, user_id) VALUES (?, ?)`
     const result = await db.run(query, [path, user.id]);
+    
+    return (result.lastID);
 }
