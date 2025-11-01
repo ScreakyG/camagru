@@ -15,6 +15,7 @@ Camagru is a instagram like web app that allow users to take live pictures with 
 ## TODO:
 - Call endpoint to store the image.
 - Link composed image to users in DB.
+- Show the feed in image editor
 
 ## Preview
 <div align="center">
