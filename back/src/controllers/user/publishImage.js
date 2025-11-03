@@ -136,7 +136,7 @@ export async function publishImage(request, reply) {
         const imagePath = await createComposedImage(uploadedFile, overlayParsed);
         const imageId = await linkImageToUser(imagePath, user);
 
-        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: { id: imageId, path: imagePath }}));
+        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: { id: imageId, img_path: imagePath }}));
     }
     catch(error)
     {
