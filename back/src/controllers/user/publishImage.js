@@ -1,6 +1,6 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
-import { findUserById, linkImageToUser } from "../../models/querys.js";
+import { findUserById, getImageById, linkImageToUser } from "../../models/querys.js";
 
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -135,8 +135,9 @@ export async function publishImage(request, reply) {
 
         const imagePath = await createComposedImage(uploadedFile, overlayParsed);
         const imageId = await linkImageToUser(imagePath, user);
+        const imageMetadata = await getImageById(imageId);
 
-        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: { id: imageId, img_path: imagePath }}));
+        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: imageMetadata}));
     }
     catch(error)
     {

@@ -144,3 +144,12 @@ export async function getAllUserImages(user) {
 
     return (result);
 }
+
+export async function getImageById(imageId) {
+    const db = await getDB();
+
+    const query = `SELECT * FROM images WHERE id = ?`;
+    const result = await db.get(query, [imageId]);
+
+    return (result);
+}
