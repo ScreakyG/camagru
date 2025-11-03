@@ -34,6 +34,19 @@ let imageBuild = {
 
 let webcamPlaceholder = null;
 
+async function getUserFeed() {
+    try
+    {
+        const response = await fetch("/api/user/user-gallery");
+        const resData = await response.json();
+        console.log(resData.user_images);
+    }
+    catch (error)
+    {
+        console.log("getUserFeed ERROR = ", error);
+    }
+}
+
 async function sendEditorForm(data) {
     console.log("Sending form to API : ",data);
     try
@@ -48,6 +61,7 @@ async function sendEditorForm(data) {
 
         if (response.ok)
         {
+            getUserFeed();
             const imageResult = document.getElementById("compose-result");
             imageResult.src = resData.image_metadata.path;
         }
@@ -518,7 +532,7 @@ export function showImageEditorView() {
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
-            <img class="w-[518px]" id="compose-result"src="/uploads/7be4cbd4-c52b-4e67-9a58-ddc5cf102fde.png"></img>
+            <img class="w-[518px]" id="compose-result"src=""></img>
         </div>
     `
 

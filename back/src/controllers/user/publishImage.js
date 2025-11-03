@@ -143,6 +143,6 @@ export async function publishImage(request, reply) {
         console.log("CATCHED ERROR = ", error);
         if (error.statusCode)
             return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}))
-        return (reply.send({success: false, message: "Error with uploaded file/selected overlay."}))
+        return (reply.send({success: false, message: "Internal server error", details: error.message}))
     }
 }

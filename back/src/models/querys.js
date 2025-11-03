@@ -131,6 +131,16 @@ export async function linkImageToUser(path, user) {
 
     const query = `INSERT INTO images (img_path, user_id) VALUES (?, ?)`
     const result = await db.run(query, [path, user.id]);
-    
+
     return (result.lastID);
+}
+
+export async function getAllUserImages(user) {
+    const db = await getDB();
+
+    // const query = `SELECT images.* FROM users JOIN images ON users.id = images.user_id WHERE users.id = ?`;
+    const query = `SELECT * FROM images WHERE images.user_id = ?`;
+    const result = await db.all(query, [user.id]);
+
+    return (result);
 }
