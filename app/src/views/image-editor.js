@@ -84,11 +84,24 @@ function addImageToFeed(image, imageEditorDiv) {
     const userFeed = imageEditorDiv.querySelector("div[id=feed]");
 
     console.log(`Adding image to feed : `, image);
+    const newDiv = document.createElement("div");
     const newImg = document.createElement("img");
+    const deleteBtn = document.createElement("button");
+
+    newDiv.className = "relative aspect-square rounded-xl group";
+
+    deleteBtn.type = "button";
+    deleteBtn.className = "absolute inset-0 btn btn-error w-10 opacity-0 group-hover:opacity-100";
+    deleteBtn.textContent = "X";
+    deleteBtn.addEventListener("click", () => console.log("You will delete image : ", image));
+
     newImg.src = image.img_path;
     // newImg.alt = `User feed image ${image.name}`;
-    newImg.className = "aspect-square rounded-xl";
-    userFeed.appendChild(newImg);
+    newImg.className = "w-full h-full rounded-xl";
+
+    newDiv.appendChild(deleteBtn);
+    newDiv.appendChild(newImg);
+    userFeed.appendChild(newDiv);
 }
 
 async function loadUserFeed(imageEditorDiv) {

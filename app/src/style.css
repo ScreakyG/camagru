@@ -866,6 +866,12 @@
   .fixed {
     position: fixed;
   }
+  .relative {
+    position: relative;
+  }
+  .inset-0 {
+    inset: calc(var(--spacing) * 0);
+  }
   .dropdown-end {
     --anchor-h: span-left;
     :where(.dropdown-content) {
@@ -1180,9 +1186,6 @@
   .flex-col {
     flex-direction: column;
   }
-  .flex-col-reverse {
-    flex-direction: column-reverse;
-  }
   .items-center {
     align-items: center;
   }
@@ -1404,6 +1407,13 @@
   .btn-success {
     --btn-color: var(--color-success);
     --btn-fg: var(--color-success-content);
+  }
+  .group-hover\:opacity-100 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        opacity: 100%;
+      }
+    }
   }
   .disabled\:btn-error {
     &:disabled {
