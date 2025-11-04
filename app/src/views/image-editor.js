@@ -80,6 +80,20 @@ function resetEditor() {
     drawPlaceholder(); // Pas necessaire car resetInputElement() va declancher un drawToCanvas qui va dessiner le placeholder.
 }
 
+async function deleteImageFromFeed(image) {
+    console.log("Deleting image : ", image);
+    /**
+     * TODO :
+     *  1/ Call la route pour delete
+     *  2/ Supprimer la div du DOM.
+     */
+    const test = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, 10000);
+    })
+}
+
 function addImageToFeed(image, imageEditorDiv) {
     const userFeed = imageEditorDiv.querySelector("div[id=feed]");
 
@@ -93,7 +107,11 @@ function addImageToFeed(image, imageEditorDiv) {
     deleteBtn.type = "button";
     deleteBtn.className = "absolute inset-0 btn btn-error w-10 opacity-0 group-hover:opacity-100";
     deleteBtn.textContent = "X";
-    deleteBtn.addEventListener("click", () => console.log("You will delete image : ", image));
+    deleteBtn.addEventListener("click", async () => {
+        deleteBtn.disabled = true;
+        await deleteImageFromFeed(image)
+        deleteBtn.disabled = false;
+    });
 
     newImg.src = image.img_path;
     // newImg.alt = `User feed image ${image.name}`;
