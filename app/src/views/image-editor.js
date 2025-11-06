@@ -87,11 +87,25 @@ async function deleteImageFromFeed(image) {
      *  1/ Call la route pour delete
      *  2/ Supprimer la div du DOM.
      */
-    const test = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve();
-        }, 10000);
-    })
+
+    // const test = await new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve();
+    //     }, 3000);
+    // })
+
+    try
+    {
+        const response = await fetch(`/api/user/delete-image/${image.id}`, {
+            method: "DELETE",
+        })
+        const resData = await response.json();
+        printAPIResponse(`/api/user/delete-image/${image.id}`, resData);
+    }
+    catch (error)
+    {
+        console.log("ERROR : ", error);
+    }
 }
 
 function addImageToFeed(image, imageEditorDiv) {
