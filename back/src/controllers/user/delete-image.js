@@ -28,11 +28,15 @@ export async function deleteImage(request, reply) {
         if (!image)
             throw BadRequestError("Image does not exist.");
 
-        // TODO : Verifier que l'user possede l'image.
+        // Verifier que l'user possede l'image.
         if (user.id !== image.user_id)
             throw new BadRequestError("You do not own this image.");
 
-        // TODO : Supprimer l'image.
+        /**
+         * TODO :
+         *  1/ Supprimer l'image de la DB.
+         *  2/ Supprimer l'image du systeme.
+         */
 
         return (reply.send({success: true, message: `Sucessfully deleted image : ${image.id}`}));
     }
