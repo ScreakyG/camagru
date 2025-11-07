@@ -7,6 +7,7 @@ import { redirectTo } from "./navigation.js";
 import { cleanPreviousView } from "./cleaning.js";
 import { showSettingsView } from "./views/settings.js";
 import { showImageEditorView } from "./views/image-editor.js";
+import { showGalleryView } from "./views/gallery.js";
 
 // Catching all events and preventing default behavior of <a> to prevent page refresh.
 export function handleAnchors() {
@@ -92,6 +93,11 @@ export async function router() {
 
         case "/image-editor":
             showImageEditorView();
+            break;
+
+        case "/gallery":
+            showGalleryView();
+            break;
 
         default:
             // Afficher une page 404 ?
