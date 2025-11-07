@@ -159,6 +159,4 @@ export async function deleteImageById(imageId) {
 
     const query = `DELETE FROM images WHERE id = ?`
     const result = await db.run(query, [imageId]);
-
-    console.log("Delete DB Operation = ",result);
 }
