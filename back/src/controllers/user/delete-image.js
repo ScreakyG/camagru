@@ -1,6 +1,9 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
-import { findUserById, getImageById } from "../../models/querys.js";
+import { deleteImageById, findUserById, getImageById } from "../../models/querys.js";
+
+import fs from "node:fs/promises";
+import path from "node:path";
 
 export async function deleteImage(request, reply) {
     try
@@ -26,7 +29,7 @@ export async function deleteImage(request, reply) {
         const image = await getImageById(id);
         console.log("Image to delete = ", image);
         if (!image)
-            throw BadRequestError("Image does not exist.");
+            throw new BadRequestError("Image does not exist.");
 
         // Verifier que l'user possede l'image.
         if (user.id !== image.user_id)
@@ -38,7 +41,13 @@ export async function deleteImage(request, reply) {
          *  2/ Supprimer l'image du systeme.
          */
 
-        return (reply.send({success: true, message: `Sucessfully deleted image : ${image.id}`}));
+        await deleteImageById(image.id);
+
+        const imagePath = path.join(process.cwd(), image.img_path);
+        await fs.access(imagePath);
+        await fs.unlink(imagePath);
+
+        return (reply.send({success: true, message: `Sucessfully deleted image with id : ${image.id}`}));
     }
     catch (error)
     {

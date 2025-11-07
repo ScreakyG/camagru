@@ -153,3 +153,12 @@ export async function getImageById(imageId) {
 
     return (result);
 }
+
+export async function deleteImageById(imageId) {
+    const db = await getDB();
+
+    const query = `DELETE FROM images WHERE id = ?`
+    const result = await db.run(query, [imageId]);
+
+    console.log("Delete DB Operation = ",result);
+}
