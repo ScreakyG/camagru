@@ -27,7 +27,6 @@ export async function deleteImage(request, reply) {
             throw new BadRequestError("Missing image id parameter.");
 
         const image = await getImageById(id);
-        console.log("Image to delete = ", image);
         if (!image)
             throw new BadRequestError("Image does not exist.");
 
@@ -35,17 +34,19 @@ export async function deleteImage(request, reply) {
         if (user.id !== image.user_id)
             throw new BadRequestError("You do not own this image.");
 
-        /**
-         * TODO :
-         *  1/ Supprimer l'image de la DB.
-         *  2/ Supprimer l'image du systeme.
-         */
-
         await deleteImageById(image.id);
 
         const imagePath = path.join(process.cwd(), image.img_path);
-        await fs.access(imagePath);
-        await fs.unlink(imagePath);
+
+        try
+        {
+            await fs.access(imagePath);
+            await fs.unlink(imagePath);
+        }
+        catch (error)
+        {
+            console.log("Could not delete image from filesystem : ", error);
+        }
 
         return (reply.send({success: true, message: `Sucessfully deleted image with id : ${image.id}`}));
     }
