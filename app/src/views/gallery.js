@@ -1,6 +1,7 @@
-// Variables temporaires pour tests.
-
 const app = document.getElementById("app");
+let galleryDiv = null;
+
+// Variables temporaires pour tests.
 const galleryPosts = [
     {
         image_id: 1,
@@ -70,11 +71,14 @@ function createPost(userPost) {
     const commentBtn = newPost.querySelector("div[id=comments-btn]");
     commentBtn.addEventListener("click", () => commentPost(userPost));
 
-    app.appendChild(newPost);
+    galleryDiv.appendChild(newPost);
 }
 
 export function showGalleryView() {
+    galleryDiv = document.createElement("div");
 
     for (let i = 0; i < galleryPosts.length; i++)
         createPost(galleryPosts[i]);
+
+    app.appendChild(galleryDiv);
 }
