@@ -37,7 +37,7 @@ export async function getGalleryPosts(request, reply) {
     try
     {
         const allImages = await getAllPosts();
-
+        // JOIN egalement les likes et comments.
 
         return (reply.send({success: true, all_images: allImages}));
     }

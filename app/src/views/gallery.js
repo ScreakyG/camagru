@@ -25,11 +25,21 @@ function changeHeartColor(pathElem) {
         pathElem.classList.add("fill-red-500");
 }
 
-function likePost(post, likeBtn) {
-    console.log("You liked the image : ", post);
+function updateLikeCounter(likeCounterElem) {
+    likeCounterElem.textContent = `${0 + 1} Likes`
+}
 
-    const pathElem = likeBtn.querySelector("path");
-    changeHeartColor(pathElem);
+function likePost(post, postElem) {
+    console.log("You liked the image : ", post);
+    //TODO : Regarder si le user a deja like pour savoir si on ajoute / retire.
+
+    // Change la couleur du coeur.
+    const likeElem = postElem.querySelector("div[id=like-btn]").querySelector("path");
+    changeHeartColor(likeElem);
+
+    // Modifie le compteur.
+    const likeCounter = postElem.querySelector("p[id=like-counter]");
+    updateLikeCounter(likeCounter);
 }
 
 function commentPost(post) {
@@ -61,12 +71,12 @@ function createPost(userPost) {
                     </svg>
                 </div>
             </div>
-            <p class="px-2">0 Likes</p>
+            <p id="like-counter" class="px-2">0 Likes</p>
             <p class="px-2">View comments</p>
         </div>`
 
     const likeBtn = newPost.querySelector("div[id=like-btn]");
-    likeBtn.addEventListener("click", () => likePost(userPost, likeBtn));
+    likeBtn.addEventListener("click", () => likePost(userPost, newPost));
 
     const commentBtn = newPost.querySelector("div[id=comments-btn]");
     commentBtn.addEventListener("click", () => commentPost(userPost));
