@@ -16,8 +16,19 @@ const galleryPosts = [
     }
 ];
 
-function likePost(post) {
+// Change la couleur du coeur.
+function changeHeartColor(pathElem) {
+    if (pathElem.classList.contains("fill-red-500"))
+        pathElem.classList.remove("fill-red-500");
+    else
+        pathElem.classList.add("fill-red-500");
+}
+
+function likePost(post, likeBtn) {
     console.log("You liked the image : ", post);
+
+    const pathElem = likeBtn.querySelector("path");
+    changeHeartColor(pathElem);
 }
 
 function commentPost(post) {
@@ -54,7 +65,7 @@ function createPost(userPost) {
         </div>`
 
     const likeBtn = newPost.querySelector("div[id=like-btn]");
-    likeBtn.addEventListener("click", () => likePost(userPost));
+    likeBtn.addEventListener("click", () => likePost(userPost, likeBtn));
 
     const commentBtn = newPost.querySelector("div[id=comments-btn]");
     commentBtn.addEventListener("click", () => commentPost(userPost));
@@ -63,6 +74,7 @@ function createPost(userPost) {
 }
 
 export function showGalleryView() {
+
     for (let i = 0; i < galleryPosts.length; i++)
         createPost(galleryPosts[i]);
 }
