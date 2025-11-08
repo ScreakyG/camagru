@@ -1,4 +1,4 @@
-import { getAllUserImages, findUserById, getAllImagesFromDB } from "../../models/querys.js";
+import { getAllUserImages, findUserById, getAllPosts } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
@@ -32,13 +32,14 @@ export async function getUserImages(request, reply) {
     }
 }
 
-export async function getAllImages(request, reply) {
+// Retourne les posts formater avec les informations necessaires a la composition d'un post.
+export async function getGalleryPosts(request, reply) {
     try
     {
-        const allImages = await getAllImagesFromDB();
-        // Il faudrait remplacer les id des users par leurs nom.
+        const allImages = await getAllPosts();
 
-        return (reply.send({success: true, message: allImages}));
+
+        return (reply.send({success: true, all_images: allImages}));
     }
     catch (error)
     {

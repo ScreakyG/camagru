@@ -145,10 +145,10 @@ export async function getAllUserImages(user) {
     return (result);
 }
 
-export async function getAllImagesFromDB() {
+export async function getAllPosts() {
     const db = await getDB();
 
-    const query = `SELECT * FROM images ORDER BY created_at DESC`;
+    const query = `SELECT images.id, images.img_path, images.user_id, images.created_at, users.username FROM images JOIN users ON users.id = images.user_id ORDER BY images.created_at DESC`;
     const result = await db.all(query);
 
     return (result);

@@ -46,7 +46,7 @@ function createPost(userPost) {
                         <img id="user-avatar" src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
                     </div>
                 </div>
-                <p id="username-card">${userPost.id}</p>
+                <p id="username-card">${userPost.username}</p>
             </div>
             <img id="user-post" class="w-full" src=${userPost.img_path}></img>
             <div class="flex gap-2 m-1">
@@ -77,18 +77,18 @@ function createPost(userPost) {
 async function getAllUsersImages() {
     try
     {
-        const response = await fetch("/api/user/all-images");
+        const response = await fetch("/api/user/gallery-posts");
         const resData = await response.json();
-        printAPIResponse("/api/user/all-images", resData);
+        printAPIResponse("/api/user/gallery-posts", resData);
 
         if (response.ok)
-            return (resData.message);
+            return (resData.all_images);
         else
             return (null);
     }
     catch (error)
     {
-        console.error("Error while fetching API /api/user/all-images : ", error);
+        console.error("Error while fetching API /api/user/gallery-posts : ", error);
     }
 }
 
