@@ -1,21 +1,21 @@
+import { printAPIResponse } from "../utils.js";
+
 const app = document.getElementById("app");
 let galleryDiv = null;
 
 // Variables temporaires pour tests.
-const galleryPosts = [
-    {
-        image_id: 1,
-        img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
-        username: "Yka",
-        likes: 32
-    },
-    {
-        image_id: 2,
-        img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
-        username: "Neymar",
-        likes: 2
-    }
-];
+// const galleryPosts = [
+//     {
+//         id: 1,
+//         img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
+//         user_id: 1,
+//     },
+//     {
+//         id: 2,
+//         img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
+//         user_id: "Neymar",
+//     }
+// ];
 
 // Change la couleur du coeur.
 function changeHeartColor(pathElem) {
@@ -46,7 +46,7 @@ function createPost(userPost) {
                         <img id="user-avatar" src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
                     </div>
                 </div>
-                <p id="username-card">${userPost.username}</p>
+                <p id="username-card">${userPost.id}</p>
             </div>
             <img id="user-post" class="w-full" src=${userPost.img_path}></img>
             <div class="flex gap-2 m-1">
@@ -61,7 +61,7 @@ function createPost(userPost) {
                     </svg>
                 </div>
             </div>
-            <p class="px-2">${userPost.likes} Likes</p>
+            <p class="px-2">0 Likes</p>
             <p class="px-2">View comments</p>
         </div>`
 
@@ -74,11 +74,35 @@ function createPost(userPost) {
     galleryDiv.appendChild(newPost);
 }
 
-export function showGalleryView() {
-    galleryDiv = document.createElement("div");
+async function getAllUsersImages() {
+    try
+    {
+        const response = await fetch("/api/user/all-images");
+        const resData = await response.json();
+        printAPIResponse("/api/user/all-images", resData);
 
-    for (let i = 0; i < galleryPosts.length; i++)
-        createPost(galleryPosts[i]);
+        if (response.ok)
+            return (resData.message);
+        else
+            return (null);
+    }
+    catch (error)
+    {
+        console.error("Error while fetching API /api/user/all-images : ", error);
+    }
+}
+
+export async function showGalleryView() {
+    galleryDiv = document.createElement("div");
+    galleryDiv.className = "flex flex-col gap-5 items-center"
+
+    // TODO: Charger les images de la DB.
+    const allPosts = await getAllUsersImages();
+    if (!allPosts)
+        return;
+
+    for (let i = 0; i < allPosts.length; i++)
+        createPost(allPosts[i]);
 
     app.appendChild(galleryDiv);
 }

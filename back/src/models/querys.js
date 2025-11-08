@@ -145,6 +145,15 @@ export async function getAllUserImages(user) {
     return (result);
 }
 
+export async function getAllImagesFromDB() {
+    const db = await getDB();
+
+    const query = `SELECT * FROM images ORDER BY created_at DESC`;
+    const result = await db.all(query);
+
+    return (result);
+}
+
 export async function getImageById(imageId) {
     const db = await getDB();
 

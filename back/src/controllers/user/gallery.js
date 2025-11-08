@@ -1,4 +1,4 @@
-import { getAllUserImages, findUserById } from "../../models/querys.js";
+import { getAllUserImages, findUserById, getAllImagesFromDB } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
@@ -29,5 +29,19 @@ export async function getUserImages(request, reply) {
         if (error.statusCode)
             return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}));
         return (reply.send({success: false, message: "Internal server error", details: error.message}))
+    }
+}
+
+export async function getAllImages(request, reply) {
+    try
+    {
+        const allImages = await getAllImagesFromDB();
+        // Il faudrait remplacer les id des users par leurs nom.
+
+        return (reply.send({success: true, message: allImages}));
+    }
+    catch (error)
+    {
+       return (reply.send({success: false, message: "Internal server error", details: error.message}));
     }
 }
