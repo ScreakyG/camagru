@@ -1,21 +1,8 @@
+import { getCurrentUser } from "../auth.js";
 import { printAPIResponse } from "../utils.js";
 
 const app = document.getElementById("app");
 let galleryDiv = null;
-
-// Variables temporaires pour tests.
-// const galleryPosts = [
-//     {
-//         id: 1,
-//         img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
-//         user_id: 1,
-//     },
-//     {
-//         id: 2,
-//         img_path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLixYgVKW7F62X-BB2G_mU4LTyINUmtpzLlg&s",
-//         user_id: "Neymar",
-//     }
-// ];
 
 // Change la couleur du coeur.
 function changeHeartColor(pathElem) {
@@ -29,9 +16,20 @@ function updateLikeCounter(likeCounterElem) {
     likeCounterElem.textContent = `${0 + 1} Likes`
 }
 
-function likePost(post, postElem) {
-    console.log("You liked the image : ", post);
-    //TODO : Regarder si le user a deja like pour savoir si on ajoute / retire.
+async function likePost(post, postElem) {
+    try
+    {
+        const reponse = await fetch(`/api/user/like/${post.id}`, {
+            method: "POST",
+            credentials: "include"
+        });
+        const resData = await reponse.json();
+        printAPIResponse(`/api/user/like/${post.id}`, resData);
+    }
+    catch (error)
+    {
+        console.error(`Error while fetching API /api/user/like/${userId}/${post.id} : `, error);
+    }
 
     // Change la couleur du coeur.
     const likeElem = postElem.querySelector("div[id=like-btn]").querySelector("path");

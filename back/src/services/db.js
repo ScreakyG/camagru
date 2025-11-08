@@ -54,5 +54,14 @@ async function createTables() {
             created_at          DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
             user_id             INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        )`)
+        )`);
+
+    await dbInstance.exec(`
+        CREATE TABLE IF NOT EXISTS likes (
+            user_id             INTEGER NOT NULL,
+            image_id            INTEGER NOT NULL,
+            PRIMARY KEY (user_id, image_id),
+            FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+            FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
+        )`);
 }

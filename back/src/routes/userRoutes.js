@@ -4,6 +4,7 @@ import { modifyUserInfos } from "../controllers/user/modifyUserInfos.js";
 import { publishImage } from "../controllers/user/publishImage.js";
 import { getUserImages, getGalleryPosts } from "../controllers/user/gallery.js";
 import { deleteImage } from "../controllers/user/delete-image.js";
+import { likeImage } from "../controllers/user/likeImage.js";
 
 async function userRoutes(fastify, options) {
     // POST
@@ -11,6 +12,7 @@ async function userRoutes(fastify, options) {
     fastify.post("/modify-user-infos", modifyUserInfos);
 
     fastify.post("/publish-image", publishImage);
+    fastify.post("/like/:image_id", likeImage);
 
     // GET
     fastify.get("/me", userInfos);

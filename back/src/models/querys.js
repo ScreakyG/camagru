@@ -169,3 +169,21 @@ export async function deleteImageById(imageId) {
     const query = `DELETE FROM images WHERE id = ?`
     const result = await db.run(query, [imageId]);
 }
+
+export async function insertLikeImage(userId, imageId) {
+    const db = await getDB();
+
+    const query = `INSERT INTO likes (user_id, image_id) VALUES (?, ?)`;
+    const result = await db.run(query, [userId, imageId]);
+
+    return (result);
+}
+
+export async function removeLikeImage(userId, imageId) {
+    const db = await getDB();
+
+    const query = `DELETE FROM likes WHERE user_id = ? AND image_id = ?`;
+    const result = await db.run(query, [userId, imageId]);
+
+    return (result);
+}
