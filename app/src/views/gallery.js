@@ -5,11 +5,11 @@ const app = document.getElementById("app");
 let galleryDiv = null;
 
 // Change la couleur du coeur.
-function changeHeartColor(pathElem) {
-    if (pathElem.classList.contains("fill-red-500"))
-        pathElem.classList.remove("fill-red-500");
-    else
+function changeHeartColor(pathElem, isLiked) {
+    if (isLiked)
         pathElem.classList.add("fill-red-500");
+    else
+        pathElem.classList.remove("fill-red-500");
 }
 
 function updateLikeCounter(likeCounterElem) {
@@ -19,25 +19,29 @@ function updateLikeCounter(likeCounterElem) {
 async function likePost(post, postElem) {
     try
     {
-        const reponse = await fetch(`/api/user/like/${post.id}`, {
+        const response = await fetch(`/api/user/like/${post.id}`, {
             method: "POST",
             credentials: "include"
         });
-        const resData = await reponse.json();
+        const resData = await response.json();
         printAPIResponse(`/api/user/like/${post.id}`, resData);
+
+        if (response.ok)
+        {
+            // Change la couleur du coeur.
+            const likeElem = postElem.querySelector("div[id=like-btn]").querySelector("path");
+            changeHeartColor(likeElem, resData.liked);
+
+            // Modifie le compteur. (Peut etre simplement faire un refresh du post ?)
+            const likeCounter = postElem.querySelector("p[id=like-counter]");
+            updateLikeCounter(likeCounter);
+        }
+
     }
     catch (error)
     {
-        console.error(`Error while fetching API /api/user/like/${userId}/${post.id} : `, error);
+        console.error(`Error while fetching API /api/user/like//${post.id} : `, error);
     }
-
-    // Change la couleur du coeur.
-    const likeElem = postElem.querySelector("div[id=like-btn]").querySelector("path");
-    changeHeartColor(likeElem);
-
-    // Modifie le compteur.
-    const likeCounter = postElem.querySelector("p[id=like-counter]");
-    updateLikeCounter(likeCounter);
 }
 
 function commentPost(post) {
