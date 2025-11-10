@@ -187,3 +187,12 @@ export async function removeLikeImage(userId, imageId) {
 
     return (result);
 }
+
+export async function getImageLikes(imageId) {
+    const db = await getDB();
+
+    const query = `SELECT user_id FROM likes WHERE image_id = ?`;
+    const result = await db.all(query, [imageId]);
+
+    return (result);
+}

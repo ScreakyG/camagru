@@ -1,4 +1,4 @@
-import { getAllUserImages, findUserById, getAllPosts } from "../../models/querys.js";
+import { getAllUserImages, findUserById, getAllPosts, getImageLikes } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
@@ -36,8 +36,14 @@ export async function getUserImages(request, reply) {
 export async function getGalleryPosts(request, reply) {
     try
     {
+        // Retourne les rows des images et le username correspondant a l'user_id
         const allImages = await getAllPosts();
-        // JOIN egalement les likes et comments.
+        for (let i = 0; i < allImages.length; i++)
+        {
+            const imageLikes = await getImageLikes(allImages[i].id);
+            console.log(`Image ${allImages[i].id} liked by : `, imageLikes);
+            allImages[i].liked_by = imageLikes;
+        }
 
         return (reply.send({success: true, all_images: allImages}));
     }
