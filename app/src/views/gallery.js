@@ -44,8 +44,13 @@ async function likePost(post, postElem) {
     }
 }
 
-function commentPost(post) {
+function commentPost(post, postElem) {
     console.log("You comment the image : ", post);
+
+    const commentsDiv = postElem.querySelector("div[id=comments-div]");
+    commentsDiv.classList.remove("hidden");
+;
+    //
 }
 
 async function checkUserLikedPost(post) {
@@ -93,14 +98,20 @@ async function createPost(userPost) {
                 </div>
             </div>
             <p id="like-counter" class="px-2">${userPost.liked_by.length} Likes</p>
-            <p class="px-2">View comments</p>
+            <p id="view-comments" class="px-2">View comments</p>
+            <div id="comments-div" class="px-2 mb-2 hidden">
+                <form>
+                    <textarea id="textarea-comment" class="resize-none" placeholder="Add a comment.." name="comment" rows=1 required></textarea>
+                    <button class="" type="submit">Post</button>
+                </form>
+            </div>
         </div>`
 
     const likeBtn = newPost.querySelector("div[id=like-btn]");
     likeBtn.addEventListener("click", () => likePost(userPost, newPost));
 
     const commentBtn = newPost.querySelector("div[id=comments-btn]");
-    commentBtn.addEventListener("click", () => commentPost(userPost));
+    commentBtn.addEventListener("click", () => commentPost(userPost, newPost));
 
     galleryDiv.appendChild(newPost);
 }

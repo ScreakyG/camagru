@@ -64,4 +64,15 @@ async function createTables() {
             FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
             FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
         )`);
+
+    await dbInstance.exec(`
+        CREATE TABLE IF NOT EXISTS comments (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id             INTEGER NOT NULL,
+            image_id            INTEGER NOT NULL,
+            content             TEXT NOT NULL,
+            created_at          DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+            FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
+        )`);
 }
