@@ -1,6 +1,12 @@
 import { getCurrentUser } from "../auth.js";
 import { printAPIResponse } from "../utils.js";
 
+const dummyComments = [
+    { username: "Neymar", comment: "Bonjouw"},
+    { username: "Mbappe", comment: "Il va pas la chercher"},
+    { username: "Messi", comment: "Que mira bobo"}
+];
+
 const app = document.getElementById("app");
 let galleryDiv = null;
 
@@ -44,13 +50,22 @@ async function likePost(post, postElem) {
     }
 }
 
-function commentPost(post, postElem) {
-    console.log("You comment the image : ", post);
+function showComments(post, postElem) {
+    const showCommentsDiv = postElem.querySelector("div[id=show-comments]");
+    showCommentsDiv.classList.remove("hidden");
 
     const commentsDiv = postElem.querySelector("div[id=comments-div]");
-    commentsDiv.classList.remove("hidden");
-;
-    //
+    for (let i = 0; i < dummyComments.length; i++)
+    {
+        const newComment = document.createElement("p");
+        newComment.innerHTML = `<span class="font-medium">${dummyComments[i].username}</span> : ${dummyComments[i].comment}`
+        commentsDiv.appendChild(newComment);
+    }
+
+}
+
+function postComment(post) {
+    console.log("You comment the image : ", post);
 }
 
 async function checkUserLikedPost(post) {
@@ -99,9 +114,11 @@ async function createPost(userPost) {
             </div>
             <p id="like-counter" class="px-2">${userPost.liked_by.length} Likes</p>
             <p id="view-comments" class="px-2">View comments</p>
-            <div id="comments-div" class="px-2 mb-2 hidden">
-                <form>
-                    <textarea id="textarea-comment" class="resize-none" placeholder="Add a comment.." name="comment" rows=1 required></textarea>
+            <div id="show-comments" class="px-2 my-2 hidden">
+                <div id="comments-div">
+                </div>
+                <form id="comment-form">
+                    <textarea id="comment" class="resize-none" placeholder="Add a comment.." name="comment" rows=1 required></textarea>
                     <button class="" type="submit">Post</button>
                 </form>
             </div>
@@ -110,8 +127,14 @@ async function createPost(userPost) {
     const likeBtn = newPost.querySelector("div[id=like-btn]");
     likeBtn.addEventListener("click", () => likePost(userPost, newPost));
 
-    const commentBtn = newPost.querySelector("div[id=comments-btn]");
-    commentBtn.addEventListener("click", () => commentPost(userPost, newPost));
+    const showCommentBtn = newPost.querySelector("div[id=comments-btn]");
+    showCommentBtn.addEventListener("click", () => showComments(userPost, newPost));
+
+    const commentForm = newPost.querySelector("form[id=comment-form]");
+    commentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        postComment(userPost);
+    });
 
     galleryDiv.appendChild(newPost);
 }
