@@ -12,9 +12,8 @@ function changeHeartColor(pathElem, isLiked) {
         pathElem.setAttribute("fill", "#ffffff");
 }
 
-function updateLikeCounter(likeCounterElem) {
-    console.log("LIKE COUNTER ELEM = ", likeCounterElem);
-    likeCounterElem.textContent = `${0 + 1} Likes`
+function updateLikeCounter(likeCounterElem, likesCount) {
+    likeCounterElem.textContent = `${likesCount} Likes`
 }
 
 async function likePost(post, postElem) {
@@ -35,7 +34,7 @@ async function likePost(post, postElem) {
 
             // Modifie le compteur. (Peut etre simplement faire un refresh du post ?)
             const likeCounter = postElem.querySelector("p[id=like-counter]");
-            updateLikeCounter(likeCounter);
+            updateLikeCounter(likeCounter, resData.likes_count);
         }
 
     }

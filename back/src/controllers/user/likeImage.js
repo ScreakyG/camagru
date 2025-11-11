@@ -1,4 +1,4 @@
-import { insertLikeImage, removeLikeImage, findUserById, getImageById } from "../../models/querys.js";
+import { insertLikeImage, removeLikeImage, findUserById, getImageById, getImageLikes } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
@@ -41,13 +41,15 @@ export async function likeImage(request, reply) {
             if (error.code === "SQLITE_CONSTRAINT") // Signifie que l'user a deja like l'image.
             {
                 await removeLikeImage(user.id, image_id);
-                return (reply.send({success: true, message: `User ${user.id} unliked image ${image_id}`, liked: false}));
+                const imageLikes = await getImageLikes(image_id);
+                return (reply.send({success: true, message: `User ${user.id} unliked image ${image_id}`, liked: false, likes_count: imageLikes.length}));
             }
             else
                 throw new Error(error);
         }
 
-        return reply.send({success: true, message:`User ${user.id} liked image ${image_id}`, liked: true});
+        const imageLikes = await getImageLikes(image_id);
+        return reply.send({success: true, message:`User ${user.id} liked image ${image_id}`, liked: true, likes_count: imageLikes.length});
     }
     catch (error)
     {

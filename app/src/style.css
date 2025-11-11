@@ -1362,9 +1362,6 @@
   .fill-current {
     fill: currentcolor;
   }
-  .fill-red-500 {
-    fill: var(--color-red-500);
-  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
