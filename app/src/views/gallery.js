@@ -52,9 +52,22 @@ async function likePost(post, postElem) {
 
 function showComments(post, postElem) {
     const showCommentsDiv = postElem.querySelector("div[id=show-comments]");
+
+    // Permet de cacher si re-click.
+    if (showCommentsDiv.checkVisibility() === true)
+    {
+        showCommentsDiv.classList.add("hidden");
+        return;
+    }
+
     showCommentsDiv.classList.remove("hidden");
 
     const commentsDiv = postElem.querySelector("div[id=comments-div]");
+
+    // Remove les commentaires pour eviter de les dupliquers.
+    while (commentsDiv.firstChild)
+        commentsDiv.removeChild(commentsDiv.firstChild);
+
     for (let i = 0; i < dummyComments.length; i++)
     {
         const newComment = document.createElement("p");
