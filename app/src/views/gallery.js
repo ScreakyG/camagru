@@ -130,8 +130,8 @@ async function createPost(userPost) {
             <div id="show-comments" class="px-2 my-2 hidden">
                 <div id="comments-div">
                 </div>
-                <form id="comment-form">
-                    <textarea id="comment" class="resize-none" placeholder="Add a comment.." name="comment" rows=1 required></textarea>
+                <form id="comment-form" class="mt-1">
+                    <textarea id="comment" class="resize-none focus:outline-hidden" placeholder="Add a comment.." name="comment" rows=1 required></textarea>
                     <button class="" type="submit">Post</button>
                 </form>
             </div>
@@ -139,6 +139,9 @@ async function createPost(userPost) {
 
     const likeBtn = newPost.querySelector("div[id=like-btn]");
     likeBtn.addEventListener("click", () => likePost(userPost, newPost));
+
+    const viewCommentBtn = newPost.querySelector("p[id=view-comments]");
+    viewCommentBtn.addEventListener("click", () => showComments(userPost, newPost));
 
     const showCommentBtn = newPost.querySelector("div[id=comments-btn]");
     showCommentBtn.addEventListener("click", () => showComments(userPost, newPost));
