@@ -3,6 +3,7 @@ import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
 import { getAllImageComments } from "../../models/querys.js";
 
+// TODO : Parser le comment cote back.
 export async function commentImage(request, reply) {
     try
     {
@@ -28,12 +29,13 @@ export async function commentImage(request, reply) {
         if (!image)
             throw new BadRequestError("No image exists with this id.");
 
-        // Parser le comment ?
-        const comment = "Nice picture !";
+        // Parser le comment
+        const { comment } = request.body;
+        if (!comment)
+            throw new BadRequestError("Comment is not valid.");
+
         // Inserer le commentaire en DB.
         const result = await insertCommentPost(user, comment, image_id);
-        console.log("Resultat du commentaire :", result);
-
 
         return reply.send({success: true, message: "Image commented."});
     }

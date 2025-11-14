@@ -1,5 +1,5 @@
 import { getCurrentUser } from "../auth.js";
-import { printAPIResponse } from "../utils.js";
+import { getFormValues, printAPIResponse } from "../utils.js";
 
 const app = document.getElementById("app");
 let galleryDiv = null;
@@ -72,10 +72,11 @@ function showComments(post, postElem) {
 
 }
 
-async function postComment(post) {
-    console.log("You comment the image : ", post);
+// TODO : Parser le comment cote front
+async function postComment(post, form) {
     // Recuperer la valeur de textarea.
-    const comment = "Nice picture";
+    const comment = getFormValues(form);
+    // const comment = "Nice picture";
 
     try
     {
@@ -165,7 +166,7 @@ async function createPost(userPost) {
     const commentForm = newPost.querySelector("form[id=comment-form]");
     commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        postComment(userPost);
+        postComment(userPost, commentForm);
     });
 
     galleryDiv.appendChild(newPost);
