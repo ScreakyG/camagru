@@ -44,6 +44,16 @@ async function likePost(post, postElem) {
     }
 }
 
+// Creer un commentaire et le rajoute dans la div comments du post selectionne.
+function createComment(postElem, username, comment) {
+    const commentsDiv = postElem.querySelector("div[id=comments-div]");
+
+    const newComment = document.createElement("p");
+    newComment.innerHTML = `<span class="font-medium">${username}</span> : ${comment}`
+    commentsDiv.appendChild(newComment);
+}
+
+// Affiche la div commentaire, nettoie la div et re-creer les commentaires d'un post.
 function showComments(post, postElem) {
     const showCommentsDiv = postElem.querySelector("div[id=show-comments]");
 
@@ -65,18 +75,15 @@ function showComments(post, postElem) {
     for (let i = 0; i < post.comments.length; i++)
     {
         const commentData = post.comments[i];
-        const newComment = document.createElement("p");
-        newComment.innerHTML = `<span class="font-medium">${commentData.username}</span> : ${commentData.content}`
-        commentsDiv.appendChild(newComment);
+        createComment(postElem, commentData.username, commentData.content);
     }
 
 }
 
 // TODO : Parser le comment cote front
-async function postComment(post, form) {
+async function postComment(post, form, postElem) {
     // Recuperer la valeur de textarea.
     const comment = getFormValues(form);
-    // const comment = "Nice picture";
 
     try
     {
@@ -91,6 +98,12 @@ async function postComment(post, form) {
 
         const resData = await response.json();
         printAPIResponse(`/api/user/post-comment/${post.id}`, resData);
+
+        if (response.ok)
+        {
+            // Refresh les commentaires ?
+            createComment(postElem, resData.comment.username, resData.comment.content);
+        }
     }
     catch (error)
     {
@@ -166,7 +179,7 @@ async function createPost(userPost) {
     const commentForm = newPost.querySelector("form[id=comment-form]");
     commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        postComment(userPost, commentForm);
+        postComment(userPost, commentForm, newPost);
     });
 
     galleryDiv.appendChild(newPost);

@@ -37,7 +37,7 @@ export async function commentImage(request, reply) {
         // Inserer le commentaire en DB.
         const result = await insertCommentPost(user, comment, image_id);
 
-        return reply.send({success: true, message: "Image commented."});
+        return reply.send({success: true, message: "Image commented.", comment: {username: user.username, content: comment}});
     }
     catch (error)
     {
