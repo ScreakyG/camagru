@@ -5,7 +5,7 @@ import { publishImage } from "../controllers/user/publishImage.js";
 import { getUserImages, getGalleryPosts } from "../controllers/user/gallery.js";
 import { deleteImage } from "../controllers/user/delete-image.js";
 import { likeImage } from "../controllers/user/likeImage.js";
-import { commentImage } from "../controllers/user/commentImage.js";
+import { commentImage, getImageComments } from "../controllers/user/commentImage.js";
 
 async function userRoutes(fastify, options) {
     // POST
@@ -20,6 +20,7 @@ async function userRoutes(fastify, options) {
     fastify.get("/me", userInfos);
     fastify.get("/user-gallery", getUserImages);
     fastify.get("/gallery-posts", getGalleryPosts);
+    fastify.get("/image-comments/:image_id", getImageComments);
 
     // DELETE
     fastify.delete("/delete-image/:id", deleteImage);

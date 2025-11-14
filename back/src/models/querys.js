@@ -205,3 +205,12 @@ export async function insertCommentPost(userInfo, comment, imageId) {
 
     return (result);
 }
+
+export async function getAllImageComments(imageId) {
+    const db = await getDB();
+
+    const query = `SELECT comments.id, comments.image_id, comments.content, comments.created_at, users.username FROM comments JOIN users ON users.id = comments.user_id WHERE comments.image_id = ? ORDER BY comments.created_at DESC`;
+    const result = await db.all(query, [imageId]);
+
+    return (result);
+}

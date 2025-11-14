@@ -1,6 +1,7 @@
 import { verifyJWT } from "../../utils/jwt.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
+import { getAllImageComments } from "../../models/querys.js";
 
 export async function commentImage(request, reply) {
     try
@@ -34,7 +35,28 @@ export async function commentImage(request, reply) {
         console.log("Resultat du commentaire :", result);
 
 
-        return reply.send({success: true, message: "Image commented.", comment: comment});
+        return reply.send({success: true, message: "Image commented."});
+    }
+    catch (error)
+    {
+        if (error.statusCode)
+            return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}));
+        return (reply.send({success: false, message: "Internal server error", details: error.message}))
+    }
+}
+
+// Retourne les commentaires link a une image
+export async function getImageComments(request, reply) {
+    try
+    {
+        const { image_id } = request.params;
+        if (!image_id)
+            throw new BadRequestError("Missing image id.");
+
+        const imageComments = await getAllImageComments(image_id);
+        // console.log(`Comments for image with id ${image_id} : `, imageComments);
+
+        return (reply.send({success: true, comments: imageComments}));
     }
     catch (error)
     {

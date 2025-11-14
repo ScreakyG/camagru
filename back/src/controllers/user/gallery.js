@@ -1,6 +1,7 @@
-import { getAllUserImages, findUserById, getAllPosts, getImageLikes } from "../../models/querys.js";
+import { getAllUserImages, findUserById, getAllPosts, getImageLikes, getAllImageComments } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
+
 
 export async function getUserImages(request, reply) {
     try
@@ -41,8 +42,9 @@ export async function getGalleryPosts(request, reply) {
         for (let i = 0; i < allImages.length; i++)
         {
             const imageLikes = await getImageLikes(allImages[i].id);
-            console.log(`Image ${allImages[i].id} liked by : `, imageLikes);
             allImages[i].liked_by = imageLikes;
+            const imageComments = await getAllImageComments(allImages[i].id);
+            allImages[i].comments = imageComments;
         }
 
         return (reply.send({success: true, all_images: allImages}));
