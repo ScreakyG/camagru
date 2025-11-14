@@ -196,3 +196,12 @@ export async function getImageLikes(imageId) {
 
     return (result);
 }
+
+export async function insertCommentPost(userInfo, comment, imageId) {
+    const db = await getDB();
+
+    const query = `INSERT INTO comments (user_id, image_id, content) VALUES (?, ?, ?)`;
+    const result = await db.run(query, [userInfo.id, imageId, comment]);
+
+    return (result);
+}

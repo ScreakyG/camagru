@@ -79,13 +79,20 @@ function showComments(post, postElem) {
 
 async function postComment(post) {
     console.log("You comment the image : ", post);
+    // Recuperer la valeur de textarea.
+    const comment = "Nice picture";
 
     try
     {
         const response = await fetch(`/api/user/post-comment/${post.id}`, {
             method: "POST",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(comment)
         });
+        
         const resData = await response.json();
         printAPIResponse(`/api/user/post-comment/${post.id}`, resData);
     }
