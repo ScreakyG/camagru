@@ -80,6 +80,22 @@ function showComments(post, postElem) {
 
 }
 
+async function resfreshImageComments(post) {
+    try
+    {
+        const response = await fetch(`/api/user/image-comments/${post.id}`);
+        const resData = await response.json();
+        printAPIResponse(`/api/user/image-comments/${post.id}`, resData);
+
+        if (response.ok)
+            post.comments = resData.comments;
+    }
+    catch (error)
+    {
+        console.error(`Error while fetching API /api/user/image-comments/${post.id} : `, error);
+    }
+}
+
 // TODO : Parser le comment cote front
 async function postComment(post, form, postElem) {
     // Recuperer la valeur de textarea.
@@ -102,6 +118,7 @@ async function postComment(post, form, postElem) {
         if (response.ok)
         {
             // Refresh les commentaires ?
+            await resfreshImageComments(post);
             createComment(postElem, resData.comment.username, resData.comment.content);
         }
     }
