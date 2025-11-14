@@ -1,12 +1,6 @@
 import { getCurrentUser } from "../auth.js";
 import { printAPIResponse } from "../utils.js";
 
-const dummyComments = [
-    { username: "Neymar", comment: "Bonjouw"},
-    { username: "Mbappe", comment: "Il va pas la chercher"},
-    { username: "Messi", comment: "Que mira bobo"}
-];
-
 const app = document.getElementById("app");
 let galleryDiv = null;
 
@@ -68,10 +62,11 @@ function showComments(post, postElem) {
     while (commentsDiv.firstChild)
         commentsDiv.removeChild(commentsDiv.firstChild);
 
-    for (let i = 0; i < dummyComments.length; i++)
+    for (let i = 0; i < post.comments.length; i++)
     {
+        const commentData = post.comments[i];
         const newComment = document.createElement("p");
-        newComment.innerHTML = `<span class="font-medium">${dummyComments[i].username}</span> : ${dummyComments[i].comment}`
+        newComment.innerHTML = `<span class="font-medium">${commentData.username}</span> : ${commentData.content}`
         commentsDiv.appendChild(newComment);
     }
 
@@ -92,7 +87,7 @@ async function postComment(post) {
             },
             body: JSON.stringify(comment)
         });
-        
+
         const resData = await response.json();
         printAPIResponse(`/api/user/post-comment/${post.id}`, resData);
     }
