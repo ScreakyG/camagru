@@ -77,8 +77,22 @@ function showComments(post, postElem) {
 
 }
 
-function postComment(post) {
+async function postComment(post) {
     console.log("You comment the image : ", post);
+
+    try
+    {
+        const response = await fetch(`/api/user/post-comment/${post.id}`, {
+            method: "POST",
+            credentials: "include"
+        });
+        const resData = await response.json();
+        printAPIResponse(`/api/user/post-comment/${post.id}`, resData);
+    }
+    catch (error)
+    {
+        console.error(`Error while fetching API /api/user/post-comment/${post.id} : `, error);
+    }
 }
 
 async function checkUserLikedPost(post) {
@@ -147,7 +161,7 @@ async function createPost(userPost) {
     showCommentBtn.addEventListener("click", () => showComments(userPost, newPost));
 
     const commentForm = newPost.querySelector("form[id=comment-form]");
-    commentForm.addEventListener("submit", (event) => {
+    commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         postComment(userPost);
     });
