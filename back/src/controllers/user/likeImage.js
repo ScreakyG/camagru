@@ -1,5 +1,5 @@
 import { insertLikeImage, removeLikeImage, findUserById, getImageById, getImageLikes } from "../../models/querys.js";
-import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
+import { AuthenticationError, BadRequestError, NotFoundError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
 /**
@@ -30,7 +30,7 @@ export async function likeImage(request, reply) {
 
         const image = await getImageById(image_id);
         if (!image)
-            throw new BadRequestError("No image exists with this id.");
+            throw new NotFoundError("Image not found.");
 
         try
         {

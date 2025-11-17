@@ -137,7 +137,7 @@ export async function publishImage(request, reply) {
         const imageId = await linkImageToUser(imagePath, user);
         const imageMetadata = await getImageById(imageId);
 
-        return (reply.send({success: true, message: "Image successfuly composed and saved.", image_metadata: imageMetadata}));
+        return (reply.code(201).send({success: true, message: "Image successfuly composed and saved.", image_metadata: imageMetadata}));
     }
     catch(error)
     {
