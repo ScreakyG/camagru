@@ -7,8 +7,6 @@ function isValidComment(comment) {
     if (!comment)
         return (false);
 
-    comment.trim(" ");
-    console.log(comment);
     if (comment.length < 1 || comment.length > 30)
         return (false);
     return (true);
