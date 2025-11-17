@@ -50,9 +50,15 @@ async function likePost(post, postElem) {
 function createComment(postElem, username, comment) {
     const commentsDiv = postElem.querySelector("div[id=comments-div]");
 
+    const newCommentDiv = document.createElement("div");
+    newCommentDiv.className = "flex gap-2";
+    newCommentDiv.innerHTML = `<span class="font-semibold">${username}</span>`;
+
     const newComment = document.createElement("p");
-    newComment.innerHTML = `<span class="font-medium">${username}</span> : ${comment}`
-    commentsDiv.appendChild(newComment);
+    newComment.textContent = comment;
+
+    newCommentDiv.appendChild(newComment);
+    commentsDiv.appendChild(newCommentDiv);
 }
 
 // Affiche la div commentaire, nettoie la div et re-creer les commentaires d'un post.
