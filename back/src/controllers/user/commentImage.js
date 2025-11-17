@@ -1,5 +1,5 @@
 import { verifyJWT } from "../../utils/jwt.js";
-import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
+import { AuthenticationError, BadRequestError, NotFoundError } from "../../utils/errors.js";
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
 import { getAllImageComments } from "../../models/querys.js";
 
@@ -39,7 +39,7 @@ export async function commentImage(request, reply) {
 
         const image = await getImageById(image_id);
         if (!image)
-            throw new BadRequestError("No image exists with this id.");
+            throw new NotFoundError("Image not found.");
 
         // Parser le comment
         const { comment } = request.body;
@@ -49,7 +49,7 @@ export async function commentImage(request, reply) {
         // Inserer le commentaire en DB.
         const result = await insertCommentPost(user, comment, image_id);
 
-        return reply.send({success: true, message: "Image commented.", comment: {username: user.username, content: comment}});
+        return reply.code(201).send({success: true, message: "Image commented.", comment: {username: user.username, content: comment}});
     }
     catch (error)
     {
