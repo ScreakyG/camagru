@@ -2,6 +2,25 @@ import { verifyJWT } from "../../utils/jwt.js";
 import { AuthenticationError, BadRequestError, NotFoundError } from "../../utils/errors.js";
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
 import { getAllImageComments } from "../../models/querys.js";
+import { sendCommentNotificationMail } from "../../services/mailService.js";
+
+async function notifyOwnerByMail(ownerId) {
+    try
+    {
+        if (!ownerId)
+            throw new Error("ownerId is invalid.");
+
+        const owner = await findUserById(ownerId);
+        if (!owner)
+            throw new Error(`Could not find a user with this id : ${ownerId}`);
+
+        await sendCommentNotificationMail(owner);
+    }
+    catch(error)
+    {
+        console.log("Could not send nofication mail : ", error);
+    }
+}
 
 function isValidComment(comment) {
     if (!comment)
@@ -48,6 +67,7 @@ export async function commentImage(request, reply) {
 
         // Inserer le commentaire en DB.
         const result = await insertCommentPost(user, comment, image_id);
+        notifyOwnerByMail(image.user_id);
 
         return reply.code(201).send({success: true, message: "Image commented.", comment: {username: user.username, content: comment}});
     }
