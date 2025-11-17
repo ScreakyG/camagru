@@ -3,6 +3,17 @@ import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
 import { getAllImageComments } from "../../models/querys.js";
 
+function isValidComment(comment) {
+    if (!comment)
+        return (false);
+
+    comment.trim(" ");
+    console.log(comment);
+    if (comment.length < 1 || comment.length > 30)
+        return (false);
+    return (true);
+}
+
 // TODO : Parser le comment cote back.
 export async function commentImage(request, reply) {
     try
@@ -19,7 +30,10 @@ export async function commentImage(request, reply) {
         const user = await findUserById(decodedToken.id);
         if (!user)
             throw new AuthenticationError(`Couldn't find a user with id: ${decodedToken.id}`);
-        //
+
+
+        if (!request.body)
+            throw new BadRequestError("Missing body in request.");
 
         const { image_id } = request.params;
         if (!image_id)
@@ -31,8 +45,8 @@ export async function commentImage(request, reply) {
 
         // Parser le comment
         const { comment } = request.body;
-        if (!comment)
-            throw new BadRequestError("Comment is not valid.");
+        if (!isValidComment(comment))
+            throw new BadRequestError("Comment does not meet criterias (Min 1 character, max 30)");
 
         // Inserer le commentaire en DB.
         const result = await insertCommentPost(user, comment, image_id);

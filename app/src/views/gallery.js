@@ -2,6 +2,7 @@ import { getCurrentUser } from "../auth.js";
 import { getFormValues, printAPIResponse } from "../utils.js";
 
 const COMMENT_MAXLENGTH = 30;
+const COMMENT_MINLENGTH = 1;
 
 const app = document.getElementById("app");
 let galleryDiv = null;
@@ -186,7 +187,7 @@ async function createPost(userPost) {
                 <div id="comments-div">
                 </div>
                 <form id="comment-form" class="mt-1">
-                    <textarea id="comment" class="resize-none focus:outline-hidden" placeholder="Add a comment.." name="comment" rows=1 maxlength=${COMMENT_MAXLENGTH} required></textarea>
+                    <textarea id="comment" class="resize-none focus:outline-hidden" placeholder="Add a comment.." name="comment" rows=1 minlength=${COMMENT_MINLENGTH} maxlength=${COMMENT_MAXLENGTH} required></textarea>
                     <button class="" type="submit">Post</button>
                 </form>
             </div>
