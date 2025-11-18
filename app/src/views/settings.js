@@ -157,9 +157,28 @@ function handleChangeProfileForm() {
     newEmailInput.addEventListener("input", () => hideError({inputElement: newEmailInput, errorDivElement: newEmailError}));
 }
 
+function handleCommentsNotifications(params) {
+    const currentState = false; // State en DB.
+    const commentsCheckbox = document.getElementById("toggle-notifications");
+
+    commentsCheckbox.checked = currentState;
+    console.log("Notifications comment toggle = ", commentsCheckbox.checked);
+
+    commentsCheckbox.addEventListener("change", () => {
+        console.log("Notifications comment toggle = ", commentsCheckbox.checked);
+        /**
+         * TODO :
+         *  - Call API avec la value de la checkbox.
+         *  - Garder le state ou le changer en fonction du retour du call.
+         *  - Potentiel gestion d'une div erreur ?
+         */
+    })
+}
+
 function handleSettingsForms() {
     handleChangePasswordForm();
     handleChangeProfileForm();
+    handleCommentsNotifications();
 }
 
 export function showSettingsView(currentUser) {
