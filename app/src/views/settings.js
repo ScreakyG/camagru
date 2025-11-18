@@ -226,6 +226,17 @@ export function showSettingsView(currentUser) {
                     <button type="submit" class="btn btn-primary ml-1">Save</button>
                 </form>
             </div>
+            <div class="flex flex-col border border-zinc-400 p-6 rounded-xl gap-5 w-full mx-auto sm:max-w-5xl">
+                <div>
+                    <h2 class="text-xl">Notifications</h2>
+                    <p class="text-gray-600">Enable/Disable notifications</p>
+                </div>
+                <form>
+                    <label for="toggle-notifications">New comments on your posts</label>
+                    <input class="toggle" type="checkbox" checked="checked" name="toggle-notifications" id="toggle-notifications"></input>
+                    <div id="notifications-error-div" class="my-4 text-error hidden"></div>
+                </form>
+            </div>
         </div>
     `;
 
