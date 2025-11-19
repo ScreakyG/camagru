@@ -33,6 +33,7 @@ async function createTables() {
             username            VARCHAR(150) NOT NULL UNIQUE,
             email               VARCHAR(150) NOT NULL UNIQUE,
             password_hash       TEXT NOT NULL,
+            notifications       BOOLEAN DEFAULT TRUE NOT NULL,
             is_verified         BOOLEAN DEFAULT FALSE NOT NULL,
             created_at          DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
         )`);

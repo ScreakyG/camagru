@@ -17,7 +17,7 @@ export async function userInfos(request, reply) {
         if (!user)
             throw new AuthenticationError(`Couldn't find a user with id : ${decodedToken.id}`);
 
-        return (reply.send({ success: true, user: { id: decodedToken.id, email: user.email, username: user.username }}));
+        return (reply.send({ success: true, user: { id: decodedToken.id, email: user.email, username: user.username, notifications: user.notifications }}));
     }
     catch (error)
     {

@@ -157,34 +157,45 @@ function handleChangeProfileForm() {
     newEmailInput.addEventListener("input", () => hideError({inputElement: newEmailInput, errorDivElement: newEmailError}));
 }
 
-function handleCommentsNotifications(params) {
-    const currentState = false; // State en DB.
+function handleCommentsNotifications(currentUser) {
     const commentsCheckbox = document.getElementById("toggle-notifications");
 
-    commentsCheckbox.checked = currentState;
-    console.log("Notifications comment toggle = ", commentsCheckbox.checked);
+    commentsCheckbox.checked = currentUser.notifications;
 
-    commentsCheckbox.addEventListener("change", () => {
+    commentsCheckbox.addEventListener("change", async () => {
         console.log("Notifications comment toggle = ", commentsCheckbox.checked);
-        /**
-         * TODO :
-         *  - Call API avec la value de la checkbox.
-         *  - Garder le state ou le changer en fonction du retour du call.
-         *  - Potentiel gestion d'une div erreur ?
-         */
+        try
+        {
+            const newNotificationsState = commentsCheckbox.checked;
+            const response = await fetch("/api/user/toggle-notifications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({newNotificationsState})
+            });
+
+            const resData = await response.json();
+            printAPIResponse("/api/user/toggle-notifications", resData);
+        }
+        catch (error)
+        {
+            console.error("Error while fetching API /api/user/toggle-notifications");
+        }
     })
 }
 
-function handleSettingsForms() {
+function handleSettingsForms(currentUser) {
     handleChangePasswordForm();
     handleChangeProfileForm();
-    handleCommentsNotifications();
+    handleCommentsNotifications(currentUser);
 }
 
 export function showSettingsView(currentUser) {
     let user = {
         username : currentUser ? currentUser.username : null,
-        email: currentUser ? currentUser.email : null
+        email: currentUser ? currentUser.email : null,
+        notifications: currentUser.notifications
     };
 
     const appEl = document.getElementById('app');
@@ -250,9 +261,9 @@ export function showSettingsView(currentUser) {
                     <h2 class="text-xl">Notifications</h2>
                     <p class="text-gray-600">Enable/Disable notifications</p>
                 </div>
-                <form>
+                <form id="toggle-notifications-form">
                     <label for="toggle-notifications">New comments on your posts</label>
-                    <input class="toggle" type="checkbox" checked="checked" name="toggle-notifications" id="toggle-notifications"></input>
+                    <input class="toggle" type="checkbox" name="toggle-notifications" id="toggle-notifications"></input>
                     <div id="notifications-error-div" class="my-4 text-error hidden"></div>
                 </form>
             </div>
@@ -260,5 +271,5 @@ export function showSettingsView(currentUser) {
     `;
 
     appEl.appendChild(settingsDiv);
-    handleSettingsForms();
+    handleSettingsForms(currentUser);
 }

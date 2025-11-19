@@ -126,6 +126,15 @@ export async function updateUsername(user, newUsername) {
     const result = await db.run(query, [newUsername, user.id]);
 }
 
+export async function updateNotificationsState(newState, user) {
+   const db = await getDB();
+
+   const query = `UPDATE users SET notifications = ? WHERE id = ?`;
+   const result = await db.run(query, [newState, user.id]);
+
+   return (result);
+}
+
 export async function linkImageToUser(path, user) {
     const db = await getDB();
 

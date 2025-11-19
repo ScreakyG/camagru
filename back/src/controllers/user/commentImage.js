@@ -14,7 +14,8 @@ async function notifyOwnerByMail(ownerId) {
         if (!owner)
             throw new Error(`Could not find a user with this id : ${ownerId}`);
 
-        await sendCommentNotificationMail(owner);
+        if (owner.notifications)
+            await sendCommentNotificationMail(owner);
     }
     catch(error)
     {
