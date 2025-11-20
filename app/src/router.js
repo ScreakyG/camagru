@@ -37,6 +37,10 @@ export async function router() {
     await updateAuthUI();
 
     switch (currentPath) {
+        case "/":
+            redirectTo("/gallery");
+            break;
+
         case "/verify":
             if (currentUser)
             {
