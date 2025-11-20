@@ -83,15 +83,20 @@ export async function router() {
             break;
 
         case "/settings":
-            // if (!currentUser)
-            // {
-            //     redirectTo("/login");
-            //     break;
-            // }
+            if (!currentUser)
+            {
+                redirectTo("/login");
+                break;
+            }
             showSettingsView(currentUser);
             break;
 
         case "/image-editor":
+            if (!currentUser)
+            {
+                redirectTo("/login");
+                break;
+            }
             showImageEditorView();
             break;
 

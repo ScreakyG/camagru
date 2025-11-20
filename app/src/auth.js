@@ -49,17 +49,20 @@ export async function updateAuthUI() {
     const authButtons = document.getElementById("auth-buttons");
     const avatarMenu = document.getElementById("avatar-menu");
     const logoutBtn = document.getElementById("logout-btn");
+    const imageEditorBtn = document.getElementById("image-editor-btn");
 
     if (currentUser)
     {
         authButtons.classList.add("hidden");
         avatarMenu.classList.remove("hidden");
         logoutBtn.classList.remove("hidden");
+        imageEditorBtn.classList.remove("hidden");
     }
     else
     {
         authButtons.classList.remove("hidden");
         avatarMenu.classList.add("hidden");
         logoutBtn.classList.add("hidden");
+        imageEditorBtn.classList.add("hidden");
     }
 }
