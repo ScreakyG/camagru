@@ -1,4 +1,5 @@
 import { getCurrentUser } from "../auth.js";
+import { redirectTo } from "../navigation.js";
 import { getFormValues, printAPIResponse } from "../utils.js";
 
 const COMMENT_MAXLENGTH = 30;
@@ -22,6 +23,13 @@ function updateLikeCounter(likeCounterElem, likesCount) {
 async function likePost(post, postElem) {
     try
     {
+        const currentUser = await getCurrentUser();
+        if (!currentUser)
+        {
+            redirectTo("/login");
+            return;
+        }
+
         const response = await fetch(`/api/user/like/${post.id}`, {
             method: "POST",
             credentials: "include"
@@ -112,6 +120,13 @@ async function postComment(post, form, postElem) {
 
     try
     {
+        const currentUser = await getCurrentUser();
+        if (!currentUser)
+        {
+            redirectTo("/login");
+            return;
+        }
+
         const response = await fetch(`/api/user/post-comment/${post.id}`, {
             method: "POST",
             credentials: "include",
