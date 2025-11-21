@@ -1,6 +1,6 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
-const FILESIZE_LIMIT = 3; // Max file size in MB.
+const FILESIZE_LIMIT = 2; // Max file size in MB.
 
 // Lister ici les types d'images que l'on accepte.
 const fileTypes = [
