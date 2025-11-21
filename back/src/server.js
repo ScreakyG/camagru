@@ -8,6 +8,8 @@ import userRoutes from "./routes/userRoutes.js"
 import { initDB } from "./services/db.js"
 import { initEmailService, emailServiceStatus } from "./services/mailService.js"
 
+const FILESIZE_LIMIT = process.env.MAX_IMG_SIZE || 2;
+
 // Instance setup
 const fastify = Fastify({
     logger: true
@@ -21,7 +23,8 @@ await emailServiceStatus();
 await fastify.register(cookie);
 await fastify.register(import('@fastify/multipart'), {
     limits: {
-        parts: 2
+        parts: 2,
+        fileSize: FILESIZE_LIMIT * 1024 * 1024 //Limite de la taille des fichiers (en octets).
     }
 });
 

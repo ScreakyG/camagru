@@ -1,5 +1,7 @@
 import { getFormValues, printAPIResponse } from "../utils.js";
 
+const FILESIZE_LIMIT = 3; // Max file size in MB.
+
 // Lister ici les types d'images que l'on accepte.
 const fileTypes = [
     "image/jpeg",
@@ -82,18 +84,6 @@ function resetEditor() {
 
 async function deleteImageFromFeed(image, element) {
     console.log("Deleting image : ", image);
-    /**
-     * TODO :
-     *  1/ Call la route pour delete
-     *  2/ Supprimer la div du DOM.
-     */
-
-    // const test = await new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         resolve();
-    //     }, 3000);
-    // })
-
     try
     {
         const response = await fetch(`/api/user/delete-image/${image.id}`, {
@@ -216,7 +206,7 @@ function inputFileDebugger(inputElement) {
 }
 
 function isValidInputFile(file) {
-    if (file && fileTypes.includes(file.type))
+    if (file && fileTypes.includes(file.type) && file.size < FILESIZE_LIMIT * 1024 * 1024)
         return (true);
     return (false);
 }
@@ -333,7 +323,7 @@ function updateImageDisplay(inputElement) {
                 listItem.appendChild(image);
             }
             else
-                para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+                para.textContent = `File name ${file.name}: Is not valid, use jpg, png files (<= ${FILESIZE_LIMIT}MB)`;
             listItem.appendChild(para);
             list.appendChild(listItem);
         }
