@@ -92,21 +92,25 @@ At the moment users can :
 
    # Email Config
    EMAIL_HOST=<smtp.ethereal.email>
-   EMAIL_PORT=<587>
+   EMAIL_PORT=<SERVICE PORT>
    EMAIL_USER=<your_email@gmail.com>
    EMAIL_PASS=*****
 
    # Security
    JWT_SECRET=******
+
+   # App Config
+   MAX_IMG_SIZE=2 # Max image size for uploads (in MB).
+   
    ```
    _Values between <> and **** should be replaced by yours_
 
-3. Launch the app
+2. Launch the app
    ```bash
    ./build_script.sh
    ```
 
-4. Access the app at http://localhost:8080
+3. Access the app at http://localhost:8080
 
 ### Stop the app
 Ctrl-C where you launched the script
