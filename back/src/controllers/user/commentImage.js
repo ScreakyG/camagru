@@ -27,6 +27,7 @@ function isValidComment(comment) {
     if (!comment)
         return (false);
 
+    comment = comment.trim();
     if (comment.length < 1 || comment.length > 30)
         return (false);
     return (true);
@@ -67,7 +68,7 @@ export async function commentImage(request, reply) {
             throw new BadRequestError("Comment does not meet criterias (Min 1 character, max 30)");
 
         // Inserer le commentaire en DB.
-        const result = await insertCommentPost(user, comment, image_id);
+        const result = await insertCommentPost(user, comment.trim(), image_id);
         notifyOwnerByMail(image.user_id);
 
         return reply.code(201).send({success: true, message: "Image commented.", comment: {username: user.username, content: comment}});

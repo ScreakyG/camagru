@@ -222,6 +222,8 @@ async function createPost(userPost) {
         if (event.which === 13)
         {
             event.preventDefault(); // Empeche le retour a la ligne avec Enter
+
+            // Declenche un event submit pour le form.
             const newEvent = new Event("submit", {cancelable: true});
             commentForm.dispatchEvent(newEvent);
         }
@@ -230,12 +232,23 @@ async function createPost(userPost) {
     const commentForm = newPost.querySelector("form[id=comment-form]");
     commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+
+        commentTextArea.value = commentTextArea.value.trim();
+        if (!isValidComment(commentTextArea.value))
+            return;
+
         postComment(userPost, commentForm, newPost);
         commentTextArea.value = ""; // Reset le textarea.
     });
 
 
     galleryDiv.appendChild(newPost);
+}
+
+function isValidComment(comment) {
+    if (comment.length < COMMENT_MINLENGTH || comment > COMMENT_MAXLENGTH)
+        return (false);
+    return (true);
 }
 
 async function getAllUsersImages() {
