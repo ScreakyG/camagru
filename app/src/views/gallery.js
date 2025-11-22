@@ -217,11 +217,23 @@ async function createPost(userPost) {
     const showCommentBtn = newPost.querySelector("div[id=comments-btn]");
     showCommentBtn.addEventListener("click", () => showComments(userPost, newPost));
 
+    const commentTextArea = newPost.querySelector("textarea[id=comment]");
+    commentTextArea.addEventListener("keypress", (event) => {
+        if (event.which === 13)
+        {
+            event.preventDefault(); // Empeche le retour a la ligne avec Enter
+            const newEvent = new Event("submit", {cancelable: true});
+            commentForm.dispatchEvent(newEvent);
+        }
+    })
+
     const commentForm = newPost.querySelector("form[id=comment-form]");
     commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         postComment(userPost, commentForm, newPost);
+        commentTextArea.value = ""; // Reset le textarea.
     });
+
 
     galleryDiv.appendChild(newPost);
 }
