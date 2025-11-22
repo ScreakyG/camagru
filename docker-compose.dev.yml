@@ -18,7 +18,7 @@ services:
       - ./back/src/:/app/src
       - ./back/uploads:/app/uploads
       - ./back/overlays:/app/overlays
-      - ./back/db/camagru.db:/app/camagru.db
+      - ./back/db:/app/db
     command: npm run dev
     networks:
       - camagru-network

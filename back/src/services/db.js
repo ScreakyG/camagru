@@ -14,7 +14,7 @@ export async function initDB() {
     {
         dbInstance = await open({
             // filename: process.env.DB_PATH
-            filename: "./camagru.db",
+            filename: "./db/camagru.db",
             driver: sqlite3.Database
         })
         console.log("💽 Connected to database ! ✅ ");
