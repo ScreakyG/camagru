@@ -10,6 +10,7 @@ const COMMENT_MINLENGTH = 1;
 
 const app = document.getElementById("app");
 let galleryDiv = null;
+let watcher = null;
 
 // Change la couleur du coeur.
 function changeHeartColor(pathElem, isLiked) {
@@ -290,15 +291,19 @@ async function getUsersImagesPage(page, limit) {
     }
 }
 
-async function handleIntersect(entries) {
+async function handleIntersect(entries, observer) {
    const entry = entries[0];  // Array d'elements observes , on en que 1 alors c'est le [0].
     if (!entry.isIntersecting)
         return ;
 
     console.log(`REQUESTING ${PAGE_SIZE} POSTS FOR PAGE ${currentPage}`);
     const allPosts = await getUsersImagesPage(currentPage, PAGE_SIZE);
-    if (!allPosts)
+    if (!allPosts || allPosts.length === 0)
+    {
+        console.log("No new posts , stopping observer.");
+        observer.unobserve(watcher);
         return;
+    }
 
     for (let i = 0; i < allPosts.length; i++)
         await createPost(allPosts[i]);
@@ -308,11 +313,11 @@ async function handleIntersect(entries) {
 
 async function infiniteScroll(viewDiv) {
     currentPage = 0;
+    watcher = null;
 
     // On creer un element que l'on surveillera.
-    const watcher = document.createElement("div");
+    watcher = document.createElement("div");
     watcher.id = "intersection-watcher";
-    watcher.className = "h-10 bg-red-500";
     viewDiv.appendChild(watcher);
 
     const newObserver = new IntersectionObserver(handleIntersect);
