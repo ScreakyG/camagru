@@ -269,17 +269,40 @@ async function getAllUsersImages() {
     }
 }
 
+async function handleIntersect(entries) {
+//    console.log(entries);
+   if (entries[0].isIntersecting)
+   {
+        console.log("RAJOUTE DU CONTENU");
+        const allPosts = await getAllUsersImages();
+        if (!allPosts)
+            return;
+
+        for (let i = 0; i < allPosts.length; i++)
+            await createPost(allPosts[i]);
+   }
+}
+
+async function infiniteScroll(viewDiv) {
+    // On creer un element que l'on surveillera.
+    const watcher = document.createElement("div");
+    watcher.id = "intersection-watcher";
+    watcher.className = "size-10 bg-red-500";
+
+    viewDiv.appendChild(watcher);
+
+    const newObserver = new IntersectionObserver(handleIntersect);
+    newObserver.observe(watcher);
+}
+
 export async function showGalleryView() {
+    const viewDiv = document.createElement("div");
+
     galleryDiv = document.createElement("div");
     galleryDiv.className = "flex flex-col gap-5 items-center"
 
-    // TODO: Charger les images de la DB.
-    const allPosts = await getAllUsersImages();
-    if (!allPosts)
-        return;
+    viewDiv.appendChild(galleryDiv);
+    infiniteScroll(viewDiv);
 
-    for (let i = 0; i < allPosts.length; i++)
-        createPost(allPosts[i]);
-
-    app.appendChild(galleryDiv);
+    app.appendChild(viewDiv);
 }
