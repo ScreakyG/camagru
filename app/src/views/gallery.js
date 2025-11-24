@@ -2,6 +2,9 @@ import { getCurrentUser } from "../auth.js";
 import { redirectTo } from "../navigation.js";
 import { getFormValues, printAPIResponse } from "../utils.js";
 
+let currentPage = 0;
+const PAGE_SIZE = 5;
+
 const COMMENT_MAXLENGTH = 30;
 const COMMENT_MINLENGTH = 1;
 
@@ -269,26 +272,47 @@ async function getAllUsersImages() {
     }
 }
 
-async function handleIntersect(entries) {
-//    console.log(entries);
-   if (entries[0].isIntersecting)
-   {
-        console.log("RAJOUTE DU CONTENU");
-        const allPosts = await getAllUsersImages();
-        if (!allPosts)
-            return;
+async function getUsersImagesPage(page, limit) {
+    try
+    {
+        const response = await fetch(`/api/user/gallery-posts?page=${page}&limit=${limit}`);
+        const resData = await response.json();
+        printAPIResponse(`/api/user/gallery-posts?page=${page}&limit=${limit}`, resData);
 
-        for (let i = 0; i < allPosts.length; i++)
-            await createPost(allPosts[i]);
-   }
+        if (response.ok)
+            return (resData.all_images);
+        else
+            return (null);
+    }
+    catch (error)
+    {
+        console.error(`Error while fetching API /api/user/gallery-posts?page=${page}&limit=${limit}`, error);
+    }
+}
+
+async function handleIntersect(entries) {
+   const entry = entries[0];  // Array d'elements observes , on en que 1 alors c'est le [0].
+    if (!entry.isIntersecting)
+        return ;
+
+    console.log(`REQUESTING ${PAGE_SIZE} POSTS FOR PAGE ${currentPage}`);
+    const allPosts = await getUsersImagesPage(currentPage, PAGE_SIZE);
+    if (!allPosts)
+        return;
+
+    for (let i = 0; i < allPosts.length; i++)
+        await createPost(allPosts[i]);
+
+    currentPage++;
 }
 
 async function infiniteScroll(viewDiv) {
+    currentPage = 0;
+
     // On creer un element que l'on surveillera.
     const watcher = document.createElement("div");
     watcher.id = "intersection-watcher";
-    watcher.className = "size-10 bg-red-500";
-
+    watcher.className = "h-10 bg-red-500";
     viewDiv.appendChild(watcher);
 
     const newObserver = new IntersectionObserver(handleIntersect);
@@ -300,9 +324,9 @@ export async function showGalleryView() {
 
     galleryDiv = document.createElement("div");
     galleryDiv.className = "flex flex-col gap-5 items-center"
-
     viewDiv.appendChild(galleryDiv);
-    infiniteScroll(viewDiv);
 
     app.appendChild(viewDiv);
+
+    infiniteScroll(viewDiv);
 }

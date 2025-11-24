@@ -1,4 +1,4 @@
-import { getAllUserImages, findUserById, getAllPosts, getImageLikes, getAllImageComments } from "../../models/querys.js";
+import { getAllUserImages, findUserById, getAllPosts, getImageLikes, getAllImageComments, getLimitedPosts } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyJWT } from "../../utils/jwt.js";
 
@@ -35,10 +35,24 @@ export async function getUserImages(request, reply) {
 
 // Retourne les posts formater avec les informations necessaires a la composition d'un post.
 export async function getGalleryPosts(request, reply) {
+    if (!request.query.page || !request.query.limit)
+        throw new BadRequestError("Specify a page and a limit");
+
+    const page = parseInt(request.query.page);
+    const limit = parseInt(request.query.limit);
+
+    if (Number.isNaN(page) || Number.isNaN(limit))
+        throw new BadRequestError("Specified values are not valid");
+    if (page < 0 || limit < 0 || limit > 50)
+        throw new BadRequestError("Page should be >= 0 and limit between 1 and 50");
+
+    console.log({page, limit});
+    const offset = page * limit;
+
     try
     {
         // Retourne les rows des images et le username correspondant a l'user_id
-        const allImages = await getAllPosts();
+        const allImages = await getLimitedPosts(limit, offset);
         for (let i = 0; i < allImages.length; i++)
         {
             const imageLikes = await getImageLikes(allImages[i].id);

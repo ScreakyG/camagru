@@ -163,6 +163,24 @@ export async function getAllPosts() {
     return (result);
 }
 
+export async function getLimitedPosts(limit, offset) {
+    const db = await getDB();
+
+    const query = `SELECT
+    images.id,
+    images.img_path,
+    images.user_id,
+    images.created_at,
+    users.username
+    FROM images JOIN users ON users.id = images.user_id
+    ORDER BY images.created_at DESC
+    LIMIT ? OFFSET ?`;
+
+    const result = await db.all(query, [limit, offset]);
+
+    return (result);
+}
+
 export async function getImageById(imageId) {
     const db = await getDB();
 
