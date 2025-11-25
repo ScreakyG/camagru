@@ -1408,9 +1408,6 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .h-10 {
-    height: calc(var(--spacing) * 10);
-  }
   .h-\[1em\] {
     height: 1em;
   }
@@ -1578,9 +1575,6 @@
   }
   .bg-red-200 {
     background-color: var(--color-red-200);
-  }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
   }
   .bg-zinc-200 {
     background-color: var(--color-zinc-200);
