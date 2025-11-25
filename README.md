@@ -9,7 +9,6 @@
 
 Camagru is a instagram like web app that allow users to take live pictures with their webcam, tweak them then post them.
 </br>
-⚠️ This project is at early stages, im working on image edition.
 
 
 ## TODO:
@@ -29,7 +28,7 @@ At the moment users can :
 - Edit pictures ✅
 - Like , comment posts ✅
 - Feed with all users content ✅
-- Set notifications ❌
+- Set notifications ✅
 
 ## 🛠️ Stack
 
