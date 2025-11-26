@@ -172,13 +172,13 @@ function loadOverlays(imageEditorDiv) {
         overlayMiniatureInput.type = "radio";
         overlayMiniatureInput.name = "overlay";
         overlayMiniatureInput.value = overlays[i].name; //Peut etre changer par l'ID pour mieux identifier.
-        overlayMiniatureInput.className = `peer/overlay${i + 1} hidden`;
+        overlayMiniatureInput.className = `peer hidden`;
         if (i === 0)
             overlayMiniatureInput.setAttribute("required", "");
 
         // Label setup
         overlayMiniatureLabel.setAttribute("for", overlays[i].id);
-        overlayMiniatureLabel.className = `peer-checked/overlay${i + 1}:border-black flex items-center justify-center aspect-square border rounded-xl p-2 border-zinc-400`;
+        overlayMiniatureLabel.className = `peer-checked:border-black flex items-center justify-center aspect-square border rounded-xl p-2 border-zinc-400`;
 
         // Image setup
         overlayMiniatureImg.alt = overlays[i].name;
