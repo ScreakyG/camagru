@@ -326,6 +326,7 @@ async function infiniteScroll(viewDiv) {
 
 export async function showGalleryView() {
     const viewDiv = document.createElement("div");
+    viewDiv.className = "my-5";
 
     galleryDiv = document.createElement("div");
     galleryDiv.className = "flex flex-col gap-5 items-center"
