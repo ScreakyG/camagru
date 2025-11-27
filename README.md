@@ -128,7 +128,7 @@ At the moment users can :
    JWT_SECRET=******
 
    # App Config
-   MAX_IMG_SIZE=2 # Max image size for uploads (in MB).
+   MAX_IMG_SIZE=2 # Override max image size for uploads server-side (in MB).
    
    ```
    _Values between <> and **** should be replaced by yours_
