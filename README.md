@@ -78,7 +78,7 @@ At the moment users can :
 | POST | `/api/auth/logout` | Log out a user | 200, 401, 500 |
 | POST | `/api/auth/resend-validation-link` | Resend account validation link | 200, 500 |
 | POST | `/api/auth/forgot-password` | Request reset password link | 200, 400, 500 |
-| POST | `/api/auth/reset-password` | Change user password | 200, 400, 500 |
+| POST | `/api/auth/reset-password` | Change user password from reset link | 200, 400, 500 |
 | GET | `/api/auth/verify` | Validate user account creation | 200, 400, 500 |
 | GET | `/api/auth/validate-reset-link` | Verify password reset token | 200, 500 |
 | POST | `/api/user/modify-password` | Change user password | 200, 400, 401, 500 |
