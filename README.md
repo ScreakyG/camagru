@@ -12,7 +12,7 @@ Camagru is a instagram like web app that allow users to take live pictures with 
 
 
 ## TODO:
-- Parse the comments for security.
+- Swap JWT for Session Token in DB (authentication).
 
 ## Preview
 <div align="center">
