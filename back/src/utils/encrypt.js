@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 
 
-
+// bcrypt car plus robuste pour des mots de passes (les mdps de sont pas randoms la plus part du temps)
 export async function encryptPassword(password) {
     const passHash = await bcrypt.hash(password, 10);
 
