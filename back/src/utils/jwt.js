@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { hashToken } from "./encrypt.js";
 
-import { findUserByAuthToken, insertTokenDatabase } from "../models/querys.js";
+import { findUserByAuthToken, insertTokenDatabase, deleteTokenFromDatabase } from "../models/querys.js";
 
 export async function createAuthToken(userId) {
     const authToken = crypto.randomBytes(32).toString("hex");
@@ -23,13 +23,39 @@ export async function verifyAuthToken(token) {
     //     console.log("JWT verification failed : ", error.message);
     //     return (null);
     // }
-    const tokenHash = hashToken(token);
-    const user = await findUserByAuthToken(tokenHash);
-    // console.log(`User with authToken = ${token} = ${user.id}`);
-    if (user)
-        return (user);
+    if (!token)
+        return (null);
 
-    return (null);
+    try
+    {
+        const tokenHash = hashToken(token);
+        const user = await findUserByAuthToken(tokenHash);
+        if (user)
+        {
+            // console.log(`User with authToken = ${token} = ${user.id}`);
+            return (user);
+        }
+        return (null);
+    }
+    catch (error)
+    {
+        console.log("Could not verify auth token : ", error);
+    }
+}
+
+export function removeAuthToken(token) {
+    if (!token)
+        return ;
+
+    try
+    {
+        const tokenHash = hashToken(token);
+        deleteTokenFromDatabase(tokenHash);
+    }
+    catch (error)
+    {
+        console.log("Could not remove auth token : ", error);
+    }
 }
 
 export function createValidationToken()

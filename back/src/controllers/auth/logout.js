@@ -1,4 +1,4 @@
-import { verifyAuthToken } from "../../utils/jwt.js";
+import { removeAuthToken, verifyAuthToken } from "../../utils/jwt.js";
 
 export async function logout(request, reply) {
     // Enleve le JWT dans les cookies.
@@ -6,6 +6,8 @@ export async function logout(request, reply) {
     if (!token || !verifyAuthToken(token))
         return (reply.code(401).send({success: false, message: "Not authenticated"}));
 
+
+    removeAuthToken(token);
     reply.clearCookie("auth_token", {
         path: "/",
         httpOnly: true,
