@@ -47,8 +47,8 @@ fastify.get("/api/health", async function handler (request, reply) {
 
 try
 {
-    const port = process.env.FASTIFY_PORT || 3000;
-    const host = process.env.HOST || "0.0.0.0";
+    const port = 3000;
+    const host = "0.0.0.0";
 
     await fastify.listen({port, host});
     console.log(`✅ Server running on ${host}:${port}`);

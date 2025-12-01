@@ -109,10 +109,6 @@ At the moment users can :
 
 2. Create a `.env` file in ./back folder
    ```
-   # Ports
-   NGINX_PORT= 8080
-   FASTIFY_PORT= 3000
-
    # Email Config
    EMAIL_HOST=<smtp.ethereal.email>
    EMAIL_PORT=<SERVICE PORT>
