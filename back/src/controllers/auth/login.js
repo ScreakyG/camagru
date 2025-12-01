@@ -1,7 +1,7 @@
 import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
-import { createAuthToken, createJWT } from "../../utils/jwt.js";
+import { createAuthToken } from "../../utils/jwt.js";
 import { verifyPasswordInput, verifyUsernameInput } from "../../validators/validation_rules.js";
 
 
