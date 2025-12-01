@@ -8,11 +8,6 @@
 ## Description
 
 Camagru is a instagram like web app that allow users to take live pictures with their webcam, tweak them then post them.
-</br>
-
-
-## TODO:
-- Swap JWT for Session Token in DB (authentication).
 
 ## Preview
 <div align="center">
@@ -35,7 +30,7 @@ At the moment users can :
 ### Backend
 - **Node.js**
 - **Fastify**
-- **SQLite** -> will be migrating to another later
+- **SQLite**
 - **Nodemailer**
 
 ### Frontend
@@ -124,12 +119,9 @@ At the moment users can :
    EMAIL_USER=<your_email@gmail.com>
    EMAIL_PASS=*****
 
-   # Security
-   JWT_SECRET=******
-
    # App Config
    MAX_IMG_SIZE=2 # Override max image size for uploads server-side (in MB).
-   
+
    ```
    _Values between <> and **** should be replaced by yours_
 
@@ -142,4 +134,3 @@ At the moment users can :
 
 ### Stop the app
 Ctrl-C where you launched the script
-
