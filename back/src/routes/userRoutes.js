@@ -1,7 +1,7 @@
 import { userInfos } from "../controllers/user/userInfos.js";
 import { modifyPassword } from "../controllers/user/modifyPassword.js";
 import { modifyUserInfos } from "../controllers/user/modifyUserInfos.js";
-import { publishImage } from "../controllers/user/publishImage.js";
+import { getAvailableOverlays, publishImage } from "../controllers/user/publishImage.js";
 import { getUserImages, getGalleryPosts } from "../controllers/user/gallery.js";
 import { deleteImage } from "../controllers/user/delete-image.js";
 import { likeImage } from "../controllers/user/likeImage.js";
@@ -23,6 +23,7 @@ async function userRoutes(fastify, options) {
     fastify.get("/user-gallery", getUserImages);
     fastify.get("/gallery-posts", getGalleryPosts);
     fastify.get("/image-comments/:image_id", getImageComments);
+    fastify.get("/available-overlays", getAvailableOverlays);
 
     // DELETE
     fastify.delete("/delete-image/:id", deleteImage);

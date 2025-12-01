@@ -13,17 +13,23 @@ const uploadDir = path.join(process.cwd(), "uploads");
 // Create uploads DIR (does nothing is already exists)
 await fs.mkdir(uploadDir, { recursive: true });
 
+
 const availableOverlays = [
-    "frost_frame",
-    "cat_selfie",
-    "pixel_glasses",
-    "smile_glasses"
+    { id: 0, name: "frost_frame", path: "/overlays/frost_frame.png", imgEl : null},
+    { id: 1, name: "pixel_glasses", path:"/overlays/pixel_glasses.png", imgEl : null},
+    { id: 3, name: "cat_selfie", path: "/overlays/cat_selfie.png", imgEl: null},
+    { id: 4, name: "smile_glasses", path: "/overlays/smile_glasses.png", imgEl: null},
 ];
 
 const allowedInputFileFormat = [
     "image/jpeg",
     "image/png"
 ];
+
+export async function getAvailableOverlays(request, reply) {
+    return (reply.send(availableOverlays));
+}
+
 
 function parseOverlay(overlayRequested) {
     // console.log("Selected overlay = ", overlayRequested);
@@ -35,7 +41,7 @@ function parseOverlay(overlayRequested) {
 
     for (let i = 0; i < availableOverlays.length; i++)
     {
-        if (overlayRequested.value === availableOverlays[i])
+        if (overlayRequested.value === availableOverlays[i].name)
             return (overlayRequested.value)
     }
     return (null);
@@ -69,7 +75,7 @@ async function createComposedImage(imageFile, overlay) {
     // console.log("Metadata base image = ", meta);
 
     // Chargement + redimensionner l'overlay pour fit sur l'image uploadee.
-    const overlayPath = path.join(process.cwd(), "overlays", `${overlay}.png`);
+    const overlayPath = path.join(process.cwd(), "overlays", `${overlay}.png`); // Recup le path du fichier dans le back.
     const overlayImgResized = await sharp(overlayPath)
         .resize({ width: meta.width, height: meta.height, fit: "fill" })
         .png()

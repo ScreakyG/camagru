@@ -9,12 +9,24 @@ const fileTypes = [
 ];
 
 // Array qui contient les infos de mes overlays et une variable contenant l'objet image a dessiner sur le canvas.
-const overlays = [
-    { id: 0, name: "frost_frame", path: "/src/images/frost_frame.png", imgEl : null},
-    { id: 1, name: "pixel_glasses", path:"/src/images/pixel_glasses.png", imgEl : null},
-    { id: 3, name: "cat_selfie", path: "/src/images/cat_selfie.png", imgEl: null},
-    { id: 4, name: "smile_glasses", path: "/src/images/smile_glasses.png", imgEl: null}
-];
+let overlays = null;
+
+async function getAvailableOverlays() {
+    try
+    {
+        const response = await fetch("/api/user/available-overlays");
+        const resData = await response.json();
+        printAPIResponse("/api/user/available-overlays", resData);
+
+        if (response.ok)
+            return (resData);
+        return (null);
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
+}
 
 /**
  * Dimensions que l'on prefere sur la webcam.
@@ -150,7 +162,9 @@ function resetOverlays() {
     imageBuild.activeOverlay = null;
 }
 
-function loadOverlays(imageEditorDiv) {
+async function loadOverlays(imageEditorDiv) {
+    overlays = await getAvailableOverlays();
+
     // Charge les overlays dans des imgs pour utiliser dans le request animation frame et afficher a la volee sur la preview de la webcam.
     for (let i = 0; i < overlays.length; i++)
     {
@@ -549,7 +563,7 @@ async function drawToCanvas() {
 }
 
 
-export function showImageEditorView() {
+export async function showImageEditorView() {
     const app = document.getElementById("app");
 
     const imageEditorDiv = document.createElement("div");
@@ -594,7 +608,7 @@ export function showImageEditorView() {
         </div>
     `
 
-    loadOverlays(imageEditorDiv);
+    await loadOverlays(imageEditorDiv); // Charge les metadatas des overlays depuis le back.
     loadUserFeed(imageEditorDiv);
 
     const inputElement = imageEditorDiv.querySelector("input[type=file]");
