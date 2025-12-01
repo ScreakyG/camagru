@@ -1,5 +1,5 @@
 import { AuthenticationError } from "../../utils/errors.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken } from "../../utils/jwt.js";
 import { findUserById } from "../../models/querys.js";
 
 export async function userInfos(request, reply) {
@@ -9,7 +9,7 @@ export async function userInfos(request, reply) {
         if (!token)
             throw new AuthenticationError("Could not find auth_token in cookies")
 
-        const decodedToken = verifyJWT(token);
+        const decodedToken = await verifyAuthToken(token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired");
 

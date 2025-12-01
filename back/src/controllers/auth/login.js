@@ -1,7 +1,7 @@
 import { decryptPassword } from "../../utils/encrypt.js";
 import { findUserByUsername } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
-import { createJWT } from "../../utils/jwt.js";
+import { createAuthToken, createJWT } from "../../utils/jwt.js";
 import { verifyPasswordInput, verifyUsernameInput } from "../../validators/validation_rules.js";
 
 
@@ -27,7 +27,7 @@ export async function login(request, reply) {
         if (!user.is_verified)
             return (reply.code(403).send({success: false, errorMessage: "Account is not validated", email: user.email}))
 
-        const token = createJWT({ id: user.id });
+        const token = await createAuthToken(user.id);
         reply.setCookie("auth_token", token, {
             httpOnly: true, // Non accessible avec JavaScript.
             secure: false, // Mettre en true si en HTTPS.

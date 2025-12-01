@@ -1,5 +1,5 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken } from "../../utils/jwt.js";
 import { findUserById, getImageById, linkImageToUser } from "../../models/querys.js";
 
 import path from "node:path";
@@ -104,7 +104,7 @@ export async function publishImage(request, reply) {
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
 
-        const decodedToken = verifyJWT(auth_token);
+        const decodedToken = await verifyAuthToken(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
 

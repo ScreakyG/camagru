@@ -1,7 +1,7 @@
 import { findUserByEmail, findUserById, findUserByUsername } from "../../models/querys.js";
 import { getDB } from "../../services/db.js";
 import { AuthenticationError, ConflictError } from "../../utils/errors.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken } from "../../utils/jwt.js";
 import { verifyEmailInput, verifyUsernameInput } from "../../validators/validation_rules.js";
 import { updateEmail, updateUsername } from "../../models/querys.js";
 
@@ -47,7 +47,7 @@ export async function modifyUserInfos(request, reply) {
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
 
-        const decodedToken = verifyJWT(auth_token);
+        const decodedToken = await verifyAuthToken(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
 

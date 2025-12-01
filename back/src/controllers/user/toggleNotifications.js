@@ -1,5 +1,5 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken } from "../../utils/jwt.js";
 import { findUserById, updateNotificationsState } from "../../models/querys.js";
 
 export async function toggleNotifications(request, reply) {
@@ -10,7 +10,7 @@ export async function toggleNotifications(request, reply) {
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
 
-        const decodedToken = verifyJWT(auth_token);
+        const decodedToken = await verifyAuthToken(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
 
@@ -24,7 +24,7 @@ export async function toggleNotifications(request, reply) {
         const { newNotificationsState } = request.body;
         if (newNotificationsState === undefined || null)
             throw new BadRequestError("Missing new notifications state.");
-        
+
         const result = await updateNotificationsState(newNotificationsState, user);
 
         return (reply.send({message: "Enabled/Disabled notifications.", updatedState: newNotificationsState}));

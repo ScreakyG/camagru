@@ -1,6 +1,6 @@
 import { getAllUserImages, findUserById, getAllPosts, getImageLikes, getAllImageComments, getLimitedPosts } from "../../models/querys.js";
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken} from "../../utils/jwt.js";
 
 
 export async function getUserImages(request, reply) {
@@ -11,7 +11,7 @@ export async function getUserImages(request, reply) {
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
 
-        const decodedToken = verifyJWT(auth_token);
+        const decodedToken = await verifyAuthToken(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
 

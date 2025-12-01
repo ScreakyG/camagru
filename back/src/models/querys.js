@@ -71,6 +71,15 @@ export async function findUserByUsername(username) {
     return (result);
 }
 
+export async function findUserByAuthToken(tokenHash) {
+    const db = await getDB();
+
+    const query = `SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ?`;
+    const result = await db.get(query, [tokenHash, "auth"]);
+
+    return (result);
+}
+
 export async function findUserByValidationToken(tokenHash) {
     const db = await getDB();
     const query = "SELECT users.* FROM tokens JOIN users ON tokens.user_id = users.id WHERE tokens.token_hash = ? AND purpose = ? AND tokens.token_expiration > strftime('%s', 'now')";

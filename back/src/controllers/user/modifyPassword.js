@@ -1,6 +1,6 @@
 import { AuthenticationError, BadRequestError } from "../../utils/errors.js";
 import { verifyPasswordInput } from "../../validators/validation_rules.js";
-import { verifyJWT } from "../../utils/jwt.js";
+import { verifyAuthToken } from "../../utils/jwt.js";
 import { findUserById, updatePassword } from "../../models/querys.js";
 
 export async function modifyPassword(request, reply) {
@@ -10,7 +10,7 @@ export async function modifyPassword(request, reply) {
         if (!auth_token)
             throw new AuthenticationError("Could not find auth_token in cookies.");
 
-        const decodedToken = verifyJWT(auth_token);
+        const decodedToken = await verifyAuthToken(auth_token);
         if (!decodedToken)
             throw new AuthenticationError("Auth_token is invalid/expired.");
 
