@@ -65,11 +65,15 @@ function createComment(postElem, username, comment) {
 
     const newCommentDiv = document.createElement("div");
     newCommentDiv.className = "flex gap-2";
-    newCommentDiv.innerHTML = `<span class="font-semibold">${username}</span>`;
+
+    const userSpan = document.createElement("span");
+    userSpan.className = "font-semibold";
+    userSpan.textContent = username;
 
     const newComment = document.createElement("p");
     newComment.textContent = comment;
 
+    newCommentDiv.appendChild(userSpan);
     newCommentDiv.appendChild(newComment);
     commentsDiv.appendChild(newCommentDiv);
 }
