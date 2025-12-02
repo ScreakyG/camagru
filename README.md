@@ -9,6 +9,11 @@
 
 Camagru is a instagram like web app that allow users to take live pictures with their webcam, tweak them then post them.
 
+## Todo
+
+- Working on improving app security (XSS, SQL injections, etc..).
+- Make the app more responsive.
+
 ## Preview
 <div align="center">
   <img alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" width=700 />
@@ -25,7 +30,7 @@ At the moment users can :
 - Feed with all users content ✅
 - Set notifications ✅
 
-## 🛠️ Stack
+## Stack
 
 ### Backend
 - **Node.js**
@@ -93,7 +98,7 @@ At the moment users can :
 
 
 
-## 🚀 Installation
+## Installation
 
 ### Required
 - Docker and Docker Compose
