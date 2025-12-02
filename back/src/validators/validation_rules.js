@@ -11,7 +11,7 @@ export function verifyEmailInput(email) {
     if (trimmedEmail.length === 0 || trimmedEmail.length > 255)
         throw new ValidationError("Invalid email format (length invalid)");
 
-    // Verifie certains caracteres dangereux.
+    // Verifie certains caracteres dangereux pouvant attaque XSS.
     if (/[<>"'\\]/.test(trimmedEmail))
         throw new ValidationError("Invalid email format (contains forbidden characters)");
 

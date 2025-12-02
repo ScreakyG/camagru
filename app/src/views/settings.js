@@ -212,7 +212,7 @@ export function showSettingsView(currentUser) {
                 <form id="update-profile-form" name="update-profile-form">
                     <div class="flex flex-col">
                         <label class="mb-1">Username</label>
-                        <input type="text" name="username" class="validator input input-bordered text-white ml-1" placeholder=${user.username} value=${user.username} pattern="^(?=.*[A-Za-z])(?:[A-Za-z0-9]|-)+$" minlength="3" maxlength="30" required></input>
+                        <input type="text" name="username" class="validator input input-bordered text-white ml-1" placeholder="${user.username}" value="${user.username}" pattern="^(?=.*[A-Za-z])(?:[A-Za-z0-9]|-)+$" minlength="3" maxlength="30" required></input>
                         <p class="validator-hint hidden ml-1">
                             Must be 3 to 30 characters<br/>
                             containing only letters, numbers or dash.
@@ -221,7 +221,7 @@ export function showSettingsView(currentUser) {
                     <div id="new-username-error-div" class="my-4 text-error hidden"></div>
                     <div class="flex flex-col my-5">
                         <label class="mb-1">Email address</label>
-                        <input type="email" name="email" class="validator input text-white ml-1" placeholder=${user.email} value=${user.email} required></input>
+                        <input type="email" name="email" class="validator input text-white ml-1" placeholder="${user.email}" value="${user.email}" required></input>
                         <p class="validator-hint hidden ml-1">
                             Email is not valid.
                         </p>
