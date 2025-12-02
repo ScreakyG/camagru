@@ -189,9 +189,9 @@ async function createPost(userPost) {
                         <img id="user-avatar" src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
                     </div>
                 </div>
-                <p id="username-card">${userPost.username}</p>
+                <p id="username-card"></p>
             </div>
-            <img id="user-post" class="w-full" src=${userPost.img_path}></img>
+            <img id="user-post" class="w-full"></img>
             <div class="flex gap-2 m-1">
                 <div id="like-btn" class="cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-8 text-white" viewBox="0 0 640 640">
@@ -215,6 +215,14 @@ async function createPost(userPost) {
                 </form>
             </div>
         </div>`
+
+    // Mieux pour ce premunir d'attaques XSS.
+    const usernameCard = newPost.querySelector("p[id=username-card]");
+    usernameCard.textContent = userPost.username;
+
+    const userPostImg = newPost.querySelector("img[id=user-post]");
+    userPostImg.src = userPost.img_path;
+    //
 
     const likeBtn = newPost.querySelector("div[id=like-btn]");
     likeBtn.addEventListener("click", () => likePost(userPost, newPost));

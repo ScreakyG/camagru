@@ -313,7 +313,7 @@ function updateImageDisplay(inputElement) {
     if (inputFiles.length === 0)
     {
         const para = document.createElement("p");
-        para.textContent = "No files currently selected for upload";name
+        para.textContent = "No files currently selected for upload";
         previewDiv.appendChild(para);
     }
     else
