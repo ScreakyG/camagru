@@ -38,7 +38,7 @@ function showCheckPasswordMailModal(email) {
                     <button class="btn btn-error absolute right-2 top-2" autofocus>X</button>
                     <div class="m-4 flex-col items-center">
                         <p class="m-2 text-center">
-                            If an account exists for <span class="font-semibold text-indigo-300">${email}</span>,<br>
+                            If an account exists for <span class="font-semibold text-indigo-300"></span>,<br>
                             you’ll receive a password reset link shortly.
                         </p>
                         <p class="mt-2 text-sm text-gray-500 text-center">
@@ -47,6 +47,9 @@ function showCheckPasswordMailModal(email) {
                     </div>
                 </div>
             </dialog>`
+
+    const emailSpan = newDiv.querySelector("span");
+    emailSpan.textContent = email;
 
     const body = document.querySelector("body");
     body.appendChild(newDiv);
