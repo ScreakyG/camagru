@@ -30,6 +30,7 @@ function isValidComment(comment) {
     comment = comment.trim();
     if (comment.length < 1 || comment.length > 30)
         return (false);
+
     return (true);
 }
 
