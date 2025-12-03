@@ -64,7 +64,6 @@ export async function commentImage(request, reply) {
             throw new NotFoundError("Image not found.");
 
         // Parser le comment
-        console.log(request.body);
         const { comment } = request.body;
         if (!isValidComment(comment))
             throw new BadRequestError("Comment does not meet criterias (Min 1 character, max 30)");
