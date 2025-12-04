@@ -31,7 +31,7 @@ export async function login(request, reply) {
         reply.setCookie("auth_token", token, {
             httpOnly: true, // Non accessible avec JavaScript.
             secure: false, // Mettre en true si en HTTPS.
-            sameSite: "strict",
+            sameSite: "strict", // Protection CRSF
             path: "/"
         })
 
