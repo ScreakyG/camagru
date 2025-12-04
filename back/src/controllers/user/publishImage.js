@@ -47,18 +47,26 @@ function parseOverlay(overlayRequested) {
     return (null);
 }
 
-function isValidImageFile(inputFile) {
-    // console.log("Uploaded file = ", inputFile);
-
+async function isValidImageFile(inputFile, fileBuffer) {
     if (!inputFile)
         return (false);
 
-    for (let i = 0; i < allowedInputFileFormat.length; i++)
+    // Verifie si le mimetype est accepte par le serveur.
+    if (!allowedInputFileFormat.includes(inputFile.mimetype))
+        return (false);
+
+    try
     {
-        if (inputFile.mimetype === allowedInputFileFormat[i])
-            return (true);
+        // Va essayer d'ouvrir le fichier, cela nous permet de savoir si le fichier est vraiment une image, cela echouera si il contient autre chose que de l'image.
+        const metadata = await sharp(fileBuffer).metadata();
+        // console.log("Metadata : ", metadata);
+        return (true);
     }
-    return (false);
+    catch (error)
+    {
+        console.log("Error when opening input file : ", error);
+        return (false);
+    }
 }
 
 async function createComposedImage(imageFile, overlay) {
@@ -132,7 +140,8 @@ export async function publishImage(request, reply) {
                 overlayRequested = part;
         }
 
-        if (!isValidImageFile(uploadedFileMetadata))
+        const isValid = await isValidImageFile(uploadedFileMetadata, uploadedFile);
+        if (!isValid)
             throw new BadRequestError("Uploaded file is not a image.");
 
         overlayParsed = parseOverlay(overlayRequested);
@@ -150,6 +159,6 @@ export async function publishImage(request, reply) {
         console.log("CATCHED ERROR = ", error);
         if (error.statusCode)
             return (reply.code(error.statusCode).send({success: false, errorMessage: error.message}))
-        return (reply.send({success: false, message: "Internal server error", details: error.message}))
+        return (reply.code(500).send({success: false, message: "Internal server error", details: error.message}))
     }
 }
