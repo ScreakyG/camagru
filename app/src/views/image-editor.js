@@ -646,6 +646,9 @@ export async function showImageEditorView() {
             await takePicture();
 
         const data = new FormData(editorForm);
+        // if (!data.has("overlay"))
+        //     data.append("overlay", imageBuild.activeOverlay.name);
+
         await sendEditorForm(data, imageEditorDiv);
         resetEditor();
     });
@@ -655,20 +658,23 @@ export async function showImageEditorView() {
     for (let i = 0; i < overlayBtns.length; i++)
     {
         overlayBtns[i].addEventListener("click", async (event) => {
-            if (!mediaStream && !inputElement.files[0])
+            if (mediaStream)
             {
-                event.preventDefault();
-                return ;
+                imageBuild.activeOverlay = overlays[i];
+                drawToCanvas();
+                return;
             }
-            if (!mediaStream && inputElement.files[0])
-            {
-                const isValid = await isValidInputFile(inputElement.files[0])
-                if (!isValid)
-                {
-                    event.preventDefault();
-                    return;
-                }
-            }
+            event.preventDefault();
+            if (!inputElement.files[0])
+              return ;
+
+            const isValid = await isValidInputFile(inputElement.files[0])
+            if (!isValid)
+                return;
+
+            overlayBtns[i].checked = true;
+            editorForm.dispatchEvent(new Event("change"));
+
             imageBuild.activeOverlay = overlays[i];
             drawToCanvas();
         });
