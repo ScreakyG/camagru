@@ -270,8 +270,10 @@ function hideVideoStream() {
     canvas.classList.remove("hidden");
 }
 
-function stopWebcam() {
+export function stopWebcam() {
     const video = document.getElementById("video");
+    if (!video)
+        return ;
     try
     {
         cancelAnimationFrame(raf);
@@ -284,6 +286,7 @@ function stopWebcam() {
             mediaStream = null;
         }
         video.srcObject = null;
+        console.log("Stopped Webcam");
     }
     catch (error)
     {

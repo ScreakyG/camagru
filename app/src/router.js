@@ -8,6 +8,7 @@ import { cleanPreviousView } from "./cleaning.js";
 import { showSettingsView } from "./views/settings.js";
 import { showImageEditorView } from "./views/image-editor.js";
 import { showGalleryView } from "./views/gallery.js";
+import { stopWebcam } from "./views/image-editor.js";
 
 // Catching all events and preventing default behavior of <a> to prevent page refresh.
 export function handleAnchors() {
@@ -19,6 +20,9 @@ export function handleAnchors() {
         if (target instanceof HTMLAnchorElement)
         {
             event.preventDefault();
+            if (window.location.pathname === "/image-editor")
+                stopWebcam();
+
             const href = target.getAttribute("href");
             window.history.pushState(null, "", href);
             router();
