@@ -187,8 +187,8 @@ async function loadOverlays(imageEditorDiv) {
         overlayMiniatureInput.name = "overlay";
         overlayMiniatureInput.value = overlays[i].name; //Peut etre changer par l'ID pour mieux identifier.
         overlayMiniatureInput.className = `peer hidden`;
-        if (i === 0)
-            overlayMiniatureInput.setAttribute("required", "");
+        // if (i === 0)
+        //     overlayMiniatureInput.setAttribute("required", "");
 
         // Label setup
         overlayMiniatureLabel.setAttribute("for", overlays[i].id);
@@ -219,9 +219,20 @@ function inputFileDebugger(inputElement) {
     });
 }
 
-function isValidInputFile(file) {
+async function isValidInputFile(file) {
     if (file && fileTypes.includes(file.type) && file.size < FILESIZE_LIMIT * 1024 * 1024)
-        return (true);
+    {
+        try
+        {
+            // Ici nous permet vraiment de savoir si le fichier est une image.
+            await createImageBitmap(file, { imageOrientation: 'from-image' });
+            return (true);
+        }
+        catch (error)
+        {
+            return (false);
+        }
+    }
     return (false);
 }
 
@@ -299,7 +310,7 @@ function hideWebcamErrors() {
 }
 
 
-function updateImageDisplay(inputElement) {
+async function updateImageDisplay(inputElement) {
     hideWebcamErrors();
     const previewDiv = document.getElementById("upload_preview");
 
@@ -326,7 +337,7 @@ function updateImageDisplay(inputElement) {
             const listItem = document.createElement("li");
             const para = document.createElement("p");
             listItem.className = "mt-2 p-4 flex justify-between items-center border rounded-md";
-            if (isValidInputFile(file))
+            if (await isValidInputFile(file))
             {
                 para.textContent = `File name ${file.name}, file size  ${returnFileSize(file.size)}.`;
                 const image = document.createElement("img");
@@ -344,12 +355,21 @@ function updateImageDisplay(inputElement) {
     }
 }
 
-function handleSubmitButtonInteraction(viewDiv, form) {
+async function handleSubmitButtonInteraction(viewDiv, form) {
     const submitBtn = viewDiv.querySelector("button[type=submit]");
     const formValues = getFormValues(form);
 
-    if (((formValues.image_upload && isValidInputFile(formValues.image_upload)) || mediaStream) && formValues.overlay)
-        submitBtn.removeAttribute("disabled")
+    let isValid = false;
+    if (formValues.image_upload)
+        isValid = await isValidInputFile(formValues.image_upload)
+
+    // console.log({image_upload: formValues.image_upload, isValid, mediaStream, overlay: formValues.overlay})
+
+    if (((formValues.image_upload && isValid) || mediaStream) && formValues.overlay)
+    {
+        console.log("On rend utilisable le boutton");
+       submitBtn.removeAttribute("disabled");
+    }
     else
         submitBtn.setAttribute("disabled", "");
 }
@@ -360,10 +380,9 @@ async function previewTest(inputElement) {
     resetOverlays();
     hideVideoStream();
     // Si le fichier n'est pas valide on affiche le default placeholder.
-    if (isValidInputFile(file))
+    if (await isValidInputFile(file))
     {
         const imageSrc = await createImageBitmap(file, { imageOrientation: 'from-image' });
-
         console.log("imageSrc = ", imageSrc);
         imageBuild.baseImg = imageSrc;
         drawToCanvas();
@@ -613,14 +632,14 @@ export async function showImageEditorView() {
 
     const inputElement = imageEditorDiv.querySelector("input[type=file]");
     inputFileDebugger(inputElement);
-    inputElement.addEventListener("change", () => updateImageDisplay(inputElement));
+    inputElement.addEventListener("change", async () => updateImageDisplay(inputElement));
     inputElement.addEventListener("change", async () => previewTest(inputElement));
 
     const useWebcamBtn = imageEditorDiv.querySelector("button[id=request_webcam]");
     useWebcamBtn.addEventListener("click", async () => webcamTests(imageEditorDiv));
 
     const editorForm = imageEditorDiv.querySelector("form");
-    editorForm.addEventListener("change", () => handleSubmitButtonInteraction(imageEditorDiv, editorForm));
+    editorForm.addEventListener("change", async () => handleSubmitButtonInteraction(imageEditorDiv, editorForm));
     editorForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (mediaStream)
@@ -635,14 +654,23 @@ export async function showImageEditorView() {
     const overlayBtns = imageEditorDiv.querySelectorAll("input[type=radio]");
     for (let i = 0; i < overlayBtns.length; i++)
     {
-        overlayBtns[i].addEventListener("click", (event) => {
-            if (!mediaStream && (!inputElement.files[0] || !isValidInputFile(inputElement.files[0])))
-                event.preventDefault();
-            else
+        overlayBtns[i].addEventListener("click", async (event) => {
+            if (!mediaStream && !inputElement.files[0])
             {
-                imageBuild.activeOverlay = overlays[i];
-                drawToCanvas();
+                event.preventDefault();
+                return ;
             }
+            if (!mediaStream && inputElement.files[0])
+            {
+                const isValid = await isValidInputFile(inputElement.files[0])
+                if (!isValid)
+                {
+                    event.preventDefault();
+                    return;
+                }
+            }
+            imageBuild.activeOverlay = overlays[i];
+            drawToCanvas();
         });
     }
     app.appendChild(imageEditorDiv);
