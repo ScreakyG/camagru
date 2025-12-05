@@ -592,7 +592,7 @@ export async function showImageEditorView() {
     imageEditorDiv.innerHTML = /*html*/ `
         <div class="text-black bg-zinc-200 min-h-dvh flex flex-col items-center">
             <h1 class="text-2xl text-center my-10">Editor</h1>
-            <form class="flex flex-col gap-5">
+            <form class="flex flex-col gap-5 mx-2">
                 <div id="file-viewer" class="min-h-30 p-6 border-zinc-400 rounded-xl border sm:max-w-7xl mx-auto w-full">
                     <div class="flex flex-col gap-5">
                         <div class="flex justify-between items-center">
