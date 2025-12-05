@@ -182,7 +182,7 @@ async function createPost(userPost) {
 
     const newPost = document.createElement("div");
     newPost.innerHTML = /*html*/ `
-        <div id="card" class="flex flex-col gap-2 border-2 w-[518px] rounded-md">
+        <div id="card" class="flex flex-col gap-2 border-2 rounded-md w-full max-w-[518px] mx-auto">
             <div class="flex items-center px-2 pt-2">
                 <div class="avatar mr-2">
                     <div class="w-10 rounded-full">
@@ -341,7 +341,7 @@ export async function showGalleryView() {
     viewDiv.className = "my-5";
 
     galleryDiv = document.createElement("div");
-    galleryDiv.className = "flex flex-col gap-5 items-center"
+    galleryDiv.className = "flex flex-col gap-5 mx-2"
     viewDiv.appendChild(galleryDiv);
 
     app.appendChild(viewDiv);
