@@ -589,7 +589,6 @@ async function drawToCanvas() {
         drawOverlay(imageBuild.activeOverlay);
 }
 
-
 export async function showImageEditorView() {
     const app = document.getElementById("app");
 
