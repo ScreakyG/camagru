@@ -614,7 +614,7 @@ export async function showImageEditorView() {
                         </div>
                     </div>
                 </div>
-                <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[50vh] min-h-0">
+                <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[65vh] min-h-0">
                     <div id="preview-img" class="col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
                         <div class="w-full h-full flex justify-center items-center overflow-hidden">
                             <video class="hidden max-w-full max-h-full" id="video">Video stream not available.</video>
