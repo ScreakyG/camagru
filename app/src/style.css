@@ -1220,20 +1220,8 @@
     overflow-y: auto;
     overscroll-behavior: contain;
   }
-  .col-start-1 {
-    grid-column-start: 1;
-  }
-  .col-start-2 {
-    grid-column-start: 2;
-  }
-  .col-start-5 {
-    grid-column-start: 5;
-  }
-  .row-span-5 {
-    grid-row: span 5 / span 5;
-  }
-  .row-start-1 {
-    grid-row-start: 1;
+  .row-span-1 {
+    grid-row: span 1 / span 1;
   }
   .m-1 {
     margin: calc(var(--spacing) * 1);
@@ -1417,8 +1405,8 @@
   .h-\[30\%\] {
     height: 30%;
   }
-  .h-\[65vh\] {
-    height: 65vh;
+  .h-\[50vh\] {
+    height: 50vh;
   }
   .h-full {
     height: 100%;
@@ -1447,20 +1435,17 @@
   .w-\[30\%\] {
     width: 30%;
   }
-  .w-\[518px\] {
-    width: 518px;
-  }
   .w-full {
     width: 100%;
+  }
+  .max-w-7xl {
+    max-width: var(--container-7xl);
   }
   .max-w-\[518px\] {
     max-width: 518px;
   }
   .max-w-full {
     max-width: 100%;
-  }
-  .min-w-0 {
-    min-width: calc(var(--spacing) * 0);
   }
   .flex-1 {
     flex: 1;
@@ -1490,11 +1475,8 @@
   .resize-none {
     resize: none;
   }
-  .grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-  .grid-rows-5 {
-    grid-template-rows: repeat(5, minmax(0, 1fr));
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -1516,6 +1498,9 @@
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
+  }
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
@@ -1602,6 +1587,9 @@
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
+  }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);

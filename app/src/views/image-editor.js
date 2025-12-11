@@ -614,23 +614,22 @@ export async function showImageEditorView() {
                         </div>
                     </div>
                 </div>
-                <div id="editing-area" class="grid grid-cols-5 grid-rows-5 gap-4 mx-auto sm:max-w-7xl h-[65vh] min-h-0">
-                    <div id="preview-img" class="col-span-3 col-start-2 row-span-5 row-start-1 border rounded-xl border-zinc-400 bg-zinc-300">
+                <div id="editing-area" class="grid grid-cols-4 gap-4 mx-auto max-w-7xl h-[50vh]">
+                    <div id="preview-img" class="col-span-3 border rounded-xl border-zinc-400 bg-zinc-300 min-h-0">
                         <div class="w-full h-full flex justify-center items-center overflow-hidden">
                             <video class="hidden max-w-full max-h-full" id="video">Video stream not available.</video>
                             <canvas class="max-w-full max-h-full bg-black" id="canvas"></canvas>
                         </div>
                     </div>
-                    <fieldset id="overlays" class="overflow-auto min-w-0 min-h-0 flex flex-col col-span-1 col-start-1 row-span-5 row-start-1 justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
+                    <fieldset id="overlays" class="min-h-0 col-span-1 overflow-auto flex flex-col gap-3 border rounded-xl border-zinc-400 p-3 col-span-1 row-span-1">
                         <p class="text-center">Overlays</p>
                     </fieldset>
-                    <div id="feed" class="overflow-auto min-w-0 min-h-0 flex flex-col justify-center-safe gap-5 p-5 col-span-1 col-start-5 row-span-5 row-start-1 border rounded-xl border-zinc-400">
-                        <p class="text-center">Feed</p>
-                    </div>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
-            <img class="w-[518px]" id="compose-result"src=""></img>
+            <div id="feed" class="overflow-auto flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
+                <p class="text-center">Feed</p>
+            </div>
         </div>
     `
 
