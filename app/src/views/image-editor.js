@@ -121,7 +121,7 @@ function addImageToFeed(image, imageEditorDiv) {
     const newImg = document.createElement("img");
     const deleteBtn = document.createElement("button");
 
-    newDiv.className = "relative aspect-square rounded-xl group";
+    newDiv.className = "relative aspect-square rounded-xl group flex-shrink-0 w-24 h-24";
 
     deleteBtn.type = "button";
     deleteBtn.className = "absolute inset-0 w-[30%] h-[30%] bg-red-500 opacity-0 rounded-full text-white cursor-pointer group-hover:opacity-100";
@@ -627,8 +627,7 @@ export async function showImageEditorView() {
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
-            <div id="feed" class="overflow-auto flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5 min-h-0">
-                <p class="text-center">Feed</p>
+            <div id="feed" class="max-w-7xl overflow-x-auto overflow-y-hidden flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5 min-h-0">
             </div>
         </div>
     `
