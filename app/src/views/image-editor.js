@@ -621,13 +621,13 @@ export async function showImageEditorView() {
                             <canvas class="max-w-full max-h-full bg-black" id="canvas"></canvas>
                         </div>
                     </div>
-                    <fieldset id="overlays" class="min-h-0 col-span-1 overflow-auto flex flex-col gap-3 border rounded-xl border-zinc-400 p-3 col-span-1 row-span-1">
+                    <fieldset id="overlays" class="min-h-0 col-span-1 overflow-auto flex flex-col items-center gap-3 border rounded-xl border-zinc-400 p-3 col-span-1 row-span-1">
                         <p class="text-center">Overlays</p>
                     </fieldset>
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
-            <div id="feed" class="overflow-auto flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5">
+            <div id="feed" class="overflow-auto flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5 min-h-0">
                 <p class="text-center">Feed</p>
             </div>
         </div>
