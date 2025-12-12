@@ -3,6 +3,7 @@ import { AuthenticationError, BadRequestError, NotFoundError } from "../../utils
 import { findUserById, getImageById, insertCommentPost } from "../../models/querys.js";
 import { getAllImageComments } from "../../models/querys.js";
 import { sendCommentNotificationMail } from "../../services/mailService.js";
+import { basicInputChecks } from "../../validators/basic_checks.js";
 
 async function notifyOwnerByMail(ownerId) {
     try
@@ -24,8 +25,7 @@ async function notifyOwnerByMail(ownerId) {
 }
 
 function isValidComment(comment) {
-    if (!comment)
-        return (false);
+    basicInputChecks(comment, "string", "comment", "body");
 
     comment = comment.trim();
     if (comment.length < 1 || comment.length > 30)
