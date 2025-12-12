@@ -627,7 +627,7 @@ export async function showImageEditorView() {
                 </div>
                 <button type="submit" class="btn btn-success mx-auto disabled:btn-error" disabled>Publish</button>
             </form>
-            <div id="feed" class="max-w-7xl overflow-x-auto overflow-y-hidden flex justify-center-safe gap-5 border rounded-xl border-zinc-400 p-5 min-h-0">
+            <div id="feed" class="my-5 max-w-7xl w-full overflow-auto flex gap-5 border rounded-xl border-zinc-400 p-5 min-w-0">
             </div>
         </div>
     `
