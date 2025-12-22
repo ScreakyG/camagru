@@ -19,6 +19,8 @@ const availableOverlays = [
     { id: 1, name: "pixel_glasses", path:"/overlays/pixel_glasses.png", imgEl : null},
     { id: 3, name: "cat_selfie", path: "/overlays/cat_selfie.png", imgEl: null},
     { id: 4, name: "smile_glasses", path: "/overlays/smile_glasses.png", imgEl: null},
+    { id: 5, name: "christmas_frame", path: "/overlays/christmas_frame.png", imgEl: null},
+    { id: 6, name: "wasted", path: "/overlays/wasted.png", imgEl: null},
 ];
 
 const allowedInputFileFormat = [
