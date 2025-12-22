@@ -5,12 +5,20 @@ services:
       dockerfile: nginx/Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./back/uploads:/var/www/uploads:ro
+      - ./back/overlays:/var/www/overlays:ro
     networks:
       - camagru-network
 
   api:
     build:
+      context: . #Root du projet
       dockerfile: back/Dockerfile
+    volumes:
+      - ./back/uploads:/app/uploads
+      - ./back/overlays:/app/overlays
+      - ./back/db:/app/db
     networks:
       - camagru-network
     env_file: # Va ajouter les variables d'environnement du .env dans l'env du container.

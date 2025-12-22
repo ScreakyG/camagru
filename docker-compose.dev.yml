@@ -24,7 +24,7 @@ services:
     networks:
       - camagru-network
     env_file: # Va ajouter les variables d'environnement du .env dans l'env du container.
-      - ./back/.env
+      - ./back/.env.development
 
 networks:
   camagru-network:
