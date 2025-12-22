@@ -10,20 +10,17 @@
 Camagru is a instagram like web app that allow users to take live pictures with their webcam, tweak them then post them.
 
 ## Todo
-
-- Working on improving app security (XSS, SQL injections, etc..).
-- Make the app more responsive.
+- Improve log handling.
 
 ## Preview
 <div align="center">
   <img alt="image" src="https://github.com/user-attachments/assets/0afac1ab-6122-458e-a70f-5892cee0bb21" width=700 />
 </div>
 
-At the moment users can :
+Your application users can :
 - Create a account with mail verification ✅
 - Request new password link if forgot ✅
 - Edit their email / username / password ✅
-
 - Takes pictures ✅
 - Edit pictures ✅
 - Like , comment posts ✅
@@ -130,8 +127,17 @@ At the moment users can :
    ```bash
    ./build_script.sh
    ```
+   or
+   ```bash
+   ./dev_script.sh
+   ```
 
-3. Access the app at http://localhost:8080
+4. Access the app at http://localhost:8080
 
 ### Stop the app
 Ctrl-C where you launched the script
+
+### Notes
+- Users uploaded images will be hosted on your locally on your machine in ``./back/uploads``
+- Database will be hosted in ``./back/db``
+- To add new overlays add them in ``./back/overlays`` and in ``./back/src/controllers/user/publishImage.js`` add them to the overlays array.
