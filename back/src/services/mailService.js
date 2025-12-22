@@ -4,8 +4,6 @@ let transporter = null;
 
 export function initEmailService() {
     transporter = nodemailer.createTransport({
-    // host: 'smtp.ethereal.email',
-    // port: 587,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     auth: {
